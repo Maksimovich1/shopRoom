@@ -9,13 +9,13 @@
 <html>
 <head>
     <title>Канарский отдых</title>
-    <%--<link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"--%>
-          <%--rel="stylesheet">--%>
-    <%--<script src="webjars/jquery/3.3.1/jquery.min.js"></script>--%>
-    <%--<script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--%>
+    <%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
 </head>
 <body>
 <div class="container" style="background-color: #e3f2fd">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-success btn-block" onclick="${"location.href='/productList'"}">ПРИСТУПИТЬ К ПОИСКУ</button>
+    <button type="button" class="btn btn-success btn-block" onclick="${"location.href='/secure/search'"}">ПРИСТУПИТЬ К ПОИСКУ</button>
 </div>
 </body>
 </html>

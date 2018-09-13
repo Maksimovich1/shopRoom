@@ -13,9 +13,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/productList">Поиск апартаментов</a></li>
-            <li><a href="#">Обратная связь</a></li>
-            <li><a href="#">О нас</a></li>
+            <li><a href="${pageContext.request.contextPath}/secure/search">Поиск апартаментов</a></li>
+            <li><a href="${pageContext.request.contextPath}/contacts">Обратная связь</a></li>
+            <li><a href="${pageContext.request.contextPath}/about">О нас</a></li>
         </ul>
     </div>
 </nav>

@@ -33,4 +33,14 @@ public class IController {
         null);
         return "searchPage";
     }
+
+    @RequestMapping("/about")
+    public String getAbout(){
+        return "about";
+    }
+
+    @RequestMapping("/contacts")
+    public String getContact(){
+        return "contact";
+    }
 }
