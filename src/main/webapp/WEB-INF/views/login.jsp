@@ -59,10 +59,10 @@
     <p class="h4 mb-4">Sign in</p>
 
     <!-- Email -->
-    <input type="email" id="username" class="form-control mb-4" placeholder="E-mail">
+    <input type="text" name="username" id="username" class="form-control mb-4" placeholder="E-mail">
     <br>
     <!-- Password -->
-    <input type="password" id="password" class="form-control mb-4" placeholder="Password">
+    <input type="password" name="password" id="password" class="form-control mb-4" placeholder="Password">
     <br>
     <div class="d-flex justify-content-around">
         <div>
