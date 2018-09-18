@@ -2,8 +2,10 @@ package com.mamba.shop.service.impl;
 
 import com.mamba.shop.dao.OrderDao;
 import com.mamba.shop.dao.ProductDao;
+import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Orders;
 import com.mamba.shop.entity.Product;
+import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,19 @@ public class IShopDetailsService implements ShopService{
             System.out.println(orders);
 
         return selectFreeRooms(searchListParamProduct, searchActiveOrders, date_in, date_out);
+    }
+
+    @Override
+    public List<Apartment> searchFreeApartments(String countPeople, String countChild, String district, String priceMax, Date dateIn, Date dateOut, String bedroom) {
+
+        SearchCustomModel model = new SearchCustomModel(
+                Integer.parseInt(bedroom), Integer.parseInt(countPeople),
+                Integer.parseInt(countChild), Integer.parseInt(priceMax),
+                Integer.parseInt(district),dateIn, dateOut);
+
+
+
+        return null;
     }
 
 

@@ -1,11 +1,8 @@
 package com.mamba.shop;
 
 import com.mamba.shop.config.AppConfiguration;
-import com.mamba.shop.dao.OrderDao;
-import com.mamba.shop.dao.ProductDao;
-import com.mamba.shop.entity.Orders;
-import com.mamba.shop.entity.Product;
-import com.mamba.shop.service.ShopService;
+import com.mamba.shop.dao.ApartmentDao;
+import com.mamba.shop.entity.*;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -16,19 +13,26 @@ import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
 import net.fortuna.ical4j.model.property.Summary;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        AnnotationConfigApplicationContext context =
-//                new AnnotationConfigApplicationContext(AppConfiguration.class);
-//        ProductDao dao = context.getBean(ProductDao.class);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfiguration.class);
+
+        ApartmentDao dao = context.getBean(ApartmentDao.class);
+        List<Apartment> list = dao.getAllApartmentListWithDependency();
+        for (Apartment ap :
+                list) {
+            for (Period period: ap.getPeriods()){
+                System.out.println(period);
+            }
+        }
+
+        //        ProductDao dao = context.getBean(ProductDao.class);
 //
 //        ShopService shopService = context.getBean(ShopService.class);
 //
@@ -73,7 +77,6 @@ public class Main {
 //        }
 
 
-        System.out.println(new BCryptPasswordEncoder().encode("admin"));
 
 
 
