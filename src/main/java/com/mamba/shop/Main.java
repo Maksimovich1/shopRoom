@@ -30,7 +30,7 @@ public class Main {
         ShopService service = context.getBean(ShopService.class);
         List<Apartment> list = service.searchFreeApartmentsWithDependency("2", "0",
                 "1", "65",
-                new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-22"), new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-29"),"1");
+                "2018-09-22", "2018-09-29","1");
         if (list.size() == 0)
             System.out.println("List is empty...");
         else

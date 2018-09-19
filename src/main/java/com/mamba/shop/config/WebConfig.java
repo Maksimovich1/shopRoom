@@ -1,5 +1,7 @@
 package com.mamba.shop.config;
 
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,12 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
+import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
@@ -41,7 +44,34 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/login").setViewName("login");
     }
 
-//   @Bean
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LocaleChangeInterceptor interceptor =
+                new LocaleChangeInterceptor();
+        interceptor.setParamName("lang");
+        registry.addInterceptor(interceptor);
+    }
+
+    @Bean
+    public LocaleResolver localeResolver(){
+        CookieLocaleResolver cookieLocaleResolver =
+                new CookieLocaleResolver();
+        cookieLocaleResolver.setDefaultLocale(new Locale("en"));
+        cookieLocaleResolver.setCookieName("locale");
+        cookieLocaleResolver.setCookieMaxAge(4800);
+        return cookieLocaleResolver;
+    }
+
+    @Bean
+    public MessageSource messageSource(){
+        ReloadableResourceBundleMessageSource messageSource =
+                new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("/WEB-INF/i18n/application");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+
+    //   @Bean
 //   public MessageSource messageSource(){
 //       ResourceBundleMessageSource bundleMessageSource =
 //               new ResourceBundleMessageSource();
