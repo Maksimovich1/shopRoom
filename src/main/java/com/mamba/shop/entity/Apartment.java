@@ -26,7 +26,7 @@ import java.util.Set;
                 "where ap.bedroom = :p_bedroom and " +
                 "ap.people = :p_people and " +
                 "ap.children = :p_children and " +
-                "ap.price = :p_price and " +
+                "ap.price <= :p_price and " +
                 "ap.district = :p_district and " +
                 "ap.enable = :p_enable")
 })

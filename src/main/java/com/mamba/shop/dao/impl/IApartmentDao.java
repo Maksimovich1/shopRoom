@@ -38,23 +38,14 @@ public class IApartmentDao implements ApartmentDao {
     @Override
     public List<Apartment> getAllFreeApartmentsBySearchCustomModelWithDependency(SearchCustomModel customModel) {
         Session session = sessionFactory.getCurrentSession();
-        List<Apartment> apartmentListSuitable =
-                session.getNamedQuery("Apartment.findFreeApartmentsBySearchCustomModelWithDependency")
-                .setParameter("p_bedroom", customModel.getBedroom())
-                .setParameter("p_people", customModel.getPeople())
-                .setParameter("p_children", customModel.getChild())
-                .setParameter("p_price", customModel.getPrice())
-                .setParameter("p_district", customModel.getDistrict())
-                .setParameter("p_enable", 0).list();
-
-        List<Apartment> listResult = new ArrayList<>();
-        for (Apartment apartment :
-                apartmentListSuitable) {
-            if (checkPeriodApartment(apartment, customModel.getSearch_date_in(), customModel.getSearch_date_out()))
-                listResult.add(apartment);
-        }
-
-        return listResult;
+        return (List<Apartment>) session
+                .getNamedQuery("Apartment.findFreeApartmentsBySearchCustomModelWithDependency")
+        .setParameter("p_bedroom", customModel.getBedroom())
+        .setParameter("p_people", customModel.getPeople())
+        .setParameter("p_children", customModel.getChild())
+        .setParameter("p_price", customModel.getPrice())
+        .setParameter("p_district", customModel.getDistrict())
+        .setParameter("p_enable", 1).list();
     }
 
     @Transactional(readOnly = true)
@@ -65,6 +56,13 @@ public class IApartmentDao implements ApartmentDao {
         return (Apartment) session.getNamedQuery("Apartment.findByIdWithDependency")
                 .setParameter("id", id)
                 .uniqueResult();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Apartment findById(String id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Apartment.class, id);
     }
 
     @Override
@@ -83,20 +81,4 @@ public class IApartmentDao implements ApartmentDao {
         System.out.println("## Add apartment! id =" + apartment.getId());
     }
 
-
-    //проверяет входимость одного периода в другой
-    private boolean checkPeriodApartment(Apartment apartment, Date thisDate_in, Date thisDate_out){
-        for (Period periodArchive :
-                apartment.getPeriods()) {
-            Date archiveDateIn = periodArchive.getDate_in();
-            Date archiveDateOut = periodArchive.getDate_out();
-            if (thisDate_in.before(archiveDateIn) && thisDate_out.before(archiveDateIn)){
-                return true;
-            }
-            else if (thisDate_in.after(archiveDateOut) && thisDate_out.after(archiveDateOut)){
-                return true;
-            }
-        }
-        return false;
-    }
 }

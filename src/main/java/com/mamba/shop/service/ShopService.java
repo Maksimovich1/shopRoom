@@ -8,10 +8,12 @@ import java.util.List;
 
 public interface ShopService {
 
-    List<Product> searchFreeRooms(String countPeople, String countChild, String priceMin,
-                        String priceMax, String dateIn, String dateOut);
-    List<Apartment> searchFreeApartments(
-            String countPeople, String countChild, String priceMin,
-            String priceMax, Date dateIn, Date dateOut, String bedroom
+    List<Apartment> searchFreeApartmentsWithDependency(
+            String countPeople, String countChild,
+            String district, String priceMax,
+            String dateIn, String dateOut, String bedroom
     );
+    List<Apartment> getAllApartments();
+    Apartment getByIdWithDependency(String id);
+
 }

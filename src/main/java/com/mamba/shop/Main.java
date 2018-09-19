@@ -3,6 +3,7 @@ package com.mamba.shop;
 import com.mamba.shop.config.AppConfiguration;
 import com.mamba.shop.dao.ApartmentDao;
 import com.mamba.shop.entity.*;
+import com.mamba.shop.service.ShopService;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -16,21 +17,36 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.io.*;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfiguration.class);
 
         ApartmentDao dao = context.getBean(ApartmentDao.class);
-        List<Apartment> list = dao.getAllApartmentListWithDependency();
-        for (Apartment ap :
+        ShopService service = context.getBean(ShopService.class);
+        List<Apartment> list = service.searchFreeApartmentsWithDependency("2", "0",
+                "1", "65",
+                new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-22"), new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-29"),"1");
+        if (list.size() == 0)
+            System.out.println("List is empty...");
+        else
+        for (Apartment a :
                 list) {
-            for (Period period: ap.getPeriods()){
-                System.out.println(period);
-            }
+            System.out.println(a);
         }
+        System.out.println(dao.findByIdWithDependency("2"));
+//
+//        List<Apartment> list = dao.getAllApartmentListWithDependency();
+//        for (Apartment ap :
+//                list) {
+//            for (Period period: ap.getPeriods()){
+//                System.out.println(period);
+//            }
+//        }
 
         //        ProductDao dao = context.getBean(ProductDao.class);
 //

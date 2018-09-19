@@ -8,9 +8,9 @@ import java.util.List;
 public interface ApartmentDao {
 
     List<Apartment> getAllApartmentListWithDependency();
-
     List<Apartment> getAllFreeApartmentsBySearchCustomModelWithDependency(SearchCustomModel customModel);
     Apartment findByIdWithDependency(String id);
+    Apartment findById(String id);
 
     void setDisableApartment(boolean status);
     void updateApartment(Apartment apartment);
