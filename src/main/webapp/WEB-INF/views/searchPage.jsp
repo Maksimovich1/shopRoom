@@ -54,23 +54,16 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-<img src="${pageContext.request.contextPath}/images/123.jpg" alt="picturesa"/>
-
-
-
 <div class="container">
-    <h3>Результаты:</h3>
-    <c:forEach items="${productList}" var="product">
-        <div class="row">
-            <div class="col-sm-6 col-md-10">
-                <div class="thumbnail">
-                    <%--<img src="<c:url value="../resources/images/123.jpg"/> " alt="Картинка">--%>
-                    <div class="caption">
-                        <h3>${product.getName()}</h3>
-                        <p>${product.getPrice()}$</p>
-                        <p><a href="#" class="btn btn-primary" role="button"> Аренда</a> </p>
-                    </div>
-                </div>
+    <p>Результаты:</p><br>
+    <c:forEach items="${apartmentList}" var="apartment">
+        <div class="media" background-color: aquamarine">
+            <div class="media-left">
+                <img src="${pageContext.request.contextPath}/images/123.jpg" class="img-responsive" alt="picturesa"/>
+            </div>
+            <div class="media-body">
+                <h3 class="media-heading">${apartment.getId()} <small><i>room</i></small></h3>
+                <p>${apartment.getAbout()}</p>
             </div>
         </div>
     </c:forEach>

@@ -29,10 +29,10 @@ public class IController {
     public String getSearchProduct(Model model,
                                    @RequestParam(value = "countP", defaultValue = "2") String countPeople,
                                    @RequestParam(value = "countC", defaultValue = "0")String countChild,
-                                   @RequestParam(value = "district", defaultValue = "0")String district,
+                                   @RequestParam(value = "district", defaultValue = "1")String district,
                                    @RequestParam(value = "priceMax", defaultValue = "100")String priceMax,
-                                   @RequestParam(value = "dateIn", defaultValue = "today")String dateIn,
-                                   @RequestParam(value = "dateOut", defaultValue = "tomorrow")String dateOut,
+                                   @RequestParam(value = "dateIn", defaultValue = "2018-09-20")String dateIn,
+                                   @RequestParam(value = "dateOut", defaultValue = "2018-09-22")String dateOut,
                                    @RequestParam(value = "bedroom", defaultValue = "1") String bedroom){
         model.addAttribute("apartmentList",
         shopService.searchFreeApartmentsWithDependency(
