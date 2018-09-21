@@ -4,25 +4,32 @@ import com.mamba.shop.dao.ApartmentDao;
 import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Period;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
+import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
-public class IShopDetailsService implements ShopService{
+public class IShopDetailsService implements ShopService, MailService{
 
     private final ApartmentDao apartmentDao;
+    private final JavaMailSender mailSender;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Autowired
-    public IShopDetailsService(ApartmentDao apartmentDao) {
+    public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender) {
         this.apartmentDao = apartmentDao;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -83,4 +90,23 @@ public class IShopDetailsService implements ShopService{
         return false;
     }
 
+    @Override
+    public void sendEmail(Object sendObject, String email) {
+        if (!(sendObject instanceof Apartment))
+            throw new ClassCastException("Передан не апартамент");
+        Apartment apartmentSend = (Apartment) sendObject;
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,false,"utf-8");
+            String htmlMsg = "<h3> Hello world</h3>";
+            mimeMessage.setContent(htmlMsg, "text/html");
+            messageHelper.setTo(email);
+            messageHelper.setSubject("This message is me! \n apartament id= " + apartmentSend.getId());
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

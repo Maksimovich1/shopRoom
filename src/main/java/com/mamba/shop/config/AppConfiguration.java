@@ -4,6 +4,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -18,7 +20,10 @@ import java.util.Properties;
         @ComponentScan("com.mamba.shop.controller"),
         @ComponentScan("com.mamba.shop.service")
 })
-@PropertySource("classpath:db.properties")
+@PropertySources({
+        @PropertySource("classpath:db.properties"),
+        @PropertySource("classpath:mail.properties")
+})
 public class AppConfiguration {
 
     private final Environment environment;
@@ -26,6 +31,26 @@ public class AppConfiguration {
     @Autowired
     public AppConfiguration(Environment environment) {
         this.environment = environment;
+    }
+
+    @Bean
+    public JavaMailSender getJavaMail(){
+
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        mailSender.setHost(environment.getProperty("mail.host"));
+        mailSender.setPort(Integer.parseInt(environment.getProperty("mail.port")));
+        mailSender.setUsername(environment.getProperty("mail.username"));
+        mailSender.setPassword(environment.getProperty("mail.password"));
+
+        Properties propertiesJavaMail = new Properties();
+        propertiesJavaMail.put("mail.smtp.starttls.enable", environment.getProperty("mail.smtp.starttls.enable"));
+        propertiesJavaMail.put("mail.smtp.auth", environment.getProperty("mail.smtp.auth"));
+        propertiesJavaMail.put("mail.transport.protocol", environment.getProperty("mail.transport.protocol"));
+        propertiesJavaMail.put("mail.debug", environment.getProperty("mail.debug"));
+
+        mailSender.setJavaMailProperties(propertiesJavaMail);
+        return mailSender;
     }
 
     @Bean

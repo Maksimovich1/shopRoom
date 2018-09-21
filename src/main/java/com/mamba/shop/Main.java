@@ -3,6 +3,7 @@ package com.mamba.shop;
 import com.mamba.shop.config.AppConfiguration;
 import com.mamba.shop.dao.ApartmentDao;
 import com.mamba.shop.entity.*;
+import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -28,17 +29,8 @@ public class Main {
 
         ApartmentDao dao = context.getBean(ApartmentDao.class);
         ShopService service = context.getBean(ShopService.class);
-        List<Apartment> list = service.searchFreeApartmentsWithDependency("2", "0",
-                "1", "65",
-                "2018-09-22", "2018-09-29","1");
-        if (list.size() == 0)
-            System.out.println("List is empty...");
-        else
-        for (Apartment a :
-                list) {
-            System.out.println(a);
-        }
-        System.out.println(dao.findByIdWithDependency("2"));
+        MailService mailService = context.getBean(MailService.class);
+        mailService.sendEmail(dao.findByIdWithDependency("2"),"andrey.maksimovich.96@mail.ru");
 //
 //        List<Apartment> list = dao.getAllApartmentListWithDependency();
 //        for (Apartment ap :
