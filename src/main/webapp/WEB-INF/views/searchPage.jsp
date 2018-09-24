@@ -23,41 +23,17 @@
 
 </head>
 <body>
-<jsp:include page="_navbar.jsp"/>
-
-<input type="date">
-
 <div class="container">
+    <jsp:include page="_navbar.jsp"/>
+</div>
+<div class="container" style="background-color: orange">
     <h2>Search</h2>
-    <form class="form-inline" action="#">
-        <div class="form-group">
-            <label for="countp">Кол-во людей(18+):</label>
-            <select class="form-control" id="countp">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="countc">Количество детей:</label>
-            <select class="form-control" id="countc">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
-        </div><br>
-        <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
-        </div><br>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <jsp:include page="_search.jsp"/>
 </div>
 <div class="container">
     <p>Результаты:</p><br>
     <c:forEach items="${apartmentList}" var="apartment">
-        <div class="media" background-color: aquamarine">
+        <div class="media"style="background-color: aquamarine">
             <div class="media-left">
                 <img src="${pageContext.request.contextPath}/images/123.jpg" class="img-responsive" alt="picturesa"/>
             </div>
