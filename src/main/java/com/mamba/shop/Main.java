@@ -24,13 +24,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfiguration.class);
+//        AnnotationConfigApplicationContext context =
+//                new AnnotationConfigApplicationContext(AppConfiguration.class);
 
-        ApartmentDao dao = context.getBean(ApartmentDao.class);
-        ShopService service = context.getBean(ShopService.class);
-        MailService mailService = context.getBean(MailService.class);
-        mailService.sendEmail(dao.findByIdWithDependency("2"),"andrey.maksimovich.96@mail.ru");
+
+
+//        ApartmentDao dao = context.getBean(ApartmentDao.class);
+//        ShopService service = context.getBean(ShopService.class);
+//        MailService mailService = context.getBean(MailService.class);
+//        mailService.sendEmail(dao.findByIdWithDependency("2"),"andrey.maksimovich.96@mail.ru");
 //
 //        List<Apartment> list = dao.getAllApartmentListWithDependency();
 //        for (Apartment ap :
@@ -96,37 +98,5 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-    }
-
-    public File getFileForURL(String urlSrt) throws IOException {
-        URL url = new URL(urlSrt);
-        BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
-        FileInputStream fileInputStream = new FileInputStream(url.getFile());
-        return null;
-    }
-
-    public static void listenCalendarICS(FileInputStream fileInputStream){
-
-        CalendarBuilder calendarBuilder = new CalendarBuilder();
-        try {
-            Calendar calendar = calendarBuilder.build(fileInputStream);
-            ComponentList list = calendar.getComponents(Component.VEVENT);
-            for (Object obj: list){
-                VEvent event = (VEvent) obj;
-                DtStart propIn = (DtStart) event.getProperties().get(0);
-                DtEnd propOut = (DtEnd) event.getProperties().get(1);
-                Summary inform = (Summary) event.getProperties().get(3);
-                String in = propIn.getDate().toString();
-                String out = propOut.getDate().toString();
-                String about = inform.getValue();
-                //String description = (String) o;
-//                String title = event.getSummary().getValue();
-                System.out.println("Въезд: " + in + ", выезд: " + out + ".\nInformation: " + about);
-                System.out.println("-----------------------");
-            }
-        } catch (IOException | ParserException e) {
-            e.printStackTrace();
-        }
-
     }
 }

@@ -1,7 +1,10 @@
 package com.mamba.shop.config;
 
+import com.mamba.shop.service.DownloadFile;
+import com.mamba.shop.service.impl.IDownloadFile;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +25,8 @@ import java.util.Properties;
 })
 @PropertySources({
         @PropertySource("classpath:db.properties"),
-        @PropertySource("classpath:mail.properties")
+        @PropertySource("classpath:mail.properties"),
+        @PropertySource("classpath:app.properties")
 })
 public class AppConfiguration {
 
@@ -31,6 +35,13 @@ public class AppConfiguration {
     @Autowired
     public AppConfiguration(Environment environment) {
         this.environment = environment;
+    }
+
+    @Bean
+    @Qualifier(value = "iDownLoadFile")
+    public DownloadFile downloadFile(){
+        String dirname = environment.getProperty("app.path_save");
+        return new IDownloadFile(dirname);
     }
 
     @Bean
