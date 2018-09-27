@@ -25,8 +25,18 @@ public class IControllerAdmin {
         return "adminPage";
     }
 
-    @RequestMapping("/updateOrAdd")
-    public String update(){
+    @RequestMapping(value = {"/updateOrAdd"}, method = RequestMethod.GET)
+    public String update(
+            @RequestParam(value = "id1", defaultValue = "") String id,
+            @RequestParam(value = "bedroom", defaultValue = "") String bedroom,
+            @RequestParam(value = "people", defaultValue = "") String people,
+            @RequestParam(value = "children", defaultValue = "") String children,
+            @RequestParam(value = "price", defaultValue = "") String price,
+            @RequestParam(value = "district", defaultValue = "") String district,
+            @RequestParam(value = "about", defaultValue = "") String about,
+            Model model
+    ){
+        System.out.println(id + ": " + about);
         return "updatePage";
     }
     @RequestMapping(value = "/delete", method = RequestMethod.GET)

@@ -33,6 +33,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Добавление апартамента</h4>
                 </div>
+                <form action="${pageContext.request.contextPath}/admin/updateOrAdd" method="get">
                 <div class="modal-body">
                     <div class="col-xs-6">
                         <label for="id1">ID:</label>
@@ -64,11 +65,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Добавить апартамент</button>
+                    <button type="submit" class="btn btn-success" id="idb">Добавить апартамент</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
+                </form>
             </div>
-
         </div>
     </div>
 
