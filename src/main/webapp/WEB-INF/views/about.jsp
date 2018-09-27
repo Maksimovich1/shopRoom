@@ -15,7 +15,9 @@
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<jsp:include page="_navbar.jsp"/>
+<div class="container">
+    <jsp:include page="_navbar.jsp"/>
+</div>
 <br>
 Hello About!
 </body>

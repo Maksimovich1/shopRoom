@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -6,58 +7,86 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-inline" action="#">
+<form class="form-inline" action="${pageContext.request.contextPath}/productList">
     <div class="form-row">
     <div class="form-group col-lg-3">
         <label for="bedroom">Количество комнат:</label>
-        <select class="form-control" id="bedroom">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
+        <select class="form-control" id="bedroom" name="bedroom">
+            <option <c:if test="${param.bedroom == '1'}">
+                selected="selected"
+            </c:if>>1</option>
+            <option <c:if test="${param.bedroom == '2'}">
+                selected="selected"
+            </c:if>>2</option>
+            <option <c:if test="${param.bedroom == '3'}">
+                selected="selected"
+            </c:if>>3</option>
         </select>
     </div>
     <div class="form-group col-lg-3">
-        <label for="countp">Кол-во людей(18+):</label>
-        <select class="form-control" id="countp">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+        <label for="countP">Кол-во людей(18+):</label>
+        <select class="form-control" id="countP" name="countP">
+            <option <c:if test="${param.countP == '1'}">
+                selected="selected"
+            </c:if>>1</option>
+            <option <c:if test="${param.countP == '2'}">
+                selected="selected"
+            </c:if>>2</option>
+            <option <c:if test="${param.countP == '3'}">
+                selected="selected"
+            </c:if>>3</option>
+            <option <c:if test="${param.countP == '4'}">
+                selected="selected"
+            </c:if>>4</option>
         </select>
     </div>
     <div class="form-group col-lg-3">
-        <label for="countc">Количество детей:</label>
-        <select class="form-control" id="countc">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
+        <label for="countC">Количество детей:</label>
+        <select class="form-control" id="countC" name="countC">
+            <option<c:if test="${param.countC == '0'}">
+                selected="selected"
+            </c:if>>0</option>
+            <option <c:if test="${param.countC == '1'}">
+                selected="selected"
+            </c:if>>1</option>
+            <option <c:if test="${param.countC == '2'}">
+                selected="selected"
+            </c:if>>2</option>
+            <option <c:if test="${param.countC == '3'}">
+                selected="selected"
+            </c:if>>3</option>
         </select>
     </div>
 
     <div class="form-group col-lg-3">
         <label for="district">Район:</label>
-        <select class="form-control" id="district">
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
+        <select class="form-control" id="district" name="district" selected="${param.district}">
+            <option <c:if test="${param.district == 'A'}">
+                selected="selected"
+            </c:if>>A</option>
+            <option <c:if test="${param.district == 'B'}">
+                selected="selected"
+            </c:if> >B</option>
+            <option <c:if test="${param.district == 'C'}">
+                selected="selected"
+            </c:if>>C</option>
+            <option <c:if test="${param.district == 'D'}">
+                selected="selected"
+            </c:if>>D</option>
         </select>
     </div>
         <br><br>
         <div class="form-group col-lg-4">
-    <label for="datein">Дата въезда:</label>
-    <input type="date" class="date-cell" id="datein">
+    <label for="dateIn">Дата въезда:</label>
+    <input type="date" class="date-cell" id="dateIn" name="dateIn" value="${param.dateIn}">
         </div>
         <div class="form-group col-lg-4">
-    <label for="dateout">Дата выезда:</label>
-    <input type="date" id="dateout">
+    <label for="dateOut">Дата выезда:</label>
+    <input type="date" id="dateOut" name="dateOut" value="${param.dateOut}">
         </div>
         <div class="form-group col-lg-4">
-            <label for="price">Максимальная цена:</label>
-            <input type="text" class="form-control" id="price" placeholder="price">
+            <label for="priceMax">Максимальная цена:</label>
+            <input type="text" class="form-control" id="priceMax" value="${param.priceMax}" autocomplete="off" placeholder="price" name="priceMax">
         </div>
             <br>
     <div class="checkbox">

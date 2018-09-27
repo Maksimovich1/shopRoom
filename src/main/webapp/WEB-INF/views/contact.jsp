@@ -15,9 +15,10 @@
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<jsp:include page="_navbar.jsp"/>
-<br>
 <div class="container">
+    <jsp:include page="_navbar.jsp"/>
+
+    <br>
     контакты телега и бла бла
 </div>
 </body>

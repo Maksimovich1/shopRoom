@@ -15,20 +15,28 @@
         <ul class="nav navbar-nav">
             <li class="active"><a href="${pageContext.request.contextPath}/">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/secure/search">Поиск апартаментов</a></li>
+            <sec:authorize access="hasRole('ANONYMOUS') or hasRole('USER')">
             <li><a href="${pageContext.request.contextPath}/contacts">Обратная связь</a></li>
             <li><a href="${pageContext.request.contextPath}/about">О нас</a></li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ADMIN')">
+                <li><a href="${pageContext.request.contextPath}/admin/updateOrAdd">Добавить или редактировать номер</a></li>
+            </sec:authorize>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <sec:authorize access="hasRole('ANONYMOUS')">
-            <li class="navbar-right"><a href="${pageContext.request.contextPath}/admin/control">Admin Panel</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/control">Admin Panel</a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
-            <li class="navbar-right dropdown">
+            <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="${pageContext.request.contextPath}/"
                 >Hello <sec:authentication property="principal.username"/>!
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="${pageContext.request.contextPath}/admin/control">Admin Panel</a></li>
+                    <sec:authorize access="hasRole('ADMIN')">
+                    <li><a href="${pageContext.request.contextPath}/admin/control">Admin</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/control">Добавить или редактировать</a></li>
+                    </sec:authorize>
                     <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
                 </ul>
         </sec:authorize>

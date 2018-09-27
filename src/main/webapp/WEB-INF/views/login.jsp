@@ -24,7 +24,7 @@
     <p class="h4 mb-4"><spring:message code="login.singin"/></p>
 
     <!-- Email -->
-    <input type="text" name="username" id="username" class="form-control mb-4"
+    <input type="text" autocomplete="off" name="username" id="username" class="form-control mb-4"
            placeholder=<spring:message code="login.email"/> >
     <br>
     <!-- Password -->
@@ -33,15 +33,10 @@
     <br>
     <div class="d-flex justify-content-around">
         <div>
-            <!-- Remember me -->
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
-            </div>
         </div>
         <div>
             <!-- Forgot password -->
-            <a href="#">Forgot password?</a>
+            <a href="${pageContext.request.contextPath}/"><spring:message code="login.back"/> </a>
         </div>
     </div>
 

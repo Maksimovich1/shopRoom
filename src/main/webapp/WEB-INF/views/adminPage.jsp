@@ -16,9 +16,13 @@
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<jsp:include page="_navbar.jsp"/>
 <div class="container">
-
+    <jsp:include page="_navbar.jsp"/>
+    <c:if test="${param.delete == 'true'}">
+        <div class="alert alert-success">
+            <strong>Success!</strong> Apartment is delete.
+        </div>
+    </c:if>
     <table class="table table-hover table-inverse">
         <thead>
         <tr>
@@ -30,6 +34,7 @@
             <th>District</th>
             <th>Enable</th>
             <th>About</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -43,12 +48,12 @@
                 <td>${apartment.getDistrict()}</td>
                 <td>${apartment.isEnable()}</td>
                 <td>${apartment.getAbout()}</td>
+                <td><a href="${pageContext.request.contextPath}/admin/delete?id=${apartment.getId()}">Delete</a></td>
             </tr>
         </c:forEach>
 
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

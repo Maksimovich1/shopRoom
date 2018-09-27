@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
@@ -25,15 +26,26 @@ public class IController {
         return "index";
     }
 
-    @RequestMapping({"/productList"})
+    @RequestMapping(value = {"/productList"}, method = RequestMethod.GET)
     public String getSearchProduct(Model model,
                                    @RequestParam(value = "countP", defaultValue = "2") String countPeople,
                                    @RequestParam(value = "countC", defaultValue = "0")String countChild,
-                                   @RequestParam(value = "district", defaultValue = "1")String district,
+                                   @RequestParam(value = "district", defaultValue = "A")String district,
                                    @RequestParam(value = "priceMax", defaultValue = "100")String priceMax,
                                    @RequestParam(value = "dateIn", defaultValue = "2018-09-20")String dateIn,
                                    @RequestParam(value = "dateOut", defaultValue = "2018-09-22")String dateOut,
                                    @RequestParam(value = "bedroom", defaultValue = "1") String bedroom){
+        switch (district) {
+            case "A":
+                district = "1";
+                break;
+            case "B":
+                district = "2";
+                break;
+            case "C":
+                district = "3";
+                break;
+        }
         model.addAttribute("apartmentList",
         shopService.searchFreeApartmentsWithDependency(
                 countPeople, countChild,
