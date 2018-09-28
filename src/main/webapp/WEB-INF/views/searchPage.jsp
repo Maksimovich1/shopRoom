@@ -32,17 +32,21 @@
 </div>
 <div class="container">
     <p>Результаты:</p><br>
+    <div class="row">
     <c:forEach items="${apartmentList}" var="apartment">
-        <div class="media"style="background-color: aquamarine">
-            <div class="media-left">
-                <img src="${pageContext.request.contextPath}/images/123.jpg" class="img-responsive" alt="picturesa"/>
+
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <a href="${pageContext.request.contextPath}/images/ava.jpg">
+                        <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
+                        <div class="caption">
+                            <p>${apartment.getAbout()}</p>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div class="media-body">
-                <h3 class="media-heading">${apartment.getId()} <small><i>room</i></small></h3>
-                <p>${apartment.getAbout()}</p>
-            </div>
-        </div>
     </c:forEach>
+    </div>
 </div>
 </body>
 </html>

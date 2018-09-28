@@ -45,7 +45,6 @@ public class Apartment implements Serializable {
     private Set<Period> periods =
             new HashSet<>();
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_apartment")
     public String getId() {
         return id;

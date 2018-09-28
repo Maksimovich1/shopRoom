@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -20,9 +21,28 @@
 </div>
 <div class="container">
 
+    <c:if test="${param.addStatus == 'true'}">
+        <div class="alert alert-success">
+            <strong>Success!</strong> Apartment is add.
+        </div>
+    </c:if>
+    <c:if test="${param.addStatus == 'false'}">
+        <div class="alert alert-warning">
+            <strong>Error!</strong> Апартамент не был добавлен!
+        </div>
+    </c:if>
     <!-- Trigger the modal with a button -->
+
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
 
+    <form action="${pageContext.request.contextPath}/admin/searchForId">
+        <div class="input-group col-xs-4">
+            <input type="text" class="form-control input-lg" placeholder="Search" name="ida">
+            <div class="input-group-btn">
+                <button class="btn btn-success btn-lg" type="submit">Поиск</button>
+            </div>
+        </div>
+    </form>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -33,7 +53,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Добавление апартамента</h4>
                 </div>
-                <form action="${pageContext.request.contextPath}/admin/updateOrAdd" method="get">
+                <form action="${pageContext.request.contextPath}/admin/addApartment" method="get">
                 <div class="modal-body">
                     <div class="col-xs-6">
                         <label for="id1">ID:</label>
@@ -41,11 +61,11 @@
                     </div>
                     <div class="col-xs-6">
                         <label for="countP">Колличество людей 18+:</label>
-                        <input type="text" class="form-control" id="countP" placeholder="Количество людей 18+" name="countP">
+                        <input type="text" class="form-control" id="countP" placeholder="Количество людей 18+" name="people">
                     </div>
                     <div class="col-xs-6">
                         <label for="countC">Колличество детей:</label>
-                        <input type="text" class="form-control" id="countC" placeholder="Количество детей" name="countC">
+                        <input type="text" class="form-control" id="countC" placeholder="Количество детей" name="children">
                     </div>
                     <div class="col-xs-6">
                         <label for="bedroom">Колличество комнат</label>
@@ -72,7 +92,20 @@
             </div>
         </div>
     </div>
-
+        <c:if test="${apartment != null}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    <a href="${pageContext.request.contextPath}/images/ava.jpg">
+                        <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
+                        <div class="caption">
+                            <p>${apartment.getAbout()}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </c:if>
 </div>
 </body>
 </html>

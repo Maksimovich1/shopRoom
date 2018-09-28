@@ -16,4 +16,5 @@ public interface ApartmentDao {
     void updateApartment(Apartment apartment);
 
     void addApartment(Apartment apartment);
+    void deleteApartment(Apartment apartment);
 }

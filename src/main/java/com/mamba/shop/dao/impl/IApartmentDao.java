@@ -77,8 +77,14 @@ public class IApartmentDao implements ApartmentDao {
 
     @Override
     public void addApartment(Apartment apartment) {
-        sessionFactory.getCurrentSession().saveOrUpdate(apartment);
+        sessionFactory.getCurrentSession().save(apartment);
         System.out.println("## Add apartment! id =" + apartment.getId());
+    }
+
+    @Override
+    public void deleteApartment(Apartment apartment) {
+        sessionFactory.getCurrentSession().delete(apartment);
+        System.out.println("## Delete apartment! id ="+ apartment.getId());
     }
 
 }

@@ -73,6 +73,21 @@ public class IShopDetailsService implements ShopService, MailService{
         return apartmentDao.findByIdWithDependency(id);
     }
 
+    @Override
+    public void addApartment(Apartment apartment) {
+        apartmentDao.addApartment(apartment);
+    }
+
+    @Override
+    public void deleteApartment(String id) {
+        apartmentDao.deleteApartment(apartmentDao.findById(id));
+    }
+
+    @Override
+    public void updateApartment(Apartment apartment) {
+
+    }
+
     //проверяет входимость одного периода в другой
     private boolean checkPeriodApartment(Apartment apartment, Date thisDate_in, Date thisDate_out){
         if (apartment.getPeriods().size() == 0) return true;
