@@ -4,6 +4,7 @@ import com.mamba.shop.dao.ApartmentDao;
 import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Period;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
+import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,13 +25,15 @@ public class IShopDetailsService implements ShopService, MailService{
 
     private final ApartmentDao apartmentDao;
     private final JavaMailSender mailSender;
+    private final DownloadFile downloadFile;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Autowired
-    public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender) {
+    public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender, DownloadFile downloadFile) {
         this.apartmentDao = apartmentDao;
         this.mailSender = mailSender;
+        this.downloadFile = downloadFile;
     }
 
     @Override
@@ -74,6 +78,11 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
+    public Apartment getById(String id) {
+        return null;
+    }
+
+    @Override
     public void addApartment(Apartment apartment) {
         apartmentDao.addApartment(apartment);
     }
@@ -86,6 +95,16 @@ public class IShopDetailsService implements ShopService, MailService{
     @Override
     public void updateApartment(Apartment apartment) {
 
+    }
+
+    @Override
+    public boolean refreshDataBaseDate(String idApartment) {
+        try {
+            refresh(idApartment);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     //проверяет входимость одного периода в другой
@@ -123,5 +142,23 @@ public class IShopDetailsService implements ShopService, MailService{
             e.printStackTrace();
         }
 
+    }
+
+    private void refresh(String id) throws IOException {
+        Apartment apartment = getById(id);
+        downloadFile.saveFile("room32" + id, apartment.getId(/*здесь должен быть урл*/));
+        List<Period> periods = downloadFile.listenCalendarICS("room32" + id);
+
+        for (Period prd :
+                periods) {
+            if (equalsDatePeriods(apartment, prd))
+            {
+                //add period in this apartment
+            }
+        }
+
+    }
+    private boolean equalsDatePeriods(Apartment apartment, Period periodBooking){
+        return false;
     }
 }

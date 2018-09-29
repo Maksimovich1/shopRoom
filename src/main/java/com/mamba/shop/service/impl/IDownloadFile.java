@@ -1,12 +1,15 @@
 package com.mamba.shop.service.impl;
 
 import com.mamba.shop.config.AppConfiguration;
+import com.mamba.shop.entity.Period;
 import com.mamba.shop.service.DownloadFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -68,8 +71,9 @@ public class IDownloadFile implements DownloadFile {
     }
 
     @Override
-    public void listenCalendarICS(String file) {
+    public List<Period> listenCalendarICS(String file) {
         String pathToFile = dirname + file;
+        List<Period> periods = new ArrayList<>();
         CalendarBuilder calendarBuilder = new CalendarBuilder();
         try {
             FileInputStream fileInputStream = new FileInputStream(pathToFile);
@@ -80,6 +84,12 @@ public class IDownloadFile implements DownloadFile {
                 DtStart propIn = (DtStart) event.getProperties().get(0);
                 DtEnd propOut = (DtEnd) event.getProperties().get(1);
                 Summary inform = (Summary) event.getProperties().get(3);
+                // запись в лист всех дат полученных с букинга
+                Period period = new Period();
+                period.setDate_in(propIn.getDate());
+                period.setDate_out(propOut.getDate());
+                periods.add(period);
+                // вывод в консоль
                 String in = propIn.getDate().toString();
                 String out = propOut.getDate().toString();
                 String about = inform.getValue();
@@ -91,6 +101,7 @@ public class IDownloadFile implements DownloadFile {
         } catch (IOException | ParserException e) {
             e.printStackTrace();
         }
+        return periods;
     }
 
 }

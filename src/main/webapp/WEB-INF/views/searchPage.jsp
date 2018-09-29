@@ -39,10 +39,14 @@
                 <div class="thumbnail">
                     <a href="${pageContext.request.contextPath}/images/ava.jpg">
                         <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
-                        <div class="caption">
-                            <p>${apartment.getAbout()}</p>
+                        <div class="caption row">
+                            <p class="col-md-6">Комнаты: ${apartment.getBedroom()}</p>
+                            <p class="col-md-6">Люди: ${apartment.getPeople()}</p>
+                            <p class="col-md-6">Дети: ${apartment.getChildren()}</p>
+                            <p class="col-md-6">Цена: ${apartment.getPrice()}</p>
                         </div>
                     </a>
+                    <button type="button" class="btn btn-success">Заказать</button>
                 </div>
             </div>
     </c:forEach>

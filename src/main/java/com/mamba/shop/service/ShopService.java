@@ -15,9 +15,12 @@ public interface ShopService {
     );
     List<Apartment> getAllApartments();
     Apartment getByIdWithDependency(String id);
+    Apartment getById(String id);
 
     void addApartment(Apartment apartment);
     void deleteApartment(String id);
     void updateApartment(Apartment apartment);
+
+    boolean refreshDataBaseDate(String idApartment);
 
 }

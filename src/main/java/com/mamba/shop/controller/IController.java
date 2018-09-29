@@ -46,6 +46,7 @@ public class IController {
                 district = "3";
                 break;
         }
+
         model.addAttribute("apartmentList",
         shopService.searchFreeApartmentsWithDependency(
                 countPeople, countChild,
