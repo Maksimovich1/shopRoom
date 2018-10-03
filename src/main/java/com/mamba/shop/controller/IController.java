@@ -1,5 +1,6 @@
 package com.mamba.shop.controller;
 
+import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Controller
 public class IController {
@@ -34,7 +36,7 @@ public class IController {
                                    @RequestParam(value = "priceMax", defaultValue = "100")String priceMax,
                                    @RequestParam(value = "dateIn", defaultValue = "2018-09-20")String dateIn,
                                    @RequestParam(value = "dateOut", defaultValue = "2018-09-22")String dateOut,
-                                   @RequestParam(value = "bedroom", defaultValue = "1") String bedroom){
+                                   @RequestParam(value = "bedroom", defaultValue = "2") String bedroom){
         switch (district) {
             case "A":
                 district = "1";
@@ -46,7 +48,6 @@ public class IController {
                 district = "3";
                 break;
         }
-
         model.addAttribute("apartmentList",
         shopService.searchFreeApartmentsWithDependency(
                 countPeople, countChild,

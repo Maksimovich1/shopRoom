@@ -46,7 +46,21 @@
                             <p class="col-md-6">Цена: ${apartment.getPrice()}</p>
                         </div>
                     </a>
-                    <button type="button" class="btn btn-success">Заказать</button>
+
+                    <form action="${pageContext.request.contextPath}/payment" method="POST">
+                        <script th:inline="javascript"
+                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="pk_test_sjBV4ZqrUCQ6YZjiAC4eufFN"
+                                data-currency="eur"
+                                data-amount="100"
+                                data-name="Payment"
+                                data-description="Demo"
+                                data-image="/images/ava.jpg"
+                                data-locale="auto">
+
+                        </script>
+                    </form>
+
                 </div>
             </div>
     </c:forEach>

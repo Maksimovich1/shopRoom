@@ -70,8 +70,29 @@ public class IControllerAdmin {
     ){
         Apartment apartment = shopService.getByIdWithDependency(id);
         model.addAttribute("apartment", apartment);
-        System.out.println("### " + apartment.getId());
         return "updatePage";
+    }
+
+    @RequestMapping(value = "/update")
+    public String updateApartment(
+            @RequestParam(value = "ida", defaultValue = "") String id,
+            @RequestParam(value = "bedroom", defaultValue = "") String bedroom,
+            @RequestParam(value = "people", defaultValue = "") String people,
+            @RequestParam(value = "children", defaultValue = "") String children,
+            @RequestParam(value = "price", defaultValue = "") String price,
+            @RequestParam(value = "district", defaultValue = "") String district,
+            @RequestParam(value = "about", defaultValue = "") String about,
+            Model model
+    ){
+                Apartment apartment = shopService.getById(id);
+                apartment.setBedroom(Integer.parseInt(bedroom));
+                apartment.setPeople(Integer.parseInt(people));
+                apartment.setChildren(Integer.parseInt(children));
+                apartment.setPrice(Integer.parseInt(price));
+                apartment.setDistrict(Integer.parseInt(district));
+                apartment.setAbout(about);
+                shopService.updateApartment(apartment);
+        return "redirect:updateOrAdd";
     }
 
 }

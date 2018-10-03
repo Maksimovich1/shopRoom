@@ -10,6 +10,7 @@ import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -29,6 +30,11 @@ public class IShopDetailsService implements ShopService, MailService{
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+
+    private static String url = "https://admin.booking.com/hotel/hoteladmin/ical.html?t=" +
+            "7OZDWQnPKjX6iJCd_r3gcp40qJ15MOn7pao19szymZV5db6L6AHQgnTipxDUtIM_-ytX307" +
+            "NGYkm7vVlwFpR-Cb81HBBYIwciBwV2oID6Aud0oatr1qm3LGxV9PZVvJ4udpFwR2i" +
+            "tykauNGrCUF7FL4aiBYaCOi7nG7jRQ";
     @Autowired
     public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender, DownloadFile downloadFile) {
         this.apartmentDao = apartmentDao;
@@ -79,7 +85,7 @@ public class IShopDetailsService implements ShopService, MailService{
 
     @Override
     public Apartment getById(String id) {
-        return null;
+        return apartmentDao.findById(id);
     }
 
     @Override
@@ -94,32 +100,76 @@ public class IShopDetailsService implements ShopService, MailService{
 
     @Override
     public void updateApartment(Apartment apartment) {
-
+        apartmentDao.updateApartment(apartment);
     }
 
-    @Override
-    public boolean refreshDataBaseDate(String idApartment) {
-        try {
-            refresh(idApartment);
-        } catch (IOException e) {
-            e.printStackTrace();
+    //проверяет входимость одного периода в другой ,true значит период уникальный
+    private boolean checkPeriodApartment(Apartment apartment, Date thisDate_in, Date thisDate_out){
+        if (apartment.getPeriods().size() == 0) return true;
+        int countEquals = apartment.getPeriods().size();
+        for (Period periodArchive :
+                apartment.getPeriods()) {
+            countEquals--;
+            Date archiveDateIn = periodArchive.getDate_in();
+            Date archiveDateOut = periodArchive.getDate_out();
+            if (thisDate_in.before(archiveDateIn) && thisDate_out.before(archiveDateIn)){
+
+                if (countEquals <= 0)
+                return true;
+            }
+            else if (thisDate_in.after(archiveDateOut) && thisDate_out.after(archiveDateOut)){
+                if (countEquals <= 0)
+                return true;
+            }
+            else return false;
         }
         return false;
     }
 
-    //проверяет входимость одного периода в другой
-    private boolean checkPeriodApartment(Apartment apartment, Date thisDate_in, Date thisDate_out){
-        if (apartment.getPeriods().size() == 0) return true;
-        for (Period periodArchive :
-                apartment.getPeriods()) {
-            Date archiveDateIn = periodArchive.getDate_in();
-            Date archiveDateOut = periodArchive.getDate_out();
-            if (thisDate_in.before(archiveDateIn) && thisDate_out.before(archiveDateIn)){
-                return true;
+
+    /*Запуск по расписанию обновления бд, каждые 10 минут */
+    @Scheduled(cron = "0 */10 * * * *")
+    public void console(){
+        System.out.println("######## timer! This method execute every 10 min");
+        List<Apartment> apartments = getAllApartments();
+        refreshDataBaseDate(apartments);
+        System.out.println("##### finish refresh!");
+    }
+
+    /*обновление бд*/
+    private void refresh(String id) throws IOException {
+        Apartment apartment = getByIdWithDependency(id);
+        if (apartment.getUrlBooking() != null) {
+            downloadFile.saveFile("room32" + id, apartment.getUrlBooking());
+            List<Period> periods = downloadFile.listenCalendarICS("room32" + id);
+
+            for (Period prd :
+                    periods) {
+                if (equalsDatePeriods(apartment, prd)) {
+                    //add period in this apartment
+                    apartment.getPeriods().add(prd);
+                    apartmentDao.updateApartment(apartment);
+                    System.out.println("####Период был уникальный для этого апартамента id:  = "
+                            + apartment.getId() + "period = " + prd.toString());
+                } else
+                    System.out.println("В данном апартаменте id =" + apartment.getId() + ": присутствует period = " + prd);
             }
-            else if (thisDate_in.after(archiveDateOut) && thisDate_out.after(archiveDateOut)){
-                return true;
+        }
+        else System.out.println("Нет урла в апартаменте");
+    }
+    private boolean equalsDatePeriods(Apartment apartment, Period periodBooking){
+        return checkPeriodApartment(apartment, periodBooking.getDate_in(), periodBooking.getDate_out());
+    }
+    @Override
+    public boolean refreshDataBaseDate(List<Apartment> apartments) {
+        try {
+            for (Apartment apartment :
+                    apartments) {
+                System.out.println("Идет синхронизация id: " + apartment.getId());
+                refresh(apartment.getId());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -136,29 +186,11 @@ public class IShopDetailsService implements ShopService, MailService{
             String htmlMsg = "<h3> Hello world</h3>";
             mimeMessage.setContent(htmlMsg, "text/html");
             messageHelper.setTo(email);
-            messageHelper.setSubject("This message is me! \n apartament id= " + apartmentSend.getId());
+            messageHelper.setSubject("This message is me! \n apartment id= " + apartmentSend.getId());
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
-    }
-
-    private void refresh(String id) throws IOException {
-        Apartment apartment = getById(id);
-        downloadFile.saveFile("room32" + id, apartment.getId(/*здесь должен быть урл*/));
-        List<Period> periods = downloadFile.listenCalendarICS("room32" + id);
-
-        for (Period prd :
-                periods) {
-            if (equalsDatePeriods(apartment, prd))
-            {
-                //add period in this apartment
-            }
-        }
-
-    }
-    private boolean equalsDatePeriods(Apartment apartment, Period periodBooking){
-        return false;
     }
 }

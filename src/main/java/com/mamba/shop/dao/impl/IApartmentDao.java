@@ -72,6 +72,7 @@ public class IApartmentDao implements ApartmentDao {
 
     @Override
     public void updateApartment(Apartment apartment) {
+        sessionFactory.getCurrentSession().saveOrUpdate(apartment);
 
     }
 

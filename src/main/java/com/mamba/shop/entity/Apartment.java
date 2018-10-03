@@ -40,6 +40,7 @@ public class Apartment implements Serializable {
     private int district;
     private int enable;
     private String about;
+    private String urlBooking;
     private Set<Picture> pictures =
             new HashSet<>();
     private Set<Period> periods =
@@ -117,6 +118,15 @@ public class Apartment implements Serializable {
         this.about = about;
     }
 
+    @Column(name = "urlBooking")
+    public String getUrlBooking() {
+        return urlBooking;
+    }
+
+    public void setUrlBooking(String urlBooking) {
+        this.urlBooking = urlBooking;
+    }
+
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL,
             orphanRemoval = true)
     public Set<Picture> getPictures() {
@@ -127,7 +137,7 @@ public class Apartment implements Serializable {
         this.pictures = pictures;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "apartment_period",
         joinColumns = @JoinColumn(name = "apartment_id"),
         inverseJoinColumns = @JoinColumn(name = "period_id"))

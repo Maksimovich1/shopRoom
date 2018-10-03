@@ -9,16 +9,13 @@ import java.util.Date;
 public class Orders implements Serializable {
     private int id_order;
     private String date_order;
-    private String customer_address;
     private String customer_email;
     private String customer_name;
     private String customer_phone;
-    private String date_in;
-    private String date_out;
-    private int id_product_buy;
+    private Date date_in;
+    private Date date_out;
+    private String id_product_buy;
     private String price;
-    private String name_product;
-    private String phoneTelega;
     private int status;
 
     public Orders() {
@@ -42,15 +39,6 @@ public class Orders implements Serializable {
 
     public void setDate_order(String date_order) {
         this.date_order = date_order;
-    }
-
-    @Column(name = "customer_address", nullable = false)
-    public String getCustomer_address() {
-        return customer_address;
-    }
-
-    public void setCustomer_address(String customer_address) {
-        this.customer_address = customer_address;
     }
 
     @Column(name = "customer_email", nullable = false)
@@ -79,58 +67,42 @@ public class Orders implements Serializable {
         this.customer_phone = customer_phone;
     }
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "data_in", nullable = false)
-    public String getDate_in() {
+    public Date getDate_in() {
         return date_in;
     }
 
-    public void setDate_in(String date_in) {
+    public void setDate_in(Date date_in) {
         this.date_in = date_in;
     }
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "data_out", nullable = false)
-    public String getDate_out() {
+    public Date getDate_out() {
         return date_out;
     }
 
-    public void setDate_out(String date_out) {
+    public void setDate_out(Date date_out) {
         this.date_out = date_out;
     }
 
-    @Column(name = "product_id", nullable = false)
-    public int getId_product_buy() {
+    @Column(name = "apartment_id", nullable = false)
+    public String getId_product_buy() {
         return id_product_buy;
     }
 
-    public void setId_product_buy(int id_product_buy) {
+    public void setId_product_buy(String id_product_buy) {
         this.id_product_buy = id_product_buy;
     }
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "summary", nullable = false)
     public String getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    @Column(name = "room_name", nullable = false)
-    public String getName_product() {
-        return name_product;
-    }
-
-    public void setName_product(String name_product) {
-        this.name_product = name_product;
-    }
-
-    @Column(name = "phone_telegram")
-    public String getPhoneTelega() {
-        return phoneTelega;
-    }
-
-    public void setPhoneTelega(String phoneTelega) {
-        this.phoneTelega = phoneTelega;
     }
 
     @Column(name = "status_order", nullable = false)
@@ -147,7 +119,6 @@ public class Orders implements Serializable {
         return "Orders{" +
                 "id_order=" + id_order +
                 ", date_order=" + date_order +
-                ", customer_address='" + customer_address + '\'' +
                 ", customer_email='" + customer_email + '\'' +
                 ", customer_name='" + customer_name + '\'' +
                 ", customer_phone='" + customer_phone + '\'' +
@@ -155,8 +126,6 @@ public class Orders implements Serializable {
                 ", date_out=" + date_out +
                 ", id_product_buy=" + id_product_buy +
                 ", price='" + price + '\'' +
-                ", name_product='" + name_product + '\'' +
-                ", phoneTelega='" + phoneTelega + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,7 @@
 package com.mamba.shop.service;
 
 import com.mamba.shop.entity.Apartment;
-import com.mamba.shop.entity.Product;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ShopService {
@@ -21,6 +19,6 @@ public interface ShopService {
     void deleteApartment(String id);
     void updateApartment(Apartment apartment);
 
-    boolean refreshDataBaseDate(String idApartment);
+    boolean refreshDataBaseDate(List<Apartment> apartments);
 
 }

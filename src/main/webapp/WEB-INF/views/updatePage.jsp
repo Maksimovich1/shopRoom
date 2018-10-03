@@ -32,8 +32,9 @@
         </div>
     </c:if>
     <!-- Trigger the modal with a button -->
-
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
+    <div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
+    </div>
 
     <form action="${pageContext.request.contextPath}/admin/searchForId">
         <div class="input-group col-xs-4">
@@ -92,17 +93,46 @@
             </div>
         </div>
     </div>
+    <c:if test="${apartment == null}">
+        <p>Ничего не найдено :(</p>
+    </c:if>
         <c:if test="${apartment != null}">
         <div class="row">
             <div class="col-md-4">
                 <div class="thumbnail">
                     <a href="${pageContext.request.contextPath}/images/ava.jpg">
                         <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
-                        <div class="caption">
-                            <p>${apartment.getAbout()}</p>
-                        </div>
                     </a>
                 </div>
+            </div>
+            <div class="col-md-8">
+                <form action="${pageContext.request.contextPath}/admin/update">
+                    <div class="form-group">
+                        <label for="ida">ID:</label>
+                        <input class="form-control input-sm" id="ida" type="text" name="ida" value="${apartment.getId()}">
+                        <label for="bedroomUpdate">Количество комнат:</label>
+                        <input class="form-control input-sm" id="bedroomUpdate" type="text" name="bedroom" value="${apartment.getBedroom()}">
+                        <label for="peopleUpdate">Количество людей:</label>
+                        <input class="form-control input-sm" id="peopleUpdate" type="text" name="people" value="${apartment.getPeople()}">
+                        <label for="chUpdate">Количество детей:</label>
+                        <input class="form-control input-sm" id="chUpdate" type="text" name="children" value="${apartment.getChildren()}">
+                        <label for="priceUpdate">Цена:</label>
+                        <input class="form-control input-sm" id="priceUpdate" type="text" name="price" value="${apartment.getPrice()}">
+                        <label for="districtUpdate">Район:</label>
+                        <input class="form-control input-sm" id="districtUpdate" type="text" name="district" value="${apartment.getDistrict()}">
+                        <label for="aboutUpdate">О номере:</label>
+                        <input class="form-control input-sm" id="aboutUpdate" type="text" name="about" value="${apartment.getAbout()}">
+                    </div>
+                    <button type="submit" class="btn btn-success">Изменить</button>
+                </form>
+                <%--<div class="caption">--%>
+                    <%--<p>${apartment.getBedroom()}</p>--%>
+                    <%--<p>${apartment.getPeople()}</p>--%>
+                    <%--<p>${apartment.getChildren()}</p>--%>
+                    <%--<p>${apartment.getPrice()}</p>--%>
+                    <%--<p>${apartment.getDistrict()}</p>--%>
+                    <%--<p>${apartment.getAbout()}</p>--%>
+                <%--</div>--%>
             </div>
             </div>
         </c:if>
