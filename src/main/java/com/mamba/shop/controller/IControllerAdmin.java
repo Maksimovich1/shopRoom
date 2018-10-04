@@ -95,4 +95,14 @@ public class IControllerAdmin {
         return "redirect:updateOrAdd";
     }
 
+    @RequestMapping(value = "/getUrl", method = RequestMethod.GET)
+    public String getUrlCalendar(
+            @RequestParam(value = "id", defaultValue = "") String id
+    ){
+                if (id.equals(""))
+                    return "redirect:control";
+                shopService.setBufferUrlBooking(id);
+                return "redirect:control";
+    }
+
 }

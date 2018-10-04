@@ -13,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SecurityDetailsService implements UserDetailsService {
 
+    private final UserDetailsDao detailsDao;
+
     @Autowired
-    private UserDetailsDao detailsDao;
+    public SecurityDetailsService(UserDetailsDao detailsDao) {
+        this.detailsDao = detailsDao;
+    }
 
     @Transactional(readOnly = true)
     @Override

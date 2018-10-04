@@ -21,4 +21,6 @@ public interface ShopService {
 
     boolean refreshDataBaseDate(List<Apartment> apartments);
 
+    void setBufferUrlBooking(String idApartment);
+    void downloadMyCalendar();
 }

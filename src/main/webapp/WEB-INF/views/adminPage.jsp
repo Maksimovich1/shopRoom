@@ -49,6 +49,7 @@
                 <td>${apartment.isEnable()}</td>
                 <td>${apartment.getAbout()}</td>
                 <td><a href="${pageContext.request.contextPath}/admin/delete?id=${apartment.getId()}">Delete</a></td>
+                <td><a href="${pageContext.request.contextPath}/admin/getUrl?id=${apartment.getId()}">Ссылка на календарь.</a> </td>
             </tr>
         </c:forEach>
 

@@ -1,17 +1,19 @@
 package com.mamba.shop.controller;
 
-import com.mamba.shop.entity.Apartment;
+
 import com.mamba.shop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 @Controller
 public class IController {
@@ -65,5 +67,27 @@ public class IController {
     @RequestMapping("/contacts")
     public String getContact(){
         return "contact";
+    }
+
+    @RequestMapping("/get.download/jsd1134is6chd_uhc_sid/sdcs32dvg2222112/{id}5987412365/bzs123fff_gbc)ss")
+    public String downloadCalendar(@PathVariable String id, HttpServletResponse response){
+        System.out.println("Here_____" + id);
+        FileInputStream file = null;
+        try {
+            file = new FileInputStream("D:\\calendar\\room1.ics");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        response.setContentType("text/calendar");
+
+        response.setHeader("Content-Disposition","attachment; filename=\"" + "Room123ewwxxxxxx" + id + ".ics" +"\"");
+        try {
+            assert file != null;
+            FileCopyUtils.copy(file, response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "index";
     }
 }

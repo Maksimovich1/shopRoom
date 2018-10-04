@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -172,6 +175,21 @@ public class IShopDetailsService implements ShopService, MailService{
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void setBufferUrlBooking(String idApartment) {
+        String url = "http://localhost:8080/get.download/jsd1134is6chd_uhc_sid/sdcs32dvg2222112/" + idApartment +"5987412365/bzs123fff_gbc)ss";
+        StringSelection selection = new StringSelection(url);
+
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
+        System.out.println("#___________copy");
+    }
+
+    @Override
+    public void downloadMyCalendar() {
+
     }
 
     @Override
