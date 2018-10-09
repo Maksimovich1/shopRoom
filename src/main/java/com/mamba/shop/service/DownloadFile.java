@@ -8,4 +8,5 @@ import java.util.List;
 public interface DownloadFile {
     void saveFile(String filename, String url) throws IOException;
     List<Period> listenCalendarICS(String fileName);
+    void writeCalendar(String fileName, Period period);
 }

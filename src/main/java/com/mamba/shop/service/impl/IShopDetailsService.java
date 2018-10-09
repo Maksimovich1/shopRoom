@@ -193,6 +193,24 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
+    public int getCountOrderDay(String _dateIn, String _dateOut) {
+        int count = 0;
+        try {
+            Date dateIn = new SimpleDateFormat(DATE_FORMAT).parse(_dateIn);
+            Date dateOut = new SimpleDateFormat(DATE_FORMAT).parse(_dateOut);
+
+            long dayIn = dateIn.getTime();
+            long dayOut = dateOut.getTime();
+            long qwe = dayOut - dayIn;
+            count = (int) (qwe/86400000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("Не удалось преоброзавать дату из строки!");
+        }
+        return count;
+    }
+
+    @Override
     public void sendEmail(Object sendObject, String email) {
         if (!(sendObject instanceof Apartment))
             throw new ClassCastException("Передан не апартамент");

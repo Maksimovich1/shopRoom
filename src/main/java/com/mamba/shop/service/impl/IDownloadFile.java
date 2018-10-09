@@ -4,18 +4,15 @@ import com.mamba.shop.config.AppConfiguration;
 import com.mamba.shop.entity.Period;
 import com.mamba.shop.service.DownloadFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.ComponentList;
+import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
@@ -39,13 +36,11 @@ public class IDownloadFile implements DownloadFile {
         dirname = dirnameC;
     }
         public static void main(String[] args) throws IOException {
-            AnnotationConfigApplicationContext context =
-                    new AnnotationConfigApplicationContext(AppConfiguration.class);
 
-        DownloadFile file = context.getBean(DownloadFile.class);
-        file.saveFile(fileName, url);
+        IDownloadFile downloadFile = new IDownloadFile("D:\\calendar");
+
         System.out.println("ok!");
-        file.listenCalendarICS(fileName);
+        downloadFile.writeCalendar(fileName, new Period());
     }
 
     @Override
@@ -102,6 +97,28 @@ public class IDownloadFile implements DownloadFile {
             e.printStackTrace();
         }
         return periods;
+    }
+
+    @Override
+    public void writeCalendar(String fileName, Period period) {
+        FileInputStream fileInputStream;
+        CalendarBuilder calendarBuilder = new CalendarBuilder();
+        Calendar calendar;
+        try {
+            fileInputStream = new FileInputStream(dirname + fileName);
+            calendar = calendarBuilder.build(fileInputStream);
+            Date dateIn = new DateTime(period.getDate_in());
+            Date dateOut = new DateTime(period.getDate_out());
+            VEvent event = new VEvent(dateIn, dateOut, "");
+            calendar.getComponents().add(event);
+            FileOutputStream outputStream = new FileOutputStream(dirname + fileName);
+            CalendarOutputter outputter = new CalendarOutputter();
+            outputter.output(calendar, outputStream);
+
+            System.out.println("123___");
+        } catch (ParserException | IOException | ValidationException e) {
+            e.printStackTrace();
+        }
     }
 
 }

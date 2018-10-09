@@ -9,7 +9,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,6 +49,8 @@ public class IController {
                 district = "3";
                 break;
         }
+        int countDay = shopService.getCountOrderDay(dateIn, dateOut);
+        model.addAttribute("countDay", countDay);
         model.addAttribute("apartmentList",
         shopService.searchFreeApartmentsWithDependency(
                 countPeople, countChild,
@@ -57,6 +58,10 @@ public class IController {
                 dateIn, dateOut, bedroom)
         );
         return "searchPage";
+    }
+    @RequestMapping("/order")
+    public String order(){
+    return "";
     }
 
     @RequestMapping("/about")

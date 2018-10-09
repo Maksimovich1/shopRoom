@@ -23,4 +23,6 @@ public interface ShopService {
 
     void setBufferUrlBooking(String idApartment);
     void downloadMyCalendar();
+
+    int getCountOrderDay(String dateIn, String dateOut);
 }

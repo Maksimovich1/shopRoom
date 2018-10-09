@@ -32,6 +32,7 @@
 </div>
 <div class="container">
     <p>Результаты:</p><br>
+    <p>Запрашиваемое количество ночей: ${countDay} :)</p>
     <div class="row">
     <c:forEach items="${apartmentList}" var="apartment">
 
@@ -43,9 +44,10 @@
                             <p class="col-md-6">Комнаты: ${apartment.getBedroom()}</p>
                             <p class="col-md-6">Люди: ${apartment.getPeople()}</p>
                             <p class="col-md-6">Дети: ${apartment.getChildren()}</p>
-                            <p class="col-md-6">Цена: ${apartment.getPrice()}</p>
+                            <p class="col-md-6">Цена: ${apartment.getPrice() * countDay} $</p>
                         </div>
                     </a>
+                    <button class="btn btn-primary">Заказать</button>
 
                     <form action="${pageContext.request.contextPath}/payment" method="POST">
                         <script th:inline="javascript"
