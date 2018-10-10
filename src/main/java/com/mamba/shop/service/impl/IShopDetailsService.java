@@ -31,7 +31,7 @@ public class IShopDetailsService implements ShopService, MailService{
     private final JavaMailSender mailSender;
     private final DownloadFile downloadFile;
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 
     private static String url = "https://admin.booking.com/hotel/hoteladmin/ical.html?t=" +

@@ -6,7 +6,9 @@ import com.mamba.shop.service.DownloadFile;
 
 import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -14,9 +16,9 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.property.DtEnd;
-import net.fortuna.ical4j.model.property.DtStart;
-import net.fortuna.ical4j.model.property.Summary;
+import net.fortuna.ical4j.model.component.VTimeZone;
+import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.util.UidGenerator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -35,33 +37,19 @@ public class IDownloadFile implements DownloadFile {
     public IDownloadFile (String dirnameC) {
         dirname = dirnameC;
     }
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args) throws Exception {
 
         IDownloadFile downloadFile = new IDownloadFile("D:\\calendar");
 
-        System.out.println("ok!");
-        downloadFile.writeCalendar(fileName, new Period());
+        Period period = new Period();
+        period.setDate_in(new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).parse("2018-09-01"));
+        period.setDate_out(new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).parse("2018-09-28"));
+        System.out.println("initial...........!");
+        downloadFile.writeCalendar("\\room2.ics", period, "testing date", "Europe/Minsk");
     }
 
     @Override
     public void saveFile(String filename, String url) throws IOException {
-//        BufferedInputStream inputStream = null;
-//        FileOutputStream outputStream = null;
-//        try {
-//            inputStream = new BufferedInputStream(new URL(url).openStream());
-//            outputStream = new FileOutputStream(filename);
-//            byte []data = new byte[1024];
-//            int count;
-//            while ((count = inputStream.read(data, 0, 1024)) != -1){
-//                outputStream.write(data, 0, count);
-//            }
-//        }
-//        finally {
-//            if (inputStream != null)
-//                inputStream.close();
-//            if (outputStream != null)
-//                outputStream.close();
-//        }
         FileUtils.copyURLToFile(new URL(url), new File(dirname + filename));
     }
 
@@ -100,23 +88,40 @@ public class IDownloadFile implements DownloadFile {
     }
 
     @Override
-    public void writeCalendar(String fileName, Period period) {
+    public void writeCalendar(String fileName, Period period, String eventName, String timeZone) {
         FileInputStream fileInputStream;
         CalendarBuilder calendarBuilder = new CalendarBuilder();
-        Calendar calendar;
+
+
         try {
             fileInputStream = new FileInputStream(dirname + fileName);
-            calendar = calendarBuilder.build(fileInputStream);
-            Date dateIn = new DateTime(period.getDate_in());
-            Date dateOut = new DateTime(period.getDate_out());
-            VEvent event = new VEvent(dateIn, dateOut, "");
-            calendar.getComponents().add(event);
+            Calendar icsCalendar = calendarBuilder.build(fileInputStream);
+
+//           // Устанавливаем часовой пояс
+            TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+            TimeZone timezone = registry.getTimeZone(timeZone);
+            VTimeZone tz = timezone.getVTimeZone();
+
+            DateTime start = new DateTime(period.getDate_in());
+            DateTime end = new DateTime(period.getDate_out());
+            VEvent meeting = new VEvent(start, end, eventName);
+// Добавляем к нему информацию о часовом поясе
+            meeting.getProperties().add(tz.getTimeZoneId());
+// генерируем uid
+            UidGenerator generator = new UidGenerator("tenerifeperfect");
+            meeting.getProperties().add(generator.generateUid());
+// Добавляем к календарю созданное событие
+            icsCalendar.getComponents().add(meeting);
+
             FileOutputStream outputStream = new FileOutputStream(dirname + fileName);
             CalendarOutputter outputter = new CalendarOutputter();
-            outputter.output(calendar, outputStream);
+            outputter.output(icsCalendar, outputStream);
 
-            System.out.println("123___");
-        } catch (ParserException | IOException | ValidationException e) {
+            System.out.println("success");
+        } catch (IOException | ValidationException e) {
+            e.printStackTrace();
+            System.out.println("yps.... (");
+        } catch (ParserException e) {
             e.printStackTrace();
         }
     }
