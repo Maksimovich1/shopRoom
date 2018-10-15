@@ -45,7 +45,7 @@
 
     <!-- Register -->
     <p><spring:message code="login.noauth"/>
-        <a href="${pageContext.request.contextPath}/productList"><spring:message code="login.conwauth"/>.</a>
+        <a href="${pageContext.request.contextPath}/"><spring:message code="login.conwauth"/>.</a>
     </p>
 
 </form>

@@ -1,8 +1,12 @@
 package com.mamba.shop.service.impl;
 
 import com.mamba.shop.dao.ApartmentDao;
+import com.mamba.shop.dao.OrderDao;
+import com.mamba.shop.dao.UserDetailsDao;
 import com.mamba.shop.entity.Apartment;
+import com.mamba.shop.entity.Orders;
 import com.mamba.shop.entity.Period;
+import com.mamba.shop.entity.User;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.MailService;
@@ -11,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.acls.model.NotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -30,6 +38,8 @@ public class IShopDetailsService implements ShopService, MailService{
     private final ApartmentDao apartmentDao;
     private final JavaMailSender mailSender;
     private final DownloadFile downloadFile;
+    private final UserDetailsDao userDetailsDao;
+    private final OrderDao orderDao;
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -39,10 +49,14 @@ public class IShopDetailsService implements ShopService, MailService{
             "NGYkm7vVlwFpR-Cb81HBBYIwciBwV2oID6Aud0oatr1qm3LGxV9PZVvJ4udpFwR2i" +
             "tykauNGrCUF7FL4aiBYaCOi7nG7jRQ";
     @Autowired
-    public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender, DownloadFile downloadFile) {
+    public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender,
+                               DownloadFile downloadFile, UserDetailsDao userDetailsDao,
+                               OrderDao orderDao) {
         this.apartmentDao = apartmentDao;
         this.mailSender = mailSender;
         this.downloadFile = downloadFile;
+        this.userDetailsDao = userDetailsDao;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -211,6 +225,25 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
+    public User getCurrentUser() throws NotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null)
+            throw new NotFoundException("");
+
+        Object obj = authentication.getPrincipal();
+        String username;
+
+        if (obj instanceof UserDetails)
+            username = ((UserDetails) obj).getUsername();
+        else
+            username = obj.toString();
+        User user = userDetailsDao.findUserByUsername(username);
+        System.out.println("user = " + username);
+        return user;
+    }
+
+    @Override
     public void sendEmail(Object sendObject, String email) {
         if (!(sendObject instanceof Apartment))
             throw new ClassCastException("Передан не апартамент");
@@ -228,5 +261,22 @@ public class IShopDetailsService implements ShopService, MailService{
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public int createOrder(String email, String nameUser, String dateOrder,
+                            Date dateIn, Date dateOut, String apartmentId,
+                            int status, String summary) {
+        Orders order = new Orders();
+        order.setCustomer_email(email);
+        order.setCustomer_name(nameUser);
+        order.setDate_order(dateOrder);
+        order.setDate_in(dateIn);
+        order.setDate_out(dateOut);
+        order.setId_product_buy(apartmentId);
+        order.setPrice(summary);
+        order.setStatus(status);
+        orderDao.addOrder(order);
+        return 0;
     }
 }

@@ -1,7 +1,11 @@
 package com.mamba.shop.service;
 
 import com.mamba.shop.entity.Apartment;
+import com.mamba.shop.entity.Orders;
+import com.mamba.shop.entity.User;
+import org.springframework.security.acls.model.NotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ShopService {
@@ -25,4 +29,11 @@ public interface ShopService {
     void downloadMyCalendar();
 
     int getCountOrderDay(String dateIn, String dateOut);
+    User getCurrentUser() throws NotFoundException;
+
+    /*--------------------order*/
+    int createOrder(String email, String nameUser, String dateOrder,
+                     Date dateIn, Date dateOut, String apartmentId,
+                     int status, String summary);
+
 }

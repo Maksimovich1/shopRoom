@@ -19,15 +19,16 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
             <div class="item active">
-                <img src="${pageContext.request.contextPath}/images/1.jpg" alt="Los Angeles" style="width:100%; height: 50%">
+                <img src="${pageContext.request.contextPath}/images/1.jpg" alt="Los Angeles">
             </div>
 
             <div class="item">
-                <img src="${pageContext.request.contextPath}/images/2.jpg" alt="Chicago" style="width:100%; height: 50%">
+                <img src="${pageContext.request.contextPath}/images/2.jpg" alt="Chicago" >
             </div>
 
+            <%--style="width:100%; height: 50%"--%>
             <div class="item">
-                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="New york" style="width:100%; height: 50%">
+                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="New york" >
             </div>
         </div>
 

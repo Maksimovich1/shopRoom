@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -31,42 +32,36 @@
     <jsp:include page="_search.jsp"/>
 </div>
 <div class="container">
-    <p>Результаты:</p><br>
-    <p>Запрашиваемое количество ночей: ${countDay} :)</p>
-    <div class="row">
-    <c:forEach items="${apartmentList}" var="apartment">
+    <c:if test="${countDay == 0}">
+        <p>Здесь будут результаты...</p>
+    </c:if>
+    <c:if test="${countDay > 0}">
+        <p>Результаты:</p><br>
+        <p>Запрашиваемое количество ночей: ${countDay} :)</p>
+        <div class="row">
+            <c:forEach items="${apartmentList}" var="apartment">
 
-            <div class="col-md-3">
-                <div class="thumbnail">
-                    <a href="${pageContext.request.contextPath}/images/ava.jpg">
-                        <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
-                        <div class="caption row">
-                            <p class="col-md-6">Комнаты: ${apartment.getBedroom()}</p>
-                            <p class="col-md-6">Люди: ${apartment.getPeople()}</p>
-                            <p class="col-md-6">Дети: ${apartment.getChildren()}</p>
-                            <p class="col-md-6">Цена: ${apartment.getPrice() * countDay} $</p>
-                        </div>
-                    </a>
-                    <button class="btn btn-primary">Заказать</button>
-
-                    <form action="${pageContext.request.contextPath}/payment" method="POST">
-                        <script th:inline="javascript"
-                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="pk_test_sjBV4ZqrUCQ6YZjiAC4eufFN"
-                                data-currency="eur"
-                                data-amount="100"
-                                data-name="Payment"
-                                data-description="Demo"
-                                data-image="/images/ava.jpg"
-                                data-locale="auto">
-
-                        </script>
-                    </form>
-
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <a href="${pageContext.request.contextPath}/images/ava.jpg">
+                            <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
+                            <div class="caption row">
+                                <p class="col-md-6">Комнаты: ${apartment.getBedroom()}</p>
+                                <p class="col-md-6">Люди: ${apartment.getPeople()}</p>
+                                <p class="col-md-6">Дети: ${apartment.getChildren()}</p>
+                                <p class="col-md-6">Цена: ${apartment.getPrice() * countDay} $</p>
+                            </div>
+                        </a>
+                        <form action="${pageContext.request.contextPath}/secure/order" method="post">
+                            <input name="idApartment" value="${apartment.getId()}" type="hidden">
+                            <button class="btn btn-primary">Заказать</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-    </c:forEach>
-    </div>
+            </c:forEach>
+        </div>
+    </c:if>
+
 </div>
 </body>
 </html>

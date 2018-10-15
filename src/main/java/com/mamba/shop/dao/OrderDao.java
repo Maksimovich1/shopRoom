@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface OrderDao {
 
-    void addOrder(Orders order);
+    int addOrder(Orders order);
     void deleteOrder(Orders order);
     void updateOrder(Orders order);
 
     List<Orders> getAllOrders();
     List<Orders> getActiveOrders(Date now);
+
+    List<Orders> getOrderByUsername(String username);
 
 }

@@ -21,15 +21,13 @@ import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.util.UidGenerator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.util.FileCopyUtils;
+
+import javax.servlet.http.HttpServletResponse;
 
 public class IDownloadFile implements DownloadFile {
 
-    private static String url = "https://admin.booking.com/hotel/hoteladmin/ical.html?t=" +
-            "7OZDWQnPKjX6iJCd_r3gcp40qJ15MOn7pao19szymZV5db6L6AHQgnTipxDUtIM_-ytX307" +
-            "NGYkm7vVlwFpR-Cb81HBBYIwciBwV2oID6Aud0oatr1qm3LGxV9PZVvJ4udpFwR2i" +
-            "tykauNGrCUF7FL4aiBYaCOi7nG7jRQ";
-    private static String fileName = "\\room1.ics";
-    private static String dirname;
+    private String dirname;
 
     public IDownloadFile() {
     }
@@ -92,11 +90,17 @@ public class IDownloadFile implements DownloadFile {
         FileInputStream fileInputStream;
         CalendarBuilder calendarBuilder = new CalendarBuilder();
 
-
+        Calendar icsCalendar;
         try {
-            fileInputStream = new FileInputStream(dirname + fileName);
-            Calendar icsCalendar = calendarBuilder.build(fileInputStream);
-
+            if (new File(dirname + fileName).exists()) {
+                fileInputStream = new FileInputStream(dirname + fileName);
+                icsCalendar = calendarBuilder.build(fileInputStream);
+            }else {
+                icsCalendar = new Calendar();
+                icsCalendar.getProperties().add(new ProdId("-//tenerife"));
+                icsCalendar.getProperties().add(Version.VERSION_2_0);
+                icsCalendar.getProperties().add(CalScale.GREGORIAN);
+            }
 //           // Устанавливаем часовой пояс
             TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
             TimeZone timezone = registry.getTimeZone(timeZone);
@@ -116,12 +120,33 @@ public class IDownloadFile implements DownloadFile {
             FileOutputStream outputStream = new FileOutputStream(dirname + fileName);
             CalendarOutputter outputter = new CalendarOutputter();
             outputter.output(icsCalendar, outputStream);
+            outputStream.close();
 
             System.out.println("success");
         } catch (IOException | ValidationException e) {
             e.printStackTrace();
-            System.out.println("yps.... (");
+            System.out.println("Ошибка создания календаря!");
         } catch (ParserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void downloadCalendar(String id, HttpServletResponse response) {
+        FileInputStream file = null;
+        try {
+            file = new FileInputStream(dirname + "\\room234" + id + ".ics");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        response.setContentType("text/calendar");
+
+        response.setHeader("Content-Disposition","attachment; filename=\"" + "Room123e_wwlE_xxx" + id + ".ics" +"\"");
+        try {
+            assert file != null;
+            FileCopyUtils.copy(file, response.getOutputStream());
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

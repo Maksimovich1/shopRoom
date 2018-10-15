@@ -1,5 +1,7 @@
 package com.mamba.shop.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -58,7 +60,8 @@ public class Orders implements Serializable {
     public void setCustomer_name(String customer_name) {
         this.customer_name = customer_name;
     }
-    @Column(name = "customer_phone", nullable = false)
+    @Column(name = "customer_phone")
+    @ColumnDefault("none")
     public String getCustomer_phone() {
         return customer_phone;
     }

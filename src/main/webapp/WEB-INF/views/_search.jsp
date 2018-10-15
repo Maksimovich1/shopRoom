@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-inline" action="${pageContext.request.contextPath}/productList">
+<form class="form-inline" action="${pageContext.request.contextPath}/secure/productList">
     <div class="form-row">
     <div class="form-group col-lg-3">
         <label for="bedroom">Количество комнат:</label>
