@@ -3,6 +3,7 @@ package com.mamba.shop.controller;
 
 import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Period;
+import com.mamba.shop.entity.User;
 import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.ShopService;
 import com.mamba.shop.service.impl.IShopDetailsService;
@@ -24,10 +25,10 @@ public class IAccessController {
     private final DownloadFile downloadFile;
 
     private int countNight = 0;
-    private String dateIn;
-    private String dateOut;
+    private String dateIn = "";
+    private String dateOut = "";
     private int summary = 0;
-    private Period period;
+    private Period period = null;
 
     @Autowired
     public IAccessController(ShopService shopService, DownloadFile downloadFile) {
@@ -82,6 +83,11 @@ public class IAccessController {
         );
         return "searchPage";
     }
+    @RequestMapping("/order")
+    public String callbackOrder(){
+        to_zero();
+        return "redirect:product";
+    }
     @RequestMapping(value = {"/order"}, method = RequestMethod.POST)
     public String order(
             @RequestParam(value = "idApartment") String idApartment,
@@ -111,6 +117,11 @@ public class IAccessController {
         model.addAttribute("summary", summary);
         return "confirmationPage";
     }
+    @RequestMapping(value = "/complete")
+    public String callbackCompleteOrder(){
+        to_zero();
+                return "redirect:product";
+    }
     @RequestMapping(value = "/complete", method = RequestMethod.POST)
     public String completeOrder(
             @RequestParam(value = "email") String email,
@@ -129,12 +140,28 @@ public class IAccessController {
             shopService.updateApartment(apartment);
             shopService.createOrder(email, username,
                     new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).format(new Date()),
-                    period.getDate_in(), period.getDate_out(), apartmentId, 1,
+                    period.getDate_in(), period.getDate_out(), apartmentId, 0,
                     String.valueOf(summary));
         }
         catch (Exception e){
             e.printStackTrace();
         }
         return "successOrder";
+    }
+    @RequestMapping("/my_order")
+    public String my_order(
+            Model model
+    ){
+        User user = shopService.getCurrentUser();
+        if (user != null)
+        model.addAttribute("orders", shopService.getOrderByUsername(user.getUsername()));
+        return "orderPage";
+    }
+    private void to_zero(){
+        countNight = 0;
+        dateIn = "";
+        dateOut = "";
+        summary = 0;
+        period = null;
     }
 }

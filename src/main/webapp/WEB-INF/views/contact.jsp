@@ -11,15 +11,15 @@
     <title>Contacts</title>
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<jsp:include page="_navbar.jsp"/>
 <div class="container">
-    <jsp:include page="_navbar.jsp"/>
-
-    <br>
     контакты телега и бла бла
 </div>
+<jsp:include page="_footer.jsp"/>
 </body>
 </html>

@@ -97,7 +97,7 @@ public class IDownloadFile implements DownloadFile {
                 icsCalendar = calendarBuilder.build(fileInputStream);
             }else {
                 icsCalendar = new Calendar();
-                icsCalendar.getProperties().add(new ProdId("-//tenerife"));
+                icsCalendar.getProperties().add(new ProdId("-//tenerife" + fileName));
                 icsCalendar.getProperties().add(Version.VERSION_2_0);
                 icsCalendar.getProperties().add(CalScale.GREGORIAN);
             }
@@ -112,7 +112,7 @@ public class IDownloadFile implements DownloadFile {
 // Добавляем к нему информацию о часовом поясе
             meeting.getProperties().add(tz.getTimeZoneId());
 // генерируем uid
-            UidGenerator generator = new UidGenerator("tenerifeperfect");
+            UidGenerator generator = new UidGenerator("tenerifeperfect" + fileName);
             meeting.getProperties().add(generator.generateUid());
 // Добавляем к календарю созданное событие
             icsCalendar.getComponents().add(meeting);

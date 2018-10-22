@@ -6,12 +6,23 @@ import javax.persistence.*;
 @Table(name = "AUTHORITIES")
 public class Authorities {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @Column(name = "AUTHORITY")
     private String authority;
 
     @ManyToOne
     @JoinColumn(name = "USERNAME")
     private User user;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getAuthority() {
         return authority;

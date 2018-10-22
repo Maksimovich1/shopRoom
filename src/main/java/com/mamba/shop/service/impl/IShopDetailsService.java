@@ -2,15 +2,14 @@ package com.mamba.shop.service.impl;
 
 import com.mamba.shop.dao.ApartmentDao;
 import com.mamba.shop.dao.OrderDao;
+import com.mamba.shop.dao.PictureDao;
 import com.mamba.shop.dao.UserDetailsDao;
-import com.mamba.shop.entity.Apartment;
-import com.mamba.shop.entity.Orders;
-import com.mamba.shop.entity.Period;
-import com.mamba.shop.entity.User;
+import com.mamba.shop.entity.*;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
+import com.mamba.shop.service.uploadFile.FileBucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -40,23 +40,20 @@ public class IShopDetailsService implements ShopService, MailService{
     private final DownloadFile downloadFile;
     private final UserDetailsDao userDetailsDao;
     private final OrderDao orderDao;
+    private final PictureDao pictureDao;
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
-
-    private static String url = "https://admin.booking.com/hotel/hoteladmin/ical.html?t=" +
-            "7OZDWQnPKjX6iJCd_r3gcp40qJ15MOn7pao19szymZV5db6L6AHQgnTipxDUtIM_-ytX307" +
-            "NGYkm7vVlwFpR-Cb81HBBYIwciBwV2oID6Aud0oatr1qm3LGxV9PZVvJ4udpFwR2i" +
-            "tykauNGrCUF7FL4aiBYaCOi7nG7jRQ";
     @Autowired
     public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender,
                                DownloadFile downloadFile, UserDetailsDao userDetailsDao,
-                               OrderDao orderDao) {
+                               OrderDao orderDao, PictureDao pictureDao) {
         this.apartmentDao = apartmentDao;
         this.mailSender = mailSender;
         this.downloadFile = downloadFile;
         this.userDetailsDao = userDetailsDao;
         this.orderDao = orderDao;
+        this.pictureDao = pictureDao;
     }
 
     @Override
@@ -156,7 +153,7 @@ public class IShopDetailsService implements ShopService, MailService{
     /*обновление бд*/
     private void refresh(String id) throws IOException {
         Apartment apartment = getByIdWithDependency(id);
-        if (apartment.getUrlBooking() != null) {
+        if (apartment.getUrlBooking() != null && !apartment.getUrlBooking().equals("")) {
             downloadFile.saveFile("room32" + id, apartment.getUrlBooking());
             List<Period> periods = downloadFile.listenCalendarICS("room32" + id);
 
@@ -240,6 +237,7 @@ public class IShopDetailsService implements ShopService, MailService{
             username = obj.toString();
         User user = userDetailsDao.findUserByUsername(username);
         System.out.println("user = " + username);
+        System.out.println(user.toString());
         return user;
     }
 
@@ -267,10 +265,16 @@ public class IShopDetailsService implements ShopService, MailService{
     public int createOrder(String email, String nameUser, String dateOrder,
                             Date dateIn, Date dateOut, String apartmentId,
                             int status, String summary) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).parse(dateOrder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Orders order = new Orders();
         order.setCustomer_email(email);
         order.setCustomer_name(nameUser);
-        order.setDate_order(dateOrder);
+        order.setDate_order(date);
         order.setDate_in(dateIn);
         order.setDate_out(dateOut);
         order.setId_product_buy(apartmentId);
@@ -278,5 +282,61 @@ public class IShopDetailsService implements ShopService, MailService{
         order.setStatus(status);
         orderDao.addOrder(order);
         return 0;
+    }
+
+    @Override
+    public List<Orders> getAllOrdersForDate(Date dateBefore) {
+
+        return orderDao.getAllOrdersForDate(dateBefore);
+    }
+
+    @Override
+    public List<Orders> getAllOrdersActive(int status) {
+        return null;
+    }
+
+    @Override
+    public List<Orders> getAllOrders() {
+        return orderDao.getAllOrders();
+    }
+
+    @Override
+    public List<Orders> getOrderByUsername(String username) {
+        return orderDao.getOrderByUsername(username);
+    }
+
+    @Override
+    public void deleteOrder(Orders order) {
+
+    }
+
+    @Override
+    public void updateStatusOrders(Orders order) {
+
+    }
+
+    ////////////////////////////////////////
+    @Override
+    public void saveImageForApartment(CommonsMultipartFile[] file, String idApartment) {
+
+        Apartment apartment = apartmentDao.findById(idApartment);
+        System.out.println("Запись картинки в бд.________");
+        if ((file != null) && (file.length > 0)){
+            for (CommonsMultipartFile multipartFile: file){
+                if (multipartFile.isEmpty()){
+                    System.out.println("name = " + multipartFile.getOriginalFilename());
+                    if (!multipartFile.getOriginalFilename().equals("")){
+                        Picture picture = new Picture();
+                        picture.setPict(multipartFile.getBytes());
+                        picture.setApartment(apartment);
+                        pictureDao.addPicture(picture);
+                        System.out.println("Картинка успешно добавлена!--------");
+                    }
+                }
+            }// конец цикла
+        }else {
+            System.out.println("____переданный массив из байтов пуст, null");
+        }
+
     }
 }

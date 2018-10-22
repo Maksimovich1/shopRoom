@@ -9,14 +9,15 @@
 <html>
 <head>
     <title>Канарский отдых</title>
-    <link href="static/style.css" rel="stylesheet">
+
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-<body>
+<body class="bacgr">
     <jsp:include page="_navbar.jsp"/>
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
@@ -28,18 +29,18 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="${pageContext.request.contextPath}/images/1.jpg" alt="Image">
+                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="Image">
                 <div class="carousel-caption">
-                    <h3>Holiday</h3>
-                    <p>Money Money.</p>
+                    <h2>Проведи время красиво</h2>
+                    <p>Ты не забудешь никогда.</p>
                 </div>
             </div>
 
             <div class="item">
-                <img src="${pageContext.request.contextPath}/images/1.jpg" alt="Image">
+                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="Image">
                 <div class="carousel-caption">
-                    <h3>More Sell $</h3>
-                    <p>Lorem ipsum...</p>
+                    <h3>Потрясающие восходы</h3>
+                    <p>Огненные закаты.</p>
                 </div>
             </div>
         </div>
@@ -55,32 +56,31 @@
         </a>
     </div>
 
-
     <div class="container text-center">
-        <h3>What We Do</h3><br>
+        <h3>Что Вас ждет :)</h3><br>
         <div class="row">
             <div class="col-sm-4">
-                <img src="${pageContext.request.contextPath}/images/ava.jpg" class="img-responsive" style="width:100%" alt="Image">
-                <p>Current Project</p>
+                <img src="${pageContext.request.contextPath}/images/1.jpg" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
+                <p>Отдыхай красиво!</p>
             </div>
             <div class="col-sm-4">
-                <img src="${pageContext.request.contextPath}/images/ava.jpg" class="img-responsive" style="width:100%" alt="Image">
-                <p>Project 2</p>
+                <img src="${pageContext.request.contextPath}/images/2.jpg" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
+                <p>Отдыхай качественно!</p>
             </div>
             <div class="col-sm-4">
                 <div class="well">
-                    <p>Some text..</p>
-                </div>
-                <div class="well">
-                    <p>Some text..</p>
+                    <p>
+                        Равным образом рамки и место обучения кадров представляет собой интересный
+                        эксперимент проверки систем массового участия. Значимость этих проблем настолько
+                        очевидна, что дальнейшее развитие различных форм деятельности требуют определения
+                        и уточнения модели развития. Повседневная практика показывает, что реализация
+                        намеченных плановых заданий позволяет выполнять важные задания по разработке
+                        системы обучения кадров, соответствует насущным потребностям.
+                    </p>
                 </div>
             </div>
         </div>
     </div><br>
-
-    <footer class="container-fluid text-center">
-        <p>Footer Text</p>
-    </footer>
-
+    <jsp:include page="_footer.jsp"/>
     </body>
 </html>

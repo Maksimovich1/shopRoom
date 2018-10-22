@@ -1,13 +1,26 @@
 package com.mamba.shop.controller;
 
 import com.mamba.shop.entity.Apartment;
+import com.mamba.shop.entity.Picture;
 import com.mamba.shop.service.ShopService;
+import com.mamba.shop.service.impl.IShopDetailsService;
+import com.mamba.shop.service.uploadFile.FileBucket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/admin")
@@ -103,6 +116,25 @@ public class IControllerAdmin {
                     return "redirect:control";
                 shopService.setBufferUrlBooking(id);
                 return "redirect:control";
+    }
+    @RequestMapping(value = "/orders")
+    public String getAllOrders(Model model){
+        Date date = new Date();
+        model.addAttribute("orders", shopService.getAllOrdersForDate(date));
+        return "orderPage";
+    }
+
+    //не работает(
+    @RequestMapping(value = "/save_image", method = RequestMethod.POST , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String uploadImage(
+
+            @RequestParam(value = "file") MultipartFile file1,
+            @RequestParam(value = "file") CommonsMultipartFile[] file,
+            HttpServletRequest request) throws IOException, ServletException {
+        String id = "1";
+        request.getPart("file");
+                shopService.saveImageForApartment(file, id);
+       return "redirect:control";
     }
 
 }

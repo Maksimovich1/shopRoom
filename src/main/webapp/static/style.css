@@ -1,16 +1,24 @@
-.navbar {
-    margin-bottom: 0;
-    border-radius: 0;
+.navbar{
+    margin-bottom: 0; !important;
+}
+.btnmy{
+    margin-bottom: 9px;
 }
 
 /* Add a gray background color and some padding to the footer */
 footer {
-    background-color: #f2f2f2;
-    padding: 25px;
+    background-color: #3e5e69;
+    padding: 40px;
+}
+.bacgr {
+    background-color: #c0dbda;
+}
+.navbar-inverse{
+    background-color: #381717;!important;
 }
 
 .carousel-inner img {
-    width: 100%; /* Set width to 100% */
+    width: 80%; /* Set width to 100% */
     margin: auto;
     min-height:200px;
 }
@@ -20,4 +28,20 @@ footer {
     .carousel-caption {
         display: none;
     }
+}
+/* Set gray background color and 100% height */
+.sidenav {
+    background-color: #f1f1f1;
+    height: auto;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+.row.content {height: auto;}
+
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+    .row.content {height: auto;}
+}
+.col-sm-3my {
+    width: 24%;
 }

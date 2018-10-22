@@ -32,6 +32,8 @@ public class Picture {
         this.apartment = apartment;
     }
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "pic")
     public byte[] getPict() {
         return pict;

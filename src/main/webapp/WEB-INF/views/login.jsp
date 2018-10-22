@@ -21,6 +21,12 @@
 <div class="container" style="width: 25%">
 <form class="text-center border border-light p-5" action='<spring:url value="/loginAction"/>' method="post">
 
+    <c:if test="${param.error != null}">
+        <div class="alert alert-danger">
+            <strong><spring:message code="login.error"/></strong> <spring:message code="login.errormessage"/>
+        </div>
+    </c:if>
+
     <p class="h4 mb-4"><spring:message code="login.singin"/></p>
 
     <!-- Email -->

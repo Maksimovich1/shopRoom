@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -33,7 +34,6 @@
             <th>Price</th>
             <th>District</th>
             <th>Enable</th>
-            <th>About</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -46,15 +46,22 @@
                 <td>${apartment.getChildren()}</td>
                 <td>${apartment.getPrice()}</td>
                 <td>${apartment.getDistrict()}</td>
-                <td>${apartment.isEnable()}</td>
-                <td>${apartment.getAbout()}</td>
-                <td><a href="${pageContext.request.contextPath}/admin/delete?id=${apartment.getId()}">Delete</a></td>
-                <td><a href="${pageContext.request.contextPath}/admin/getUrl?id=${apartment.getId()}">Ссылка на календарь.</a> </td>
+                <td>
+                    <c:if test="${apartment.isEnable() == 1}">Доступен</c:if>
+                    <c:if test="${apartment.isEnable() == 0}">Недоступен</c:if>
+                </td>
+                <td><a href=" <c:url value="${pageContext.request.contextPath}/admin/delete?id=${apartment.getId()}"/> "> Delete</a></td>
+                <td><a href=" <c:url value="${pageContext.request.contextPath}/admin/getUrl?id=${apartment.getId()}"/> ">Ссылка на календарь.</a> </td>
             </tr>
         </c:forEach>
-
         </tbody>
     </table>
+
+        <%--<form:form  action="${pageContext.request.contextPath}/admin/save_image" method="post" enctype="multipart/form-data">--%>
+            <%--<input id="inpId" type="text" name="idApartment" value="1">--%>
+            <%--<input id="inpUpload" type="file" name="file">--%>
+            <%--<input id="btnUpload" type="submit" value="submit"/>--%>
+        <%--</form:form>--%>
 </div>
 </body>
 </html>

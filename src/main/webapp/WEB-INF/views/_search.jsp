@@ -20,7 +20,7 @@
             </c:if>>2</option>
             <option <c:if test="${param.bedroom == '3'}">
                 selected="selected"
-            </c:if>>3</option>
+            </c:if> >3</option>
         </select>
     </div>
     <div class="form-group col-lg-3">

@@ -20,7 +20,7 @@
                     <li><a href="${pageContext.request.contextPath}/about">О нас</a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <li><a href="${pageContext.request.contextPath}/admin/updateOrAdd">Добавить или редактировать номер</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/orders">Продажи</a></li>
                 </sec:authorize>
             </ul>
 
@@ -36,10 +36,11 @@
                 <ul class="dropdown-menu">
                     <sec:authorize access="hasRole('ADMIN')">
                     <li><a href="${pageContext.request.contextPath}/admin/control">Admin</a></li>
-                    <li><a href="${pageContext.request.contextPath}/admin/control"><span class="glyphicon glyphicon-cog"></span> Добавить или редактировать</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/updateOrAdd"><span class="glyphicon glyphicon-cog"></span> Добавить или редактировать</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/control"><span class="glyphicon glyphicon-trash"></span> Удалить или получить ссылку</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('USER')">
-                        <li><a href="${pageContext.request.contextPath}/secure/product"><span class="glyphicon glyphicon-list-alt"></span> Заказы</a></li>
+                        <li><a href="${pageContext.request.contextPath}/secure/my_order"><span class="glyphicon glyphicon-list-alt"></span> Мои заказы</a></li>
                     </sec:authorize>
                     <li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>

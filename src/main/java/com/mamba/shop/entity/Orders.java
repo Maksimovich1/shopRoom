@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "order_rooms")
 public class Orders implements Serializable {
     private int id_order;
-    private String date_order;
+    private Date date_order;
     private String customer_email;
     private String customer_name;
     private String customer_phone;
@@ -34,12 +34,13 @@ public class Orders implements Serializable {
         this.id_order = id_order;
     }
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "data_order", nullable = false)
-    public String getDate_order() {
+    public Date getDate_order() {
         return date_order;
     }
 
-    public void setDate_order(String date_order) {
+    public void setDate_order(Date date_order) {
         this.date_order = date_order;
     }
 

@@ -2,6 +2,7 @@ package com.mamba.shop.dao.impl;
 
 import com.mamba.shop.dao.OrderDao;
 import com.mamba.shop.entity.Orders;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,10 +38,24 @@ public class IOrderDao implements OrderDao {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Orders> getAllOrders() {
-        return null;
+        System.out.println("###getAll orders.");
+        Session session = sessionFactory.getCurrentSession();
+        return (List<Orders>) session.createQuery("from Orders").list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Orders> getAllOrdersForDate(Date date) {
+        System.out.println("###getAllForDate " + date);
+        Session session = sessionFactory.getCurrentSession();
+        return (List<Orders>) session.createQuery("from Orders" +
+                " where data_order <= :datenow")
+                .setParameter("datenow", date)
+                .list();
     }
 
     @Override
@@ -48,8 +63,14 @@ public class IOrderDao implements OrderDao {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Orders> getOrderByUsername(String username) {
-        return null;
+        System.out.println("###getAllOrderByUsername");
+        Session session = sessionFactory.getCurrentSession();
+        return (List<Orders>) session.createQuery("from Orders" +
+                " where customer_name = :username")
+                .setParameter("username", username)
+                .list();
     }
 }

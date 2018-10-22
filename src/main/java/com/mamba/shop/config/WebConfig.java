@@ -1,6 +1,7 @@
 package com.mamba.shop.config;
 
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/secure/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/admin/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/secure/static/**").addResourceLocations("/static/");
     }
 
     @Override
@@ -72,6 +74,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
+    @Bean
+    public CommonsMultipartResolver commonsMultipartResolver(){
+        CommonsMultipartResolver multipartResolver =
+                new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(20971520);
+        multipartResolver.setMaxInMemorySize(1048576);
+        return multipartResolver;
+    }
+
 
     //   @Bean
 //   public MessageSource messageSource(){

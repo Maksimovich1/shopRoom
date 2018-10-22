@@ -12,6 +12,7 @@ public interface OrderDao {
     void updateOrder(Orders order);
 
     List<Orders> getAllOrders();
+    List<Orders> getAllOrdersForDate(Date date);
     List<Orders> getActiveOrders(Date now);
 
     List<Orders> getOrderByUsername(String username);
