@@ -125,7 +125,8 @@ public class IAccessController {
     @RequestMapping(value = "/complete", method = RequestMethod.POST)
     public String completeOrder(
             @RequestParam(value = "email") String email,
-            @RequestParam(value = "apartment") String apartmentId
+            @RequestParam(value = "apartment") String apartmentId,
+            Model model
     ){
         String username = shopService.getCurrentUser().getUsername();
 
@@ -142,10 +143,12 @@ public class IAccessController {
                     new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).format(new Date()),
                     period.getDate_in(), period.getDate_out(), apartmentId, 0,
                     String.valueOf(summary));
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        model.addAttribute("id", shopService.getOrderByUsername(username));
         return "successOrder";
     }
     @RequestMapping("/my_order")

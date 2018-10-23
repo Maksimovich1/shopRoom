@@ -20,6 +20,8 @@
 <div class="container">
     Hello About!
 </div>
-<jsp:include page="_footer.jsp"/>
+<div class="to_bottom">
+    <jsp:include page="_footer.jsp"/>
+</div>
 </body>
 </html>

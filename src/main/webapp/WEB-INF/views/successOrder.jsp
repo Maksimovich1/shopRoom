@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -11,7 +12,8 @@
     <title>Title</title>
 </head>
 <body>
-<h1>SUCCESS!</h1>
+<h1>Поздравляем!</h1>
 ваш № заказа = ${id}
+<a href="<c:url value="/secure/my_order"/>">Перейти к заказам</a>
 </body>
 </html>

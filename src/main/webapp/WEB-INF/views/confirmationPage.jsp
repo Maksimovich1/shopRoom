@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -38,7 +39,7 @@
                 <input name="apartment" type="hidden" value="${id}">
                 <button type="submit" class="btn btn-default">Оформить заказ</button>
             </form>
-            <a href="${pageContext.request.contextPath}/secure/product" class="btn btn-danger">Вернуться</a>
+            <a href="<c:url value="/secure/product"/>" class="btn btn-danger">Вернуться</a>
         </div>
     </div>
 </div>

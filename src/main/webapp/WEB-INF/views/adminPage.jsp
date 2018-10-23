@@ -50,8 +50,12 @@
                     <c:if test="${apartment.isEnable() == 1}">Доступен</c:if>
                     <c:if test="${apartment.isEnable() == 0}">Недоступен</c:if>
                 </td>
-                <td><a href=" <c:url value="${pageContext.request.contextPath}/admin/delete?id=${apartment.getId()}"/> "> Delete</a></td>
-                <td><a href=" <c:url value="${pageContext.request.contextPath}/admin/getUrl?id=${apartment.getId()}"/> ">Ссылка на календарь.</a> </td>
+                <td><a href=" <c:url value="/admin/delete">
+                                <c:param name="id" value="${apartment.getId()}"/>
+                              </c:url> "> Delete</a></td>
+                <td><a href=" <c:url value="/admin/getUrl">
+                                <c:param name="id" value="${apartment.getId()}"/>
+                              </c:url> ">Ссылка на календарь.</a> </td>
             </tr>
         </c:forEach>
         </tbody>

@@ -42,7 +42,7 @@
         </div>
         <div>
             <!-- Forgot password -->
-            <a href="${pageContext.request.contextPath}/"><spring:message code="login.back"/> </a>
+            <a href="<c:url value="/"/>"><spring:message code="login.back"/> </a>
         </div>
     </div>
 
@@ -50,9 +50,9 @@
     <button class="btn btn-info btn-block my-4" type="submit"><spring:message code="login.button"/></button>
 
     <!-- Register -->
-    <p><spring:message code="login.noauth"/>
-        <a href="${pageContext.request.contextPath}/"><spring:message code="login.conwauth"/>.</a>
-    </p>
+    <%--<p><spring:message code="login.noauth"/>--%>
+        <%--<a href="${pageContext.request.contextPath}/"><spring:message code="login.conwauth"/>.</a>--%>
+    <%--</p>--%>
 
 </form>
 </div>

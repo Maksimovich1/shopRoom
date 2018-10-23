@@ -9,6 +9,12 @@
 footer {
     background-color: #3e5e69;
     padding: 40px;
+
+}
+.to_bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 .bacgr {
     background-color: #c0dbda;

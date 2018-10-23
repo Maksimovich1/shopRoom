@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -29,7 +30,7 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="Image">
+                <img src="<c:url value="/images/3.jpg"/>" alt="Image">
                 <div class="carousel-caption">
                     <h2>Проведи время красиво</h2>
                     <p>Ты не забудешь никогда.</p>
@@ -37,7 +38,7 @@
             </div>
 
             <div class="item">
-                <img src="${pageContext.request.contextPath}/images/3.jpg" alt="Image">
+                <img src="<c:url value="/images/3.jpg"/>" alt="Image">
                 <div class="carousel-caption">
                     <h3>Потрясающие восходы</h3>
                     <p>Огненные закаты.</p>
@@ -60,11 +61,11 @@
         <h3>Что Вас ждет :)</h3><br>
         <div class="row">
             <div class="col-sm-4">
-                <img src="${pageContext.request.contextPath}/images/1.jpg" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
+                <img src="<c:url value="/images/1.jpg"/>" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
                 <p>Отдыхай красиво!</p>
             </div>
             <div class="col-sm-4">
-                <img src="${pageContext.request.contextPath}/images/2.jpg" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
+                <img src="<c:url value="/images/2.jpg"/>" class="img-responsive img-rounded" style="width: 100%; height: 400px;" alt="Image">
                 <p>Отдыхай качественно!</p>
             </div>
             <div class="col-sm-4">
