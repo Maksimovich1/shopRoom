@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-@Transactional
+
 @Repository
 public class IApartmentDao implements ApartmentDao {
 
@@ -24,7 +24,7 @@ public class IApartmentDao implements ApartmentDao {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional(readOnly = true)
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Apartment> getAllApartmentListWithDependency() {
@@ -33,7 +33,7 @@ public class IApartmentDao implements ApartmentDao {
         return (List<Apartment>) session.getNamedQuery("Apartment.findAllWithDependency").list();
     }
 
-    @Transactional(readOnly = true)
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Apartment> getAllFreeApartmentsBySearchCustomModelWithDependency(SearchCustomModel customModel) {
@@ -48,7 +48,6 @@ public class IApartmentDao implements ApartmentDao {
         .setParameter("p_enable", 1).list();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Apartment findByIdWithDependency(String id) {
         System.out.println("## findById id=" + id);
@@ -58,7 +57,6 @@ public class IApartmentDao implements ApartmentDao {
                 .uniqueResult();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Apartment findById(String id) {
         Session session = sessionFactory.getCurrentSession();

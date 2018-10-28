@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Repository
 public class IUserDetailsDao implements UserDetailsDao {
 
@@ -18,7 +17,6 @@ public class IUserDetailsDao implements UserDetailsDao {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User findUserByUsername(String username) {
         return sessionFactory.getCurrentSession().get(User.class, username);

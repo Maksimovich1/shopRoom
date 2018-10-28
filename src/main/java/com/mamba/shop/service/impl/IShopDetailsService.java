@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.mail.MessagingException;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
+@Transactional
 public class IShopDetailsService implements ShopService, MailService{
 
     private final ApartmentDao apartmentDao;
@@ -55,7 +57,7 @@ public class IShopDetailsService implements ShopService, MailService{
         this.orderDao = orderDao;
         this.pictureDao = pictureDao;
     }
-
+    @Transactional(readOnly = true)
     @Override
     public List<Apartment> searchFreeApartmentsWithDependency(
             String countPeople, String countChild,
@@ -87,31 +89,29 @@ public class IShopDetailsService implements ShopService, MailService{
         return listResult;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Apartment> getAllApartments() {
         return apartmentDao.getAllApartmentListWithDependency();
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Apartment getByIdWithDependency(String id) {
         return apartmentDao.findByIdWithDependency(id);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Apartment getById(String id) {
         return apartmentDao.findById(id);
     }
-
     @Override
     public void addApartment(Apartment apartment) {
         apartmentDao.addApartment(apartment);
     }
-
     @Override
     public void deleteApartment(String id) {
         apartmentDao.deleteApartment(apartmentDao.findById(id));
     }
-
     @Override
     public void updateApartment(Apartment apartment) {
         apartmentDao.updateApartment(apartment);
@@ -142,6 +142,7 @@ public class IShopDetailsService implements ShopService, MailService{
 
 
     /*Запуск по расписанию обновления бд, каждые 10 минут */
+    @Override
     @Scheduled(cron = "0 */10 * * * *")
     public void console(){
         System.out.println("######## timer! This method execute every 10 min");
@@ -151,6 +152,7 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     /*обновление бд*/
+
     private void refresh(String id) throws IOException {
         Apartment apartment = getByIdWithDependency(id);
         if (apartment.getUrlBooking() != null && !apartment.getUrlBooking().equals("")) {
@@ -174,6 +176,7 @@ public class IShopDetailsService implements ShopService, MailService{
     private boolean equalsDatePeriods(Apartment apartment, Period periodBooking){
         return checkPeriodApartment(apartment, periodBooking.getDate_in(), periodBooking.getDate_out());
     }
+
     @Override
     public boolean refreshDataBaseDate(List<Apartment> apartments) {
         try {
@@ -221,6 +224,7 @@ public class IShopDetailsService implements ShopService, MailService{
         return count;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getCurrentUser() throws NotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -261,17 +265,31 @@ public class IShopDetailsService implements ShopService, MailService{
 
     }
 
+    @Transactional
     @Override
-    public int createOrder(String email, String nameUser, String dateOrder,
+    public void setCompleteOrder(Orders order, String apartmentId, Period period, String username){
+        if (order != null) {
+            downloadFile.writeCalendar("\\room234" + apartmentId + ".ics", period,
+                    username, "Europe/Moscow");
+            Apartment apartment = apartmentDao.findByIdWithDependency(apartmentId);
+            apartment.getPeriods().add(period);
+            apartmentDao.updateApartment(apartment);
+            orderDao.addOrder(order);
+        }
+    }
+
+    @Override
+    public Orders createOrder(String email, String nameUser, String dateOrder,
                             Date dateIn, Date dateOut, String apartmentId,
                             int status, String summary) {
-        Date date = null;
+        Date date;
+        Orders order = new Orders();
         try {
             date = new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).parse(dateOrder);
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
-        Orders order = new Orders();
         order.setCustomer_email(email);
         order.setCustomer_name(nameUser);
         order.setDate_order(date);
@@ -280,13 +298,19 @@ public class IShopDetailsService implements ShopService, MailService{
         order.setId_product_buy(apartmentId);
         order.setPrice(summary);
         order.setStatus(status);
-        orderDao.addOrder(order);
-        return 0;
+        return order;
+    }
+
+    @Override
+    public void confirmOrderPaymentStatus(String idOrder, int status) {
+        Orders orders = orderDao.getOrderById(idOrder);
+        orders.setStatus(status);
+        System.out.println("### установлен статус " + status);
+        orderDao.updateOrder(orders);
     }
 
     @Override
     public List<Orders> getAllOrdersForDate(Date dateBefore) {
-
         return orderDao.getAllOrdersForDate(dateBefore);
     }
 
@@ -306,8 +330,8 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
-    public void deleteOrder(Orders order) {
-
+    public void deleteOrder(String orderId) {
+        orderDao.deleteOrder(orderDao.getOrderById(orderId));
     }
 
     @Override

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-@Transactional
 @Repository
 public class IOrderDao implements OrderDao {
 
@@ -35,11 +34,10 @@ public class IOrderDao implements OrderDao {
 
     @Override
     public void updateOrder(Orders order) {
-
+        sessionFactory.getCurrentSession().saveOrUpdate(order);
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
     @Override
     public List<Orders> getAllOrders() {
         System.out.println("###getAll orders.");
@@ -72,5 +70,12 @@ public class IOrderDao implements OrderDao {
                 " where customer_name = :username")
                 .setParameter("username", username)
                 .list();
+    }
+
+    @Override
+    public Orders getOrderById(String idOrder) {
+        System.out.println("###getByIdOrder__________________");
+        int id = Integer.valueOf(idOrder);
+        return sessionFactory.getCurrentSession().get(Orders.class, id);
     }
 }

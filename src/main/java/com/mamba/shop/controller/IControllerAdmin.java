@@ -124,6 +124,19 @@ public class IControllerAdmin {
         return "orderPage";
     }
 
+    @RequestMapping("/confirmPaymentUser")
+    public String confirmPaymentUser(
+            @RequestParam String id,
+            @RequestParam String status
+    ){
+        int st = Integer.valueOf(status);
+        if (st == -1){
+            shopService.deleteOrder(id);
+        }else
+        shopService.confirmOrderPaymentStatus(id, st);
+        return "redirect:orders";
+    }
+
     //не работает(
     @RequestMapping(value = "/save_image", method = RequestMethod.POST , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(

@@ -27,7 +27,7 @@
 
         <ul class="nav navbar-nav navbar-right">
             <sec:authorize access="hasRole('ANONYMOUS')">
-            <li><a href="<c:url value="/admin/control"/>">Login ADMIN <span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="<c:url value="/secure/product"/>">Login <span class="glyphicon glyphicon-user"></span></a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
             <li class="dropdown">

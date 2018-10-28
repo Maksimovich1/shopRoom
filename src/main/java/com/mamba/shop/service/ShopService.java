@@ -2,6 +2,7 @@ package com.mamba.shop.service;
 
 import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Orders;
+import com.mamba.shop.entity.Period;
 import com.mamba.shop.entity.User;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -34,7 +35,7 @@ public interface ShopService {
     User getCurrentUser() throws NotFoundException;
 
     /*--------------------order*/
-    int createOrder(String email, String nameUser, String dateOrder,
+    Orders createOrder(String email, String nameUser, String dateOrder,
                      Date dateIn, Date dateOut, String apartmentId,
                      int status, String summary);
 
@@ -42,8 +43,12 @@ public interface ShopService {
     List<Orders> getAllOrdersActive(int status);
     List<Orders> getAllOrders();
     List<Orders> getOrderByUsername(String username);
-    void deleteOrder(Orders order);
+    void deleteOrder(String order);
     void updateStatusOrders(Orders order);
     //-----------------------picture
     void saveImageForApartment(CommonsMultipartFile[] file, String idApartment);
+    //__________________________________________________
+    void setCompleteOrder(Orders order, String apartmentId, Period period, String username);
+    void console();
+    void confirmOrderPaymentStatus(String idOrder, int status);
 }

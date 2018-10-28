@@ -114,21 +114,48 @@
         </div>
 </form>
         <div class="col-sm-9">
+            <c:if test="${view == true && apartmentList.size() > 0}">
+                <h5>Количество дней: ${countDay}. Максимальная цена: ${price} </h5>
             <div class="row">
                         <c:forEach items="${apartmentList}" var="apartment">
 
                         <div class="col-md-4">
                             <div class="well">
                         <div class="thumbnail">
-                        <a href="${pageContext.request.contextPath}/images/ava.jpg">
-                        <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
+
+
+                            <div id="myCarousel${apartment.getId()}" class="carousel slide " data-interval="false" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel${apartment.getId()}" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel${apartment.getId()}" data-slide-to="1"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+
+                                    <div class="item active">
+                                        <img src="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}" alt="No photo" style="width:100%;">
+                                        <div class="carousel-caption">
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <img src="${pageContext.request.contextPath}/secure/getImage/room1${apartment.getId()}" alt="No photo" style="width:100%;">
+                                        <div class="carousel-caption">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         <div class="caption row">
                         <p class="col-md-6">Комнаты: ${apartment.getBedroom()}</p>
                         <p class="col-md-6">Люди: ${apartment.getPeople()}</p>
                         <p class="col-md-6">Дети: ${apartment.getChildren()}</p>
                         <p class="col-md-6">Цена: ${apartment.getPrice() * countDay} $</p>
                         </div>
-                        </a>
+
                             <div>
                                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo${apartment.getId()}">О номере</button>
                                 <div id="demo${apartment.getId()}" class="collapse">
@@ -144,6 +171,14 @@
                             </div>
                         </c:forEach>
                 </div>
+            </c:if>
+            <c:if test="${view == false}">
+                <h1 class="hsearch">Здесь будут результаты поиска.</h1>
+            </c:if>
+            <c:if test="${view == true && apartmentList.size() == 0}">
+                <h1 class="hsearch">По вашему запросу ничего не найдено.<br>
+                Ничего страшного, Мы Вам поможем!</h1>
+            </c:if>
             </div>
 
         </div>
