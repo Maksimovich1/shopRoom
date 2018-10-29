@@ -137,6 +137,15 @@ public class IControllerAdmin {
         return "redirect:orders";
     }
 
+    @RequestMapping("deleteOrder")
+    public String deleteOrder(
+            @RequestParam(name = "id") String idOrder
+    ){
+                shopService.deleteOrder(idOrder);
+        return "redirect:orders";
+    }
+
+
     //не работает(
     @RequestMapping(value = "/save_image", method = RequestMethod.POST , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(
@@ -148,6 +157,11 @@ public class IControllerAdmin {
         request.getPart("file");
                 shopService.saveImageForApartment(file, id);
        return "redirect:control";
+    }
+
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String notFoundPage(){
+        return "_404";
     }
 
 }

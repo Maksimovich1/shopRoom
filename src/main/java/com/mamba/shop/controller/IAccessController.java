@@ -208,6 +208,11 @@ public class IAccessController {
         }
         return imageInByte;
     }
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String notFoundPage(){
+        return "_404";
+    }
+
     private void to_zero(){
         countNight = 0;
         dateIn = "";

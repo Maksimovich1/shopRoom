@@ -41,6 +41,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/admin/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
         registry.addResourceHandler("/secure/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/admin/static/**").addResourceLocations("/static/");
     }
 
     @Override

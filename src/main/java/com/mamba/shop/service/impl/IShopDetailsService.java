@@ -1,9 +1,6 @@
 package com.mamba.shop.service.impl;
 
-import com.mamba.shop.dao.ApartmentDao;
-import com.mamba.shop.dao.OrderDao;
-import com.mamba.shop.dao.PictureDao;
-import com.mamba.shop.dao.UserDetailsDao;
+import com.mamba.shop.dao.*;
 import com.mamba.shop.entity.*;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.DownloadFile;
@@ -31,6 +28,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -43,19 +41,21 @@ public class IShopDetailsService implements ShopService, MailService{
     private final UserDetailsDao userDetailsDao;
     private final OrderDao orderDao;
     private final PictureDao pictureDao;
+    private final PeriodDao periodDao;
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Autowired
     public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender,
                                DownloadFile downloadFile, UserDetailsDao userDetailsDao,
-                               OrderDao orderDao, PictureDao pictureDao) {
+                               OrderDao orderDao, PictureDao pictureDao, PeriodDao periodDao) {
         this.apartmentDao = apartmentDao;
         this.mailSender = mailSender;
         this.downloadFile = downloadFile;
         this.userDetailsDao = userDetailsDao;
         this.orderDao = orderDao;
         this.pictureDao = pictureDao;
+        this.periodDao = periodDao;
     }
     @Transactional(readOnly = true)
     @Override
@@ -331,12 +331,29 @@ public class IShopDetailsService implements ShopService, MailService{
 
     @Override
     public void deleteOrder(String orderId) {
-        orderDao.deleteOrder(orderDao.getOrderById(orderId));
-    }
-
-    @Override
-    public void updateStatusOrders(Orders order) {
-
+        Orders order = orderDao.getOrderById(orderId);
+        String aparId = order.getId_product_buy();
+        Period periodOrder = new Period();
+        periodOrder.setDate_in(order.getDate_in());
+        periodOrder.setDate_out(order.getDate_out());
+        Apartment apartment = apartmentDao.findByIdWithDependency(aparId);
+        int idPeriodRemove = -1;
+        for (Period period :
+                apartment.getPeriods()) {
+            if (equalsDate(periodOrder.getDate_in(), period.getDate_in())
+                    && equalsDate(periodOrder.getDate_out(), period.getDate_out())){
+                apartment.getPeriods().remove(period);
+                idPeriodRemove = period.getId();
+                break;
+            }
+        }
+        if (idPeriodRemove < 0){
+            System.out.println("Не найден удаляемый период");
+        }
+        else {
+            periodDao.deletePeriod(periodDao.getById(idPeriodRemove));
+            orderDao.deleteOrder(order);
+        }
     }
 
     ////////////////////////////////////////
@@ -362,5 +379,13 @@ public class IShopDetailsService implements ShopService, MailService{
             System.out.println("____переданный массив из байтов пуст, null");
         }
 
+    }
+    private boolean equalsDate(Date date1, Date date2){
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        calendar2.setTime(date2);
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
     }
 }

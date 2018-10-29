@@ -39,12 +39,11 @@ public interface ShopService {
                      Date dateIn, Date dateOut, String apartmentId,
                      int status, String summary);
 
-    List<Orders> getAllOrdersForDate(Date dateBefore);
+    List<Orders> getAllOrdersForDate(Date dateBefore); //после указанной даты
     List<Orders> getAllOrdersActive(int status);
     List<Orders> getAllOrders();
     List<Orders> getOrderByUsername(String username);
     void deleteOrder(String order);
-    void updateStatusOrders(Orders order);
     //-----------------------picture
     void saveImageForApartment(CommonsMultipartFile[] file, String idApartment);
     //__________________________________________________
