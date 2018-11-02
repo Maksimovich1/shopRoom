@@ -265,12 +265,11 @@ public class IShopDetailsService implements ShopService, MailService{
 
     }
 
-    @Transactional
     @Override
     public void setCompleteOrder(Orders order, String apartmentId, Period period, String username){
         if (order != null) {
-            downloadFile.writeCalendar("\\room234" + apartmentId + ".ics", period,
-                    username, "Europe/Moscow");
+//            downloadFile.writeCalendar("\\room234" + apartmentId + ".ics", period,
+//                    username, "Europe/Moscow");
             Apartment apartment = apartmentDao.findByIdWithDependency(apartmentId);
             apartment.getPeriods().add(period);
             apartmentDao.updateApartment(apartment);
@@ -286,6 +285,7 @@ public class IShopDetailsService implements ShopService, MailService{
         Orders order = new Orders();
         try {
             date = new SimpleDateFormat(IShopDetailsService.DATE_FORMAT).parse(dateOrder);
+            date.setTime(date.getTime() + 54000000); // + 15 hours
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

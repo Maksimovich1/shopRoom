@@ -1,6 +1,9 @@
 package com.mamba.shop.controller;
 
+import com.mamba.shop.entity.Apartment;
+import com.mamba.shop.entity.Period;
 import com.mamba.shop.service.DownloadFile;
+import com.mamba.shop.service.ShopService;
 import com.mamba.shop.service.impl.IShopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,15 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class IController {
 
     private final DownloadFile downloadFile;
+    private final ShopService shopService;
 
     @Autowired
-    public IController(DownloadFile downloadFile) {
+    public IController(DownloadFile downloadFile,
+                       ShopService shopService
+    ) {
         this.downloadFile = downloadFile;
+        this.shopService = shopService;
     }
 
     @GetMapping("/")
@@ -43,6 +52,9 @@ public class IController {
     @RequestMapping("/get.download/jsd1134is6chd_uhc_sid/sdcs32dvg2222112/{id}5987412365/bzs123fff_gbc)ss")
     public String downloadCalendar(@PathVariable String id, HttpServletResponse response){
         System.out.println("Скачиваем календарь номер = " + id);
+        Apartment apartment = shopService.getByIdWithDependency(id);
+        Set<Period> periods =  apartment.getPeriods();
+        downloadFile.writeCalendar("\\room234" + id + ".ics",periods,"Europe/Minsk");
         downloadFile.downloadCalendar(id, response);
         return "index";
     }
