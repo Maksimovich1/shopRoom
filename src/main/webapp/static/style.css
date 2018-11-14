@@ -7,10 +7,30 @@
 
 /* Add a gray background color and some padding to the footer */
 footer {
-    background-color: #3e5e69;
+    background-color: #336a7d;
     padding: 40px;
-
 }
+.footer {
+    margin: 0 auto;
+    max-width: 1260px;
+    font-family: plumbregular, serif;
+}
+.footer-link{
+    margin: 15px 10px 30px 40px;
+    width: auto;
+}
+.footer-logo {
+    float: right;
+    font-size: .75em;
+    width: 375px;
+    margin-bottom: 15px;
+}
+
+.footer-link-single {
+    float: left;
+    width: 25%;
+}
+
 .to_bottom {
     position: absolute;
     width: 100%;
@@ -132,4 +152,8 @@ footer {
     margin-left: 20%;
     margin-right: 20%;
     background-color: #e9d8b0;
+}
+
+.width_OrderParameter {
+    width: 52px;
 }

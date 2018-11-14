@@ -12,7 +12,8 @@ public interface OrderDao {
     void updateOrder(Orders order);
 
     List<Orders> getAllOrders();
-    List<Orders> getAllOrdersForDate(Date date);
+    List<Orders> getAllOrdersForParam(String sql, String idOrder, String status,
+                                     String idRoom, String username);
     List<Orders> getActiveOrders(Date now);
 
     List<Orders> getOrderByUsername(String username);

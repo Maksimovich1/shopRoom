@@ -6,7 +6,7 @@ import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
-import com.mamba.shop.service.uploadFile.FileBucket;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -57,6 +57,7 @@ public class IShopDetailsService implements ShopService, MailService{
         this.pictureDao = pictureDao;
         this.periodDao = periodDao;
     }
+
     @Transactional(readOnly = true)
     @Override
     public List<Apartment> searchFreeApartmentsWithDependency(
@@ -146,7 +147,8 @@ public class IShopDetailsService implements ShopService, MailService{
     @Scheduled(cron = "0 */10 * * * *")
     public void console(){
         System.out.println("######## timer! This method execute every 10 min");
-        List<Apartment> apartments = getAllApartments();
+        //List<Apartment> apartments = getAllApartments();
+        List<Apartment> apartments = apartmentDao.getAllApartmentListWithDependency();
         refreshDataBaseDate(apartments);
         System.out.println("##### finish refresh!");
     }
@@ -307,11 +309,6 @@ public class IShopDetailsService implements ShopService, MailService{
         orders.setStatus(status);
         System.out.println("### установлен статус " + status);
         orderDao.updateOrder(orders);
-    }
-
-    @Override
-    public List<Orders> getAllOrdersForDate(Date dateBefore) {
-        return orderDao.getAllOrdersForDate(dateBefore);
     }
 
     @Override

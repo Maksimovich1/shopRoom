@@ -4,6 +4,7 @@ import com.mamba.shop.dao.OrderDao;
 import com.mamba.shop.entity.Orders;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +48,27 @@ public class IOrderDao implements OrderDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Orders> getAllOrdersForDate(Date date) {
-        System.out.println("###getAllForDate " + date);
+    public List<Orders> getAllOrdersForParam(String sql, String idOrder, String status,
+                                             String idRoom, String username) {
+        System.out.println("###getAllOrdersForParam");
         Session session = sessionFactory.getCurrentSession();
-        return (List<Orders>) session.createQuery("from Orders" +
-                " where data_order <= :datenow")
-                .setParameter("datenow", date)
-                .list();
+
+            Query query = session.createQuery(sql);
+
+            query.setParameter("status", status);
+            if (!idOrder.equals(""))
+                query.setParameter("idOrder", Integer.parseInt(idOrder));
+            if (!idRoom.equals(""))
+                query.setParameter("idRoom", idRoom);
+            if (!username.equals(""))
+                query.setParameter("username", username);
+
+//                .setParameter("status", status)
+//                .setParameter("idOrder", idOrder)
+//                .setParameter("idRoom", idRoom)
+//                .setParameter("dateOrder", dateOrder)
+//                .setParameter("username", username)
+        return (List<Orders>) query.list();
     }
 
     @Override

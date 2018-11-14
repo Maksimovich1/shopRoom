@@ -17,7 +17,5 @@
 <body>
 <jsp:include page="_navbar.jsp"/>
 secureddddddddddddddddddddddddddddddddddddddddd
-<br>
-<button class="btn btn-default" onclick="${"location.href='/logout'"}">Logout</button>
 </body>
 </html>

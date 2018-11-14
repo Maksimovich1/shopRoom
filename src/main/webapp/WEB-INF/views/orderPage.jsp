@@ -20,6 +20,35 @@
 <body class="bacgr">
 <jsp:include page="_navbar.jsp"/>
 <div class="container">
+        <%--Форма поиска для покупок--%>
+    <security:authorize access="hasRole('ADMIN')">
+        <br>
+        <br>
+    <form class="form-inline" action="${pageContext.request.contextPath}/admin/orders" method="post">
+        <div class="form-group">
+            <label for="room">ID комнаты:</label>
+            <input type="text" class="form-control width_OrderParameter" id="room" name="idRoom">
+        </div>
+        <div class="form-group">
+        <label for="status">Статус:</label>
+        <input type="text" class="form-control" id="status" name="status" placeholder="Ожидает оплаты(0)">
+    </div>
+        <div class="form-group">
+            <label for="orderId">ID заказа:</label>
+            <input type="text" class="form-control width_OrderParameter" id="orderId" name="idOrder">
+        </div>
+        <%--<div class="form-group">
+            <label for="dateOrder">ID заказа:</label>
+            <input type="date" class="form-control" id="dateOrder" name="dateOrder">
+        </div>--%>
+        <div class="form-group">
+            <label for="username">Покупатель:</label>
+            <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <button type="submit" class="btn btn-default">Поиск</button>
+    </form>
+    </security:authorize>
+            <%--Вывод списка ордеров--%>
     <c:if test="${orders != null && orders.size() != 0 }">
     <table class="table table-hover table-inverse">
         <thead>
@@ -30,7 +59,9 @@
             <th>Номер комнаты</th>
             <th>Сумма</th>
             <th>Статус оплаты</th>
-            <th>Подтверждение</th>
+            <security:authorize access="hasRole('ADMIN')">
+                <th>Подтверждение</th>
+            </security:authorize>
         </tr>
         </thead>
         <tbody>
@@ -115,7 +146,12 @@
         <br>
         <br>
         <div class="alert alert-danger">
+            <security:authorize access="hasRole('USER')">
             <strong>Ваш список заказов пуст.</strong>
+            </security:authorize>
+            <security:authorize access="hasRole('ADMIN')">
+                <strong>Список покупок пуст. Укажите параметры поиска!</strong>
+            </security:authorize>
         </div>
     </c:if>
 </div>

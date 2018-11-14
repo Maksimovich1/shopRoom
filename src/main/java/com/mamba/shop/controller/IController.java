@@ -3,15 +3,14 @@ package com.mamba.shop.controller;
 import com.mamba.shop.entity.Apartment;
 import com.mamba.shop.entity.Period;
 import com.mamba.shop.service.DownloadFile;
+import com.mamba.shop.service.RegistrationService;
 import com.mamba.shop.service.ShopService;
 import com.mamba.shop.service.impl.IShopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
@@ -25,13 +24,16 @@ public class IController {
 
     private final DownloadFile downloadFile;
     private final ShopService shopService;
+    private final RegistrationService registrationService;
 
     @Autowired
     public IController(DownloadFile downloadFile,
-                       ShopService shopService
+                       ShopService shopService,
+                       RegistrationService registrationService
     ) {
         this.downloadFile = downloadFile;
         this.shopService = shopService;
+        this.registrationService = registrationService;
     }
 
     @GetMapping("/")
@@ -63,4 +65,26 @@ public class IController {
         return "_404";
     }
 
+    @RequestMapping(value = "/singUp", method = RequestMethod.GET)
+    public String singUpForm(){
+        return "registrationForm";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String singUp(
+            @RequestParam(value = "username", defaultValue = "") String username,
+            @RequestParam(value = "password1", defaultValue = "") String password1,
+            @RequestParam(value = "password2", defaultValue = "") String password2,
+            Model model
+    ){
+        if (username.equals("") || password1.equals("") || password2.equals("") || !password1.equals(password2)){
+            System.out.println("Error, empty input or don`t equals password");
+            model.addAttribute("registrationSuccess", false);
+        }
+        else {
+            registrationService.regUser(username, password1);
+            model.addAttribute("registrationSuccess", true);
+        }
+        return "index";
+    }
 }
