@@ -6,16 +6,20 @@ import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.RegistrationService;
 import com.mamba.shop.service.ShopService;
 import com.mamba.shop.service.impl.IShopDetailsService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -41,12 +45,12 @@ public class IController {
         return "index";
     }
 
-    @RequestMapping("/about")
+    @GetMapping("/about")
     public String getAbout(){
         return "about";
     }
 
-    @RequestMapping("/contacts")
+    @GetMapping("/contacts")
     public String getContact(){
         return "contact";
     }
@@ -60,12 +64,12 @@ public class IController {
         downloadFile.downloadCalendar(id, response);
         return "index";
     }
-    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    @GetMapping(value = "/404")
     public String notFoundPage(){
         return "_404";
     }
 
-    @RequestMapping(value = "/singUp", method = RequestMethod.GET)
+    @GetMapping(value = "/singUp")
     public String singUpForm(){
         return "registrationForm";
     }
@@ -75,16 +79,24 @@ public class IController {
             @RequestParam(value = "username", defaultValue = "") String username,
             @RequestParam(value = "password1", defaultValue = "") String password1,
             @RequestParam(value = "password2", defaultValue = "") String password2,
+            @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam(value = "phone", defaultValue = "") String phone,
+            @RequestParam(value = "service_code", defaultValue = "") String service_cod,
             Model model
     ){
-        if (username.equals("") || password1.equals("") || password2.equals("") || !password1.equals(password2)){
-            System.out.println("Error, empty input or don`t equals password");
-            model.addAttribute("registrationSuccess", false);
+
+        if (password1.equals(password2)){
+            try{
+                registrationService.regUser(username, password1, email, phone, service_cod);
+                model.addAttribute("registrationSuccess", true);
+            }
+            catch (IllegalAccessException ex){
+                model.addAttribute("verificationError", true);
+                //model.addAttribute("registrationSuccess", false);
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("duplicate_user", true);
+            }
         }
-        else {
-            registrationService.regUser(username, password1);
-            model.addAttribute("registrationSuccess", true);
-        }
-        return "index";
+        return "login";
     }
 }

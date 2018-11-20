@@ -1,7 +1,12 @@
 package com.mamba.shop.service;
 
+
+
+
 public interface RegistrationService {
 
-    boolean regUser(String username, String pass);
+    void regUser(String username, String pass, String email,
+                    String phone, String service_cod)
+            throws IllegalAccessException, IllegalArgumentException;
 
 }

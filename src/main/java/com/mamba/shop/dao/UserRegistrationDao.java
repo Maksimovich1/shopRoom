@@ -2,6 +2,10 @@ package com.mamba.shop.dao;
 
 import com.mamba.shop.entity.Authorities;
 import com.mamba.shop.entity.User;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.sql.SQLException;
 
 public interface UserRegistrationDao {
 
@@ -13,4 +17,6 @@ public interface UserRegistrationDao {
     void addAuth(Authorities authorities);
     void updateAuth(Authorities authorities);
     void deleteAuth(Authorities authorities);
+
+    boolean duplicateEmail(String email);
 }

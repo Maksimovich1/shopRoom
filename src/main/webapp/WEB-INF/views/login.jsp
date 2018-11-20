@@ -60,13 +60,52 @@
 
 <div class="container">
 
-<c:if test="${param.error != null}">
-    <div class="alert alert-danger">
-    <strong><spring:message code="login.error"/></strong> <spring:message code="login.errormessage"/>
-    </div>
-    </c:if>
+
 
     <div id="logbox">
+            <%--
+            Ошибка при попытке входа
+            --%>
+        <c:if test="${param.error != null}">
+        <div class="alert alert-danger" style="height: auto">
+            <strong><spring:message code="login.error"/></strong> <spring:message code="login.errormessage"/>
+        </div>
+        </c:if>
+            <%--
+            Сообщение о удачной регистрации
+            --%>
+        <c:if test="${registrationSuccess == true}">
+            <div class="alert alert-success" style="height: auto">
+               <spring:message code="login.success_reg"/>
+            </div>
+        </c:if>
+            <%--
+            Сообщение о НЕ удачной регистрации
+            --%>
+                <c:if test="${registrationSuccess == false}">
+                    <div class="alert alert-danger" style="height: auto">
+                        <spring:message code="login.error_reg"/>
+                    </div>
+                </c:if>
+                <%--
+                Сообщение о НЕ удачной регистрации сбой верификации!
+                --%>
+                <c:if test="${verificationError == true}">
+                    <div class="alert alert-danger" style="height: auto">
+                        <spring:message code="login.error_verif_reg"/>
+                    </div>
+                </c:if>
+                <%--
+                Сообщение о НЕ удачной регистрации сбой верификации!
+                --%>
+                <c:if test="${duplicate_user == true}">
+                    <div class="alert alert-danger" style="height: auto">
+                        <spring:message code="login.error_duplicate_reg"/>
+                    </div>
+                </c:if>
+                <%--
+                Форма входа_________
+                --%>
         <form id="signup" action='<spring:url value="/loginAction"/>' method="post">
         <h1><spring:message code="login.singin"/></h1>
         <input type="text" autocomplete="off" name="username" class="input pass" placeholder=<spring:message code="login.email"/> />

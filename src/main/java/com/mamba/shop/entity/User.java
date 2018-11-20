@@ -14,6 +14,12 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
+    @Column(name = "EMAIL", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "PHONE")
+    private String phone;
+
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled;
 
@@ -50,6 +56,22 @@ public class User {
 
     public void setAuthorities(Set<Authorities> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
