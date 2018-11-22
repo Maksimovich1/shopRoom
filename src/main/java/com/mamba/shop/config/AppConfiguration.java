@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 @Configuration
@@ -65,7 +67,7 @@ public class AppConfiguration {
         return mailSender;
     }
 
-    @Bean
+    /*@Bean
     public DataSource getDataSource(){
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(environment.getProperty("db.driver"));
@@ -73,7 +75,31 @@ public class AppConfiguration {
         dataSource.setUsername(environment.getProperty("db.username"));
         dataSource.setPassword(environment.getProperty("db.password"));
         return dataSource;
+    }*/
+
+
+    @Bean
+    public DataSource getDataSource() {
+        URI dbUri = null;
+        try {
+            dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        assert dbUri != null;
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+
+        return basicDataSource;
     }
+
 
     @Bean
     public LocalSessionFactoryBean sessionFactoryBean(){

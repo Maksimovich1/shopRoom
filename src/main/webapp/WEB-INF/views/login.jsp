@@ -17,51 +17,7 @@
     <title><spring:message code="login.title"/> </title>
 </head>
 <body>
-<%--<br>--%>
-<%--<br>--%>
-<%--<div class="container" style="width: 25%">--%>
-<%--<form class="text-center border border-light p-5" action='<spring:url value="/loginAction"/>' method="post">--%>
-
-    <%--<c:if test="${param.error != null}">--%>
-        <%--<div class="alert alert-danger">--%>
-            <%--<strong><spring:message code="login.error"/></strong> <spring:message code="login.errormessage"/>--%>
-        <%--</div>--%>
-    <%--</c:if>--%>
-
-    <%--<p class="h4 mb-4"><spring:message code="login.singin"/></p>--%>
-
-    <%--<!-- Email -->--%>
-    <%--<input type="text" autocomplete="off" name="username" id="username" class="form-control mb-4"--%>
-           <%--placeholder=<spring:message code="login.email"/> >--%>
-    <%--<br>--%>
-    <%--<!-- Password -->--%>
-    <%--<input type="password" name="password" id="password" class="form-control mb-4"--%>
-           <%--placeholder=<spring:message code="login.pass"/> >--%>
-    <%--<br>--%>
-    <%--<div class="d-flex justify-content-around">--%>
-        <%--<div>--%>
-        <%--</div>--%>
-        <%--<div>--%>
-            <%--<!-- Return main page -->--%>
-            <%--<a href="<c:url value="/"/>"><spring:message code="login.back"/> </a>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-
-    <%--<!-- Sign in button -->--%>
-    <%--<button class="btn btn-info btn-block my-4" type="submit"><spring:message code="login.button"/></button>--%>
-
-    <%--<!-- Register -->--%>
-    <%--<p><spring:message code="login.noauth"/>--%>
-        <%--<a href="${pageContext.request.contextPath}/singUp"><spring:message code="login.conwauth"/>.</a>--%>
-    <%--</p>--%>
-
-<%--</form>--%>
-<%--</div>--%>
-
 <div class="container">
-
-
-
     <div id="logbox">
             <%--
             Ошибка при попытке входа
@@ -108,8 +64,8 @@
                 --%>
         <form id="signup" action='<spring:url value="/loginAction"/>' method="post">
         <h1><spring:message code="login.singin"/></h1>
-        <input type="text" autocomplete="off" name="username" class="input pass" placeholder=<spring:message code="login.email"/> />
-        <input type="password" name="password" id="password" required="required" class="input pass" placeholder=<spring:message code="login.pass"/> />
+        <input type="text" autocomplete="off" name="username" class="input pass" placeholder="<spring:message code="login.email"/>" />
+        <input type="password" name="password" id="password" required="required" class="input pass" placeholder="<spring:message code="login.pass"/>" />
         <input type="submit" class="inputButton" value=<spring:message code="login.button"/>/>
             <div class="text-center">
         <a href="${pageContext.request.contextPath}/singUp"><spring:message code="login.conwauth"/></a> - <a href="#" id="">forgot password</a>

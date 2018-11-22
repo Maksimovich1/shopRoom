@@ -35,7 +35,7 @@ public class Orders implements Serializable {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "data_order", nullable = false)
+    @Column(name = "date_order", nullable = false)
     public Date getDate_order() {
         return date_order;
     }
@@ -72,7 +72,7 @@ public class Orders implements Serializable {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "data_in", nullable = false)
+    @Column(name = "date_in", nullable = false)
     public Date getDate_in() {
         return date_in;
     }
@@ -82,7 +82,7 @@ public class Orders implements Serializable {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "data_out", nullable = false)
+    @Column(name = "date_out", nullable = false)
     public Date getDate_out() {
         return date_out;
     }

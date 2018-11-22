@@ -120,8 +120,8 @@ public class IControllerAdmin {
             @RequestParam(value = "children", defaultValue = "") String children,
             @RequestParam(value = "price", defaultValue = "") String price,
             @RequestParam(value = "district", defaultValue = "") String district,
-            @RequestParam(value = "about", defaultValue = "") String about,
-            Model model
+            @RequestParam(value = "about", defaultValue = "") String about
+            /*Model model*/
     ){
                 Apartment apartment = shopService.getById(id);
                 apartment.setBedroom(Integer.parseInt(bedroom));
@@ -186,6 +186,13 @@ public class IControllerAdmin {
     @RequestMapping(value = "/blocks")
     public String blockApartmentDate(){
         return "searchPageSecure";
+    }
+    /*
+    * Блок работы с юзерами, отключение и просмотр
+    * */
+    @RequestMapping(value = "/users")
+    public String manageUsers(){
+        return "";
     }
 
     //не работает(

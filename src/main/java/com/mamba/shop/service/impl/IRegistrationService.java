@@ -5,16 +5,14 @@ import com.mamba.shop.dao.UserRegistrationDao;
 import com.mamba.shop.entity.Authorities;
 import com.mamba.shop.entity.User;
 import com.mamba.shop.service.RegistrationService;
-import org.hibernate.exception.ConstraintViolationException;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.NestedServletException;
 
-import java.sql.SQLException;
+import java.util.List;
 
 @Transactional
 @Service
@@ -70,5 +68,20 @@ public class IRegistrationService implements RegistrationService {
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<User> getAllUser() {
+
+        return null;
+    }
+
+    @Override
+    public void disableOrEnableUser(String username, boolean enabled) throws NotFoundException {
+        User user = userDetailsDao.findUserByUsername(username);
+        if (user != null){
+            user.setEnabled(enabled);
+        }
+        else throw new NotFoundException("Пользователь не найден");
     }
 }
