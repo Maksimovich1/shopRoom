@@ -24,6 +24,11 @@
             <strong>Success!</strong> Apartment is delete.
         </div>
     </c:if>
+    <c:if test="${url_download != null}">
+        <div class="alert alert-success">
+            <strong>URL: </strong> ${url_download}
+        </div>
+    </c:if>
     <table class="table table-hover table-inverse">
         <thead>
         <tr>

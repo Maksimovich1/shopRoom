@@ -28,7 +28,7 @@ public interface ShopService {
     /*---------------calendar */
     boolean refreshDataBaseDate(List<Apartment> apartments);
 
-    void setBufferUrlBooking(String idApartment);
+    String setBufferUrlBooking(String idApartment);
     void downloadMyCalendar();
 
     int getCountOrderDay(String dateIn, String dateOut);

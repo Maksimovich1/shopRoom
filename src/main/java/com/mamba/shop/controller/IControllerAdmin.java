@@ -55,12 +55,13 @@ public class IControllerAdmin {
     //Получение ссылки в буфер
     @RequestMapping(value = "/getUrl", method = RequestMethod.GET)
     public String getUrlCalendar(
-            @RequestParam(value = "id", defaultValue = "") String id
+            @RequestParam(value = "id", defaultValue = "") String id,
+            Model model
     ){
         if (id.equals(""))
             return "redirect:control";
-        shopService.setBufferUrlBooking(id);
-        return "redirect:control";
+        model.addAttribute("url_download", shopService.setBufferUrlBooking(id));
+        return "adminPage";
     }
     /*
     * Конец блока удаление и получения ссылки

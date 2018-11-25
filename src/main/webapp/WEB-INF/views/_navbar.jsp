@@ -1,5 +1,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -11,26 +12,26 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="<c:url value="/"/>">Tenerife Perfect</a>
+            <a class="navbar-brand" href="<c:url value="/"/>"><spring:message code="navbar.title"/> </a>
         </div>
             <ul class="nav navbar-nav ">
                 <li class="active"><a href= "<c:url value="/"/>" >Home</a></li>
                 <sec:authorize access="hasRole('USER')">
-                    <li><a href="<c:url value="/secure/product"/>">Поиск апартаментов</a></li>
+                    <li><a href="<c:url value="/secure/product"/>"><spring:message code="navbar.search.apartment"/></a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ANONYMOUS') or hasRole('USER')">
-                    <li><a href="<c:url value="/contacts"/>">Обратная связь</a></li>
-                    <li><a href="<c:url value="/about"/>">О нас</a></li>
+                    <li><a href="<c:url value="/contacts"/>"><spring:message code="navbar.callback"/> </a></li>
+                    <li><a href="<c:url value="/about"/>"><spring:message code="navbar.about"/></a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <li><a href="<c:url value="/admin/blocks"/>">Блокировка дат на номера</a></li>
-                    <li><a href="<c:url value="/admin/orders"/>">Управление продажами</a></li>
+                    <li><a href="<c:url value="/admin/blocks"/>"><spring:message code="navbar.block"/> </a></li>
+                    <li><a href="<c:url value="/admin/orders"/>"><spring:message code="navbar.manager_sale"/> </a></li>
                 </sec:authorize>
             </ul>
 
         <ul class="nav navbar-nav navbar-right">
             <sec:authorize access="hasRole('ANONYMOUS')">
-            <li><a href="<c:url value="/secure/product"/>">Login <span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="<c:url value="/secure/product"/>"><spring:message code="navbar.login"/> <span class="glyphicon glyphicon-user"></span></a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
             <li class="dropdown">

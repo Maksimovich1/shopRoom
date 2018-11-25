@@ -8,6 +8,7 @@ import com.mamba.shop.service.MailService;
 import com.mamba.shop.service.ShopService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,9 +22,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,6 +40,13 @@ public class IShopDetailsService implements ShopService, MailService{
     private final OrderDao orderDao;
     private final PictureDao pictureDao;
     private final PeriodDao periodDao;
+
+    @Value(value = "${app.service_shop.host}")
+    private String host;
+    @Value(value = "${app.service_shop.url_before}")
+    private String url_before;
+    @Value(value = "${app.service_shop.url_after}")
+    private String url_after;
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -144,13 +149,18 @@ public class IShopDetailsService implements ShopService, MailService{
 
     /*Запуск по расписанию обновления бд, каждые 10 минут */
     @Override
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void console(){
         System.out.println("######## timer! This method execute every 10 min");
         //List<Apartment> apartments = getAllApartments();
         List<Apartment> apartments = apartmentDao.getAllApartmentListWithDependency();
-        refreshDataBaseDate(apartments);
-        System.out.println("##### finish refresh!");
+        if (apartments == null){
+            System.out.println("Апартаментов не найдено для обновления!");
+        }
+        else {
+            refreshDataBaseDate(apartments);
+            System.out.println("##### finish refresh!");
+        }
     }
 
     /*обновление бд*/
@@ -194,13 +204,13 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
-    public void setBufferUrlBooking(String idApartment) {
-        String url = "http://localhost:8080/get.download/jsd1134is6chd_uhc_sid/sdcs32dvg2222112/" + idApartment +"5987412365/bzs123fff_gbc)ss";
-        StringSelection selection = new StringSelection(url);
+    public String setBufferUrlBooking(String idApartment) {
+        /* StringSelection selection = new StringSelection(url);
 
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, null);
-        System.out.println("#___________copy");
+        System.out.println("#___________copy");*/
+       return host + url_before + idApartment + url_after;
     }
 
     @Override

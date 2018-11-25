@@ -30,7 +30,7 @@
     <div class="row content">
         <form action="${pageContext.request.contextPath}/secure/productList" method="get">
         <div class="col-sm-3 sidenav hidden-xs col-sm-3my">
-            <h2 style="margin-left: 75px;">Поиск <span class="glyphicon glyphicon-home"></span></h2>
+            <h2 style="margin-left: 75px;">Search<span class="glyphicon glyphicon-home"></span></h2>
             <div class="form-group">
                 <label for="bedroom"> Количество комнат</label>
                 <select class="form-control" id="bedroom" name="bedroom">

@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -8,14 +9,13 @@
 <footer class="container-fluid text-center">
     <div class="footer">
         <div class="footer-logo">
-            <p>
                 <br>
-            <h1>Tenerife Perfect</h1>
-            Все права защищены.</p>
+            <h1><spring:message code="footer.title"/></h1>
+            <p><spring:message code="footer.access"/> </p>
         </div>
         <div class="footer-link">
             <div class="footer-link-single">
-                <h2>Быстрая связь</h2>
+                <h2><spring:message code="footer.contact"/></h2>
                 <h3>viber</h3>
                 <h3>Telegram</h3>
             </div>

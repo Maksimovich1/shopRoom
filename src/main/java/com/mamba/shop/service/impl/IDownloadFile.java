@@ -34,11 +34,13 @@ public class IDownloadFile implements DownloadFile {
     @Override
     public void saveFile(String filename, String url) throws IOException {
         FileUtils.copyURLToFile(new URL(url), new File(dirname + filename));
+        System.out.println(dirname + filename + "=================================");
     }
 
     @Override
     public List<Period> listenCalendarICS(String file) {
         String pathToFile = dirname + file;
+        System.out.println(pathToFile + "____________________________))===========");
         List<Period> periods = new ArrayList<>();
         CalendarBuilder calendarBuilder = new CalendarBuilder();
         try {
@@ -63,6 +65,7 @@ public class IDownloadFile implements DownloadFile {
 //                String title = event.getSummary().getValue();
                 System.out.println("Въезд: " + in + ", выезд: " + out + ".\nInformation: " + about);
                 System.out.println("-----------------------");
+                fileInputStream.close();
             }
         } catch (IOException | ParserException e) {
             e.printStackTrace();

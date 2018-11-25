@@ -13,7 +13,7 @@ footer {
 .footer {
     margin: 0 auto;
     max-width: 1260px;
-    font-family: plumbregular, serif;
+    font-family: "Times New Roman", serif;
 }
 .footer-link{
     margin: 15px 10px 30px 40px;
