@@ -24,7 +24,7 @@
             --%>
         <c:if test="${param.error != null}">
         <div class="alert alert-danger" style="height: auto">
-            <strong><spring:message code="login.error"/></strong> <spring:message code="login.errormessage"/>
+            <strong><spring:message code="login.error"/></strong> <spring:message code="login.error_message"/>
         </div>
         </c:if>
             <%--
