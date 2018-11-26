@@ -66,7 +66,7 @@ public class AppConfiguration {
         return mailSender;
     }
 
-    @Bean
+    /*@Bean
     public DataSource getDataSource(){
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(environment.getProperty("db.driver"));
@@ -74,10 +74,10 @@ public class AppConfiguration {
         dataSource.setUsername(environment.getProperty("db.username"));
         dataSource.setPassword(environment.getProperty("db.password"));
         return dataSource;
-    }
+    }*/
 
 
- /*   @Bean
+    @Bean
     public DataSource getDataSource() {
         URI dbUri = null;
         try {
@@ -97,7 +97,7 @@ public class AppConfiguration {
         basicDataSource.setPassword(password);
 
         return basicDataSource;
-    }*/
+    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactoryBean(){
