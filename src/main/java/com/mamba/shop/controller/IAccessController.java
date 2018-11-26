@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -64,7 +65,7 @@ public class IAccessController {
                                    @RequestParam(value = "dateOut", defaultValue = "2018-09-22")String dateOut,
                                    @RequestParam(value = "bedroom", defaultValue = "2") String bedroom){
         try {
-            int price = Integer.valueOf(priceMax);
+            Integer.valueOf(priceMax);
         }
         catch (Exception e){
             priceMax = "100";
@@ -193,18 +194,16 @@ public class IAccessController {
     @RequestMapping("/getImage/{id}")
     @ResponseBody
     public byte[] getImage(
-            @PathVariable String id
+            @PathVariable String id,
+            HttpServletRequest request
     ){
-        System.out.println(pathImage + "____________________");
         BufferedImage image;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] imageInByte = new byte[0];
         try {
-            String path = pathImage + id + ".jpg";
-            String file_fake_path = new File("").getAbsolutePath();
-            file_fake_path += path;
-            String filepath = file_fake_path.replace("\\bin\\","\\");
-            File file = new File(filepath);
+            String path = request.getRealPath("/") + pathImage + id + ".jpg";
+            //String filepath = file_fake_path.replace("\\bin\\","\\");
+            File file = new File(path);
             System.out.println(file.getAbsolutePath());
             image = ImageIO.read(file);
             ImageIO.write( image, "jpg", baos );
