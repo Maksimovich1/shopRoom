@@ -201,6 +201,7 @@ public class IAccessController {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] imageInByte = new byte[0];
         try {
+            System.out.println(request.getRealPath("/"));
             String path = request.getRealPath("/") + pathImage + id + ".jpg";
             //String filepath = file_fake_path.replace("\\bin\\","\\");
             File file = new File(path);
