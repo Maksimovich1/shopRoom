@@ -149,7 +149,7 @@ public class IShopDetailsService implements ShopService, MailService{
 
     /*Запуск по расписанию обновления бд, каждые 10 минут */
     @Override
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void console(){
         System.out.println("######## timer! This method execute every 10 min");
         //List<Apartment> apartments = getAllApartments();

@@ -88,6 +88,7 @@ public class IControllerAdmin {
             @RequestParam(value = "about", defaultValue = "") String about,
             Model model
     ){
+        System.out.println(about + "________________________");
         Apartment apartment = new Apartment();
         apartment.setId(id);
         apartment.setBedroom(Integer.parseInt(bedroom));

@@ -9,6 +9,7 @@ import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.ShopService;
 import com.mamba.shop.service.impl.IShopDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,8 @@ public class IAccessController {
     private String dateOut = "";
     private int summary = 0;
     private Period period = null;
+    @Value(value = "${app.controllerAccess}")
+    private String pathImage;
 
     @Autowired
     public IAccessController(ShopService shopService, DownloadFile downloadFile) {
@@ -143,8 +146,7 @@ public class IAccessController {
     @RequestMapping(value = "/complete", method = RequestMethod.POST)
     public String completeOrder(
             @RequestParam(value = "email") String email,
-            @RequestParam(value = "apartment") String apartmentId,
-            Model model
+            @RequestParam(value = "apartment") String apartmentId
     ){
         String username = shopService.getCurrentUser().getUsername();
 
@@ -193,11 +195,17 @@ public class IAccessController {
     public byte[] getImage(
             @PathVariable String id
     ){
+        System.out.println(pathImage + "____________________");
         BufferedImage image;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] imageInByte = new byte[0];
         try {
-            File file = new File("C:/projects/shopRoom/src/main/webapp/images/" + id + ".jpg");
+            String path = pathImage + id + ".jpg";
+            String file_fake_path = new File("").getAbsolutePath();
+            file_fake_path += path;
+            String filepath = file_fake_path.replace("\\bin\\","\\");
+            File file = new File(filepath);
+            System.out.println(file.getAbsolutePath());
             image = ImageIO.read(file);
             ImageIO.write( image, "jpg", baos );
             baos.flush();

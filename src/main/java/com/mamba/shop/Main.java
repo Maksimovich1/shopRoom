@@ -99,7 +99,9 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("andrey1996admin"));
+        String filePath = new File("bin/webapps/ROOT/images").getAbsolutePath();
+        System.out.println(filePath);
+        String res = filePath.replace("\\bin\\","\\");
+        System.out.println(res);
     }
 }
