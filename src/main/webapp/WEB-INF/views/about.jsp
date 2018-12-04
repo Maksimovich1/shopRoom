@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -8,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>About</title>
+    <title><spring:message code="about.title"/></title>
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet">
     <link href="static/style.css" rel="stylesheet">
@@ -18,7 +19,7 @@
 <body>
 <jsp:include page="_navbar.jsp"/>
 <div class="container">
-    Hello About!
+    <spring:message code="about.body"/>
 </div>
 <div class="to_bottom">
     <jsp:include page="_footer.jsp"/>

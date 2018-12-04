@@ -4,20 +4,53 @@
 .btnmy{
     margin-bottom: 9px;
 }
+/*
+ширина иконки апартамента
+*/
+.coll-search{
+    width: 31%;
+    background-color: #fbf9f9;
+    margin-left: 17px;
+    padding: 1px;
+    float: left;
+    border: 1px solid oldlace;
+}
+.thumbnailmy{
+    border: 0px;
+    margin-bottom: 28px;
+    padding: 3px;
+    background-color: #fff;
+}
+.wellMy{
+    min-height: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+.price_finish {
+    color: darkslategrey;
+    font-weight: 600;
+    background-color: #fffc00;
+    border-radius: 5px;
+    margin-left: 8px;
+}
+.aboutapartment {
+    margin-bottom: 5px;
+}
+.aboutapartmentbutton {
+    width: 100%;
+}
 
 /* Add a gray background color and some padding to the footer */
 footer {
-    background-color: #336a7d;
-    padding: 40px;
+    background-color: #519cb6;
 }
 .footer {
-    margin: 0 auto;
-    max-width: 1260px;
     font-family: "Times New Roman", serif;
 }
 .footer-link{
-    margin: 15px 10px 30px 40px;
     width: auto;
+    margin-top: 8px;
 }
 .footer-logo {
     float: right;
@@ -37,10 +70,14 @@ footer {
     bottom: 0;
 }
 .bacgr {
-    background-color: #c0dbda;
+    background-color: #ffffff;
 }
 .navbar-inverse{
-    background-color: #381717;!important;
+    background-color: #02428a;!important;
+    padding: 7px;
+    font-size: medium;
+    border-color: #02428a;
+    border-radius: 1px;
 }
 
 .carousel-inner img {
@@ -70,6 +107,20 @@ footer {
 }
 .col-sm-3my {
     width: 24%;
+    background-color: #fbf9f9;
+    height: auto;
+    border-radius: 3px;
+    margin-left: 10px;
+    border: 1px solid;
+    float: left;
+    padding: 10px;
+    min-width: 270px;
+}
+.info{
+    background-color: #00f9ff;
+    color: #02428a;
+    padding: 8px;
+    margin: 15px 17px 15px 11px;
 }
 .b404 {
     background: url("/images/404.png") no-repeat center;
@@ -133,12 +184,9 @@ footer {
 .well {
     min-height: 20px;
     padding: 7px;
-    margin-bottom: 20px;
-    background-color: #9dbab4;
+    background-color: #ffffff;
     border: 2px solid #5ab49e;
-    border-radius: 20px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    border-radius: 5px;
 }
 .panel {
     margin-bottom: 20px;

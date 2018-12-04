@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -20,6 +21,11 @@
 <body class="bacgr">
 <jsp:include page="_navbar.jsp"/>
 <div class="container">
+    <c:if test="${message != null && !message.equals('')}">
+        <div class="alert alert-info" style="height: auto">
+            <strong>${message}</strong>
+        </div>
+    </c:if>
         <%--Форма поиска для покупок--%>
     <security:authorize access="hasRole('ADMIN')">
         <br>
@@ -53,14 +59,14 @@
     <table class="table table-hover table-inverse">
         <thead>
         <tr>
-            <th>№ заказа</th>
-            <th>Дата заказа</th>
-            <th>Период проживания</th>
-            <th>Номер комнаты</th>
-            <th>Сумма</th>
-            <th>Статус оплаты</th>
+            <th><spring:message code="orderPage.viewOrder.title.number"/></th>
+            <th><spring:message code="orderPage.viewOrder.title.dateOrder"/></th>
+            <th><spring:message code="orderPage.viewOrder.title.datePeriod"/></th>
+            <th><spring:message code="orderPage.viewOrder.title.numberRoom"/></th>
+            <th><spring:message code="orderPage.viewOrder.title.price"/></th>
+            <th><spring:message code="orderPage.viewOrder.title.status"/></th>
             <security:authorize access="hasRole('ADMIN')">
-                <th>Подтверждение</th>
+                <th><spring:message code="orderPage.viewOrder.title.confirm"/></th>
             </security:authorize>
         </tr>
         </thead>
@@ -69,25 +75,25 @@
             <tr>
                 <th scope="row">
 
-                        Заказ №${order.getId_order()}
+                        №${order.getId_order()}
                 </th>
                 <td>${order.getDate_order()}</td>
-                <td>C: ${order.getDate_in()} по: ${order.getDate_out()}</td>
-                <td>Room №${order.getId_product_buy()}</td>
+                <td>[ ${order.getDate_in()} ]-[ ${order.getDate_out()} ]</td>
+                <td><spring:message code="orderPage.viewOrder.body.room"/> ${order.getId_product_buy()}</td>
                 <td>${order.getPrice()}</td>
                 <td>
                     <c:if test="${order.getStatus() == 1}">
                         <div class="alert alert-success">
-                            <strong>Оплачен</strong>
+                            <strong><spring:message code="orderPage.viewOrder.body.paid"/></strong>
                         </div>
                     </c:if>
                     <c:if test="${order.getStatus() == 0}">
                         <div class="alert alert-danger">
-                            <strong>Ожидает оплаты</strong>
+                            <strong><spring:message code="orderPage.viewOrder.body.awaitingpayment"/></strong>
                         </div>
                     </c:if><c:if test="${order.getStatus() == 2}">
                     <div class="alert alert-warning">
-                        <strong>Ожидает подтверждения администрации</strong>
+                        <strong><spring:message code="orderPage.viewOrder.body.awaitingadmin"/></strong>
                     </div>
                 </c:if>
                 </td>
@@ -103,7 +109,7 @@
                         <c:if test="${order.getStatus() == 1}">
                             <form action="${pageContext.request.contextPath}/admin/confirmPaymentUser" method="post">
                                 <input type="hidden" value="${order.getId_order()}" name="id">
-                                <input type="hidden" value="2" name="status">
+                                <input type="hidden" value="0" name="status">
                                 <button type="submit">Отменить оплату</button>
                             </form>
                         </c:if>
@@ -112,6 +118,11 @@
                                 <input type="hidden" value="${order.getId_order()}" name="id">
                                 <input type="hidden" value="1" name="status">
                                 <button type="submit">Подтвердить оплату</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/admin/confirmPaymentUser" method="post">
+                                <input type="hidden" value="${order.getId_order()}" name="id">
+                                <input type="hidden" value="0" name="status">
+                                <button type="submit">Неоплачен</button>
                             </form>
                         </c:if>
 
@@ -131,7 +142,7 @@
                             <form action="${pageContext.request.contextPath}/secure/confirmPaymentUser" method="post">
                                 <input type="hidden" value="${order.getId_order()}" name="id">
                                 <input type="hidden" value="2" name="status">
-                                <button class="btn btn-success" type="submit">Подтвердить оплату</button>
+                                <button class="btn btn-success" type="submit"><spring:message code="orderPage.viewOrder.body.confirmbyuser"/></button>
                             </form>
                         </c:if>
 
@@ -147,7 +158,7 @@
         <br>
         <div class="alert alert-danger">
             <security:authorize access="hasRole('USER')">
-            <strong>Ваш список заказов пуст.</strong>
+            <strong><spring:message code="orderPage.viewOrder.body.orderList"/></strong>
             </security:authorize>
             <security:authorize access="hasRole('ADMIN')">
                 <strong>Список покупок пуст. Укажите параметры поиска!</strong>

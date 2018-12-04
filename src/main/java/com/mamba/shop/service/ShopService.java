@@ -49,4 +49,6 @@ public interface ShopService {
     void setCompleteOrder(Orders order, String apartmentId, Period period, String username);
     void console();
     void confirmOrderPaymentStatus(String idOrder, int status);
+    /////----------------------
+    boolean checkFreeApartmentForDate(String apartmentId, Date in, Date out);
 }

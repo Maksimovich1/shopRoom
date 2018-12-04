@@ -123,6 +123,11 @@ public class IShopDetailsService implements ShopService, MailService{
         apartmentDao.updateApartment(apartment);
     }
 
+    @Override
+    public boolean checkFreeApartmentForDate(String apartmentId, Date in, Date out) {
+        return checkPeriodApartment(apartmentDao.findByIdWithDependency(apartmentId), in, out);
+    }
+
     //проверяет входимость одного периода в другой ,true значит период уникальный
     private boolean checkPeriodApartment(Apartment apartment, Date thisDate_in, Date thisDate_out){
         if (apartment.getPeriods().size() == 0) return true;
@@ -150,7 +155,7 @@ public class IShopDetailsService implements ShopService, MailService{
     /*Запуск по расписанию обновления бд, каждые 10 минут */
     @Override
     @Scheduled(cron = "0 */10 * * * *")
-    public void console(){
+    public  void console(){
         System.out.println("######## timer! This method execute every 10 min");
         //List<Apartment> apartments = getAllApartments();
         List<Apartment> apartments = apartmentDao.getAllApartmentListWithDependency();
@@ -258,21 +263,52 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
-    public void sendEmail(Object sendObject, String email) {
-        if (!(sendObject instanceof Apartment))
-            throw new ClassCastException("Передан не апартамент");
-        Apartment apartmentSend = (Apartment) sendObject;
+    public void sendEmail(Object sendObject, String email, String idOrder, int status) throws ClassCastException, MessagingException {
+        Orders orderSend;
+        if (idOrder == null){
+        if (!(sendObject instanceof Orders))
+            throw new ClassCastException("Передан не заказ");
+        orderSend = (Orders) sendObject;}
+        else {
+            orderSend = orderDao.getOrderById(idOrder);
+        }
+        String htmlMsg = "";
+        String bank_book = "1233123312331233";
+        switch (status){
+            case 1:
+                htmlMsg = "<h1>Dear " + orderSend.getCustomer_name() + "<h1><br>" +
+                        "<h3>You have already book the apartment " + orderSend.getId_product_buy() +
+                        " from " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_in()) + " to " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_out()) + "</h3><br>" +
+                        "To end your booking you have to make a payment of 200 euro on the account" +
+                        " " + bank_book + "<br>" +
+                        "The apartment is holded for you during this 1 hour.";
+                break;
+            case 2:
+                htmlMsg = "<h1>Username - " + orderSend.getCustomer_name() + " payment order numb. " + orderSend.getId_order() + "<h1><br>" +
+                        "<h3>You check complete payment<br> Order<br> № apartment" + orderSend.getId_product_buy() +
+                        " <br> from: " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_in()) +
+                        " <br> to: " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_out()) +
+                        " <br> price - " + orderSend.getPrice() +
+                        "</h3>";
+                break;
+            case 3:
+                htmlMsg = "<h1>Dear " + orderSend.getCustomer_name() + "<h1><br>" +
+                        "<h3>You success book apartment from " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_in()) +
+                        "to " + new SimpleDateFormat(DATE_FORMAT).format(orderSend.getDate_out()) +
+                        "</h3>";
+                break;
+        }
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            try {
+                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,false,"utf-8");
 
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,false,"utf-8");
-            String htmlMsg = "<h3> Hello world</h3>";
             mimeMessage.setContent(htmlMsg, "text/html");
             messageHelper.setTo(email);
-            messageHelper.setSubject("This message is me! \n apartment id= " + apartmentSend.getId());
+            messageHelper.setSubject("TENERIFE-PERFECT");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();
+            throw new MessagingException("Письмо не отправлено.");
         }
 
     }

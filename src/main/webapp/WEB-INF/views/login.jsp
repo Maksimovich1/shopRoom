@@ -62,16 +62,18 @@
                 <%--
                 Форма входа_________
                 --%>
-        <form id="signup" action='<spring:url value="/loginAction"/>' method="post">
-        <h1><spring:message code="login.singin"/></h1>
-        <input type="text" autocomplete="off" name="username" class="input pass" placeholder="<spring:message code="login.email"/>" />
-        <input type="password" name="password" id="password" required="required" class="input pass" placeholder="<spring:message code="login.pass"/>" />
-        <input type="submit" class="inputButton" value=<spring:message code="login.button"/>/>
-            <div class="text-center">
-        <a href="${pageContext.request.contextPath}/singUp"><spring:message code="login.conwauth"/></a> - <a href="#" id="">forgot password</a>
-            </div>
+                <form id="signup" action='<spring:url value="/loginAction"/>' method="post">
+                    <h1><spring:message code="login.singin"/></h1>
+                    <input type="text" autocomplete="off" name="username" class="input pass" placeholder="<spring:message code="login.email"/>" />
+                    <input type="password" name="password" id="password" required="required" class="input pass" placeholder="<spring:message code="login.pass"/>" />
+                    <input type="submit" class="inputButton" value=<spring:message code="login.button"/>/>
+                    <div class="text-center">
+                        <a href="${pageContext.request.contextPath}/singUp"><spring:message code="login.conwauth"/></a>
+                        -
+                        <a href="${pageContext.request.contextPath}/" id=""><spring:message code="login.toIndex"/> </a>
+                    </div>
 
-        </form>
+                </form>
 
     </div>
 

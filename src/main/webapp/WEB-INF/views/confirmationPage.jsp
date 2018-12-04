@@ -30,7 +30,7 @@
             <form action="${pageContext.request.contextPath}/secure/complete" method="post" class="form-inline">
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="${email}">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone</label>

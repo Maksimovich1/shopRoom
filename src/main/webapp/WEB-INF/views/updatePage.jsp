@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="url" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -12,13 +13,12 @@
     <title>Update or Add Apartment</title>
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
     <jsp:include page="_navbar.jsp"/>
-</div>
 <div class="container">
 
     <c:if test="${param.addStatus == 'true'}">
@@ -32,7 +32,7 @@
         </div>
     </c:if>
     <!-- Trigger the modal with a button -->
-    <div>
+    <div style="margin: 15px">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
     </div>
 
@@ -80,6 +80,10 @@
                         <label for="district">Район</label>
                         <input type="text" class="form-control" id="district" placeholder="Район:" name="district">
                     </div>
+                    <div class="col-xs-6" style="margin-right: 177px; margin-bottom: 10px;">
+                        <label for="urlbooking">URL</label>
+                        <input type="text" class="form-control" id="urlbooking" placeholder="URL Booking" name="urlbooking">
+                    </div>
                     <div>
                         <label for="about">О апартаменте:</label>
                         <textarea class="form-control" rows="5" id="about" name="about"></textarea>
@@ -100,8 +104,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="thumbnail">
-                    <a href="${pageContext.request.contextPath}/images/ava.jpg">
-                        <img src="${pageContext.request.contextPath}/images/ava.jpg" alt="Lights" style="width:100%">
+                    <a href="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}">
+                        <img src="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}" alt="Lights" style="width:100%">
                     </a>
                 </div>
             </div>
@@ -122,6 +126,8 @@
                         <input class="form-control input-sm" id="districtUpdate" type="text" name="district" value="${apartment.getDistrict()}">
                         <label for="aboutUpdate">О номере:</label>
                         <input class="form-control input-sm" id="aboutUpdate" type="text" name="about" value="${apartment.getAbout()}">
+                        <label for="aboutUpdate">Url:</label>
+                        <input class="form-control input-sm" id="urlUpdate" type="text" name="url" value="${apartment.getUrlBooking()}">
                     </div>
                     <button type="submit" class="btn btn-success">Изменить</button>
                 </form>

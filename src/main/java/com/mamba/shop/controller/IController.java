@@ -60,7 +60,7 @@ public class IController {
         System.out.println("Скачиваем календарь номер = " + id);
         Apartment apartment = shopService.getByIdWithDependency(id);
         Set<Period> periods =  apartment.getPeriods();
-        downloadFile.writeCalendar("\\room234" + id + ".ics",periods,"Europe/Minsk");
+        downloadFile.writeCalendar("room234" + id + ".ics",periods,"Europe/Minsk");
         downloadFile.downloadCalendar(id, response);
         return "index";
     }

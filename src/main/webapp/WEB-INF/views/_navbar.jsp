@@ -20,7 +20,7 @@
                     <li><a href="<c:url value="/secure/product"/>"><spring:message code="navbar.search.apartment"/></a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ANONYMOUS') or hasRole('USER')">
-                    <li><a href="<c:url value="/contacts"/>"><spring:message code="navbar.callback"/> </a></li>
+                    <%--<li><a href="<c:url value="/contacts"/>"><spring:message code="navbar.callback"/> </a></li>--%>
                     <li><a href="<c:url value="/about"/>"><spring:message code="navbar.about"/></a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ADMIN')">
@@ -30,7 +30,10 @@
             </ul>
 
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="<c:url value="?lang=en"/>">EN</a></li>
+            <li><a href="<c:url value="?lang=ru"/>">RU</a></li>
             <sec:authorize access="hasRole('ANONYMOUS')">
+
             <li><a href="<c:url value="/secure/product"/>"><spring:message code="navbar.login"/> <span class="glyphicon glyphicon-user"></span></a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
@@ -45,9 +48,9 @@
                     <li><a href="<c:url value="/admin/control"/>"><span class="glyphicon glyphicon-user"></span> Работа с клиентами</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('USER')">
-                        <li><a href="<c:url value="/secure/my_order"/>"><span class="glyphicon glyphicon-list-alt"></span> Мои заказы</a></li>
+                        <li><a href="<c:url value="/secure/my_order"/>"><span class="glyphicon glyphicon-list-alt"></span> <spring:message code="navbar.myOrders"/></a></li>
                     </sec:authorize>
-                    <li><a href="<c:url value="/logout"/>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li><a href="<c:url value="/logout"/>"><span class="glyphicon glyphicon-log-out"></span> <spring:message code="navbar.Logout"/></a></li>
                 </ul>
         </sec:authorize>
             </li>

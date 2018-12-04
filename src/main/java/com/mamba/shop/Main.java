@@ -99,9 +99,10 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        String filePath = new File("bin/webapps/ROOT/images").getAbsolutePath();
-        System.out.println(filePath);
-        String res = filePath.replace("\\bin\\","\\");
-        System.out.println(res);
+        /*String filePath = new File("src/main/webapp/images/").getAbsolutePath();
+        filePath.concat("path to the property file");
+        System.out.println(filePath);*/
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println(bCryptPasswordEncoder.encode("5250425_Os"));
     }
 }

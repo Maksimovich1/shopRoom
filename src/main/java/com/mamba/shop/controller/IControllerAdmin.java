@@ -86,6 +86,7 @@ public class IControllerAdmin {
             @RequestParam(value = "price", defaultValue = "") String price,
             @RequestParam(value = "district", defaultValue = "") String district,
             @RequestParam(value = "about", defaultValue = "") String about,
+            @RequestParam(value = "urlbooking", defaultValue = "") String url,
             Model model
     ){
         System.out.println(about + "________________________");
@@ -97,6 +98,7 @@ public class IControllerAdmin {
         apartment.setPrice(Integer.parseInt(price));
         apartment.setDistrict(Integer.parseInt(district));
         apartment.setAbout(about);
+        apartment.setUrlBooking(url);
         apartment.setEnable(1);
         shopService.addApartment(apartment);
         model.addAttribute("addStatus", true );
@@ -122,7 +124,8 @@ public class IControllerAdmin {
             @RequestParam(value = "children", defaultValue = "") String children,
             @RequestParam(value = "price", defaultValue = "") String price,
             @RequestParam(value = "district", defaultValue = "") String district,
-            @RequestParam(value = "about", defaultValue = "") String about
+            @RequestParam(value = "about", defaultValue = "") String about,
+            @RequestParam(value = "url", defaultValue = "") String url
             /*Model model*/
     ){
                 Apartment apartment = shopService.getById(id);
@@ -132,6 +135,7 @@ public class IControllerAdmin {
                 apartment.setPrice(Integer.parseInt(price));
                 apartment.setDistrict(Integer.parseInt(district));
                 apartment.setAbout(about);
+                apartment.setUrlBooking(url);
                 shopService.updateApartment(apartment);
         return "redirect:updateOrAdd";
     }

@@ -129,7 +129,7 @@ public class IDownloadFile implements DownloadFile {
     public void downloadCalendar(String id, HttpServletResponse response) {
         FileInputStream file = null;
         try {
-            file = new FileInputStream(dirname + "\\room234" + id + ".ics");
+            file = new FileInputStream(dirname + "room234" + id + ".ics");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -140,8 +140,10 @@ public class IDownloadFile implements DownloadFile {
         try {
             assert file != null;
             FileCopyUtils.copy(file, response.getOutputStream());
+            response.flushBuffer();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 
