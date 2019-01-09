@@ -20,10 +20,10 @@
     <link href="static/style.css" rel="stylesheet">
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+    <script src="static/js/loaderPage.js"></script>
 </head>
 <body class="bacgr">
+<jsp:include page="_loader.jsp"/>
 <jsp:include page="_navbar.jsp"/>
 <c:if test="${view == true && apartmentList.size() > 0}">
     <div class="info">
@@ -163,9 +163,8 @@
                     <div class="form-group">
                         <label for="priceMax"><span class="glyphicon glyphicon-euro"></span> <spring:message code="searchPage.info.maxPrice"/></label>
                         <input type="text" class="form-control" id="priceMax" value="" autocomplete="off" placeholder="Price (default 100)" name="priceMax">
-
                     </div>
-                    <button type="submit" class="btn btn-primary btnmy"><spring:message code="searchPage.search.submit"/></button>
+                    <button type="submit" class="btn btn-primary btnmy" id="sendToServer"><spring:message code="searchPage.search.submit"/></button>
                     <br>
                 </div>
             </form>
@@ -174,6 +173,11 @@
             function onsub() {
                 var dateIn = document.forms["searchApartment"]["dateIn"].value;
                 var dateOut = document.forms["searchApartment"]["dateOut"].value;
+                var maxPrice = document.forms["searchApartment"]["priceMax"].value;
+                if (isNaN(maxPrice)){
+                    alert("Цена указана не корректно");
+                    return false;
+                }
                 if (dateIn === null || dateIn === '' || dateOut === null || dateOut === ''){
                     alert("<spring:message code="searchPage.alert.invalidDate"/>");
                     return false;
@@ -187,6 +191,13 @@
                     alert("<spring:message code="searchPage.alert.invalidDate2"/>");
                     return false;
                 }
+                var preloader = $('#p_prldr'), svg_anm   = preloader.find('.svg_anm');
+                svg_anm.fadeIn();
+                preloader.fadeIn('slow');
+                console.log("123");
+                for (var i = 0; i < 1000000; i++) {
+
+                }
                 return true;
             }
         </script>
@@ -197,6 +208,11 @@
                 <c:if test="${invalidDate == true}">
                     <div class="alert alert-warning" style="height: auto;">
                         <spring:message code="searchPage.info.errorServerDate"/>
+                    </div>
+                </c:if>
+                <c:if test="${invalidNumber == true}">
+                    <div class="alert alert-warning" style="height: auto;">
+                        <spring:message code="searchPage.info.errorServerNumber"/>
                     </div>
                 </c:if>
                 <c:if test="${view == true && apartmentList.size() > 0}">
@@ -211,32 +227,25 @@
                         <div class="coll-search">
                             <div class="wellMy">
                                 <div class="thumbnail thumbnailmy">
-
-
-                                    <div id="myCarousel${apartment.getId()}" class="carousel slide " data-interval="false" data-ride="carousel">
-                                        <!-- Indicators -->
-                                        <ol class="carousel-indicators">
-                                            <li data-target="#myCarousel${apartment.getId()}" data-slide-to="0" class="active"></li>
-                                            <li data-target="#myCarousel${apartment.getId()}" data-slide-to="1"></li>
-                                        </ol>
-
-                                        <!-- Wrapper for slides -->
                                         <div class="carousel-inner" style="max-height: 200px">
+                                            <c:forEach items="${apartment.getPictures()}" var="pic" varStatus="loop">
+                                                <c:if test="${loop.index <= 1}">
+                                                <div class="item active">
+                                                    <img src="${pageContext.request.contextPath}/secure/getImage/${pic.getId()}" alt="<spring:message code="searchPage.iconApartment.photo"/>" style="width:100%;">
+                                                    <div class="carousel-caption">
+                                                    </div>
+                                                </div>
+                                                </c:if>
+                                            </c:forEach>
 
-                                            <div class="item active">
-                                                <img src="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}" alt="<spring:message code="searchPage.iconApartment.photo"/>" style="width:100%;">
+                                           <%-- <div class="item">
+                                                <img src="${pageContext.request.contextPath}/secure/getImage/${apartment.getId()}/room2" alt="<spring:message code="searchPage.iconApartment.photo"/>" style="width:100%;">
                                                 <div class="carousel-caption">
                                                 </div>
-                                            </div>
-
-                                            <div class="item">
-                                                <img src="${pageContext.request.contextPath}/secure/getImage/room1${apartment.getId()}" alt="<spring:message code="searchPage.iconApartment.photo"/>" style="width:100%;">
-                                                <div class="carousel-caption">
-                                                </div>
-                                            </div>
+                                            </div>--%>
 
                                         </div>
-                                    </div>
+
 
                                     <div class="caption row">
                                         <p class="col-md-6"><spring:message code="searchPage.iconApartment.room"/>: ${apartment.getBedroom()}</p>
@@ -246,16 +255,29 @@
                                         <p class="col-md-8 price_finish"><spring:message code="searchPage.iconApartment.price"/>: ${apartment.getPrice() * countDay} $</p>
                                     </div>
 
-                                    <div class="aboutapartment">
+                                    <%--<div class="aboutapartment">
                                         <button type="button" class="btn btn-info aboutapartmentbutton" data-toggle="collapse" data-target="#demo${apartment.getId()}">
                                             <spring:message code="searchPage.iconApartment.button.about"/></button>
                                         <div id="demo${apartment.getId()}" class="collapse">
                                                 ${apartment.getAbout()}
                                         </div>
+                                    </div>--%>
+                                    <div class="aboutapartment">
+                                            <%--<a type="button" href="<c:url value="/secure/product/apartment/${apartment.getId()}"/>"
+                                               class="btn btn-info aboutapartmentbutton">
+                                                <spring:message code="searchPage.iconApartment.button.about"/></a>--%>
+                                        <form action="/secure/product/apartment/${apartment.getId()}" method="post">
+                                            <input name="dateIn" type="hidden" value="${param.dateIn}">
+                                            <input name="dateOut" type="hidden" value="${param.dateOut}">
+                                            <button class="btn btn-info aboutapartmentbutton" type="submit"><spring:message code="searchPage.iconApartment.button.about"/></button>
+                                        </form>
+
                                     </div>
-                                    <form action="${pageContext.request.contextPath}/secure/order" method="post">
+                                    <form action="${pageContext.request.contextPath}/secure/quickOrder" method="post">
+                                        <input name="dateIn" type="hidden" value="${param.dateIn}">
+                                        <input name="dateOut" type="hidden" value="${param.dateOut}">
                                         <input name="idApartment" value="${apartment.getId()}" type="hidden">
-                                        <button class="btn btn-success" style="width: 100%"><spring:message code="searchPage.iconApartment.button.bye"/> </button>
+                                        <button class="btn btn-success" type="submit" style="width: 100%"><spring:message code="searchPage.iconApartment.button.bye"/> </button>
                                     </form>
                                 </div>
                             </div>

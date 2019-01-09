@@ -9,7 +9,7 @@ public class Picture {
 
     private int id;
     private Apartment apartment;
-    private byte[] pict;
+    private String pict;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +32,12 @@ public class Picture {
         this.apartment = apartment;
     }
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     @Column(name = "pic")
-    public byte[] getPict() {
+    public String getPict() {
         return pict;
     }
 
-    public void setPict(byte[] pict) {
+    public void setPict(String pict) {
         this.pict = pict;
     }
 

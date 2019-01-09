@@ -63,7 +63,17 @@ footer {
     float: left;
     width: 25%;
 }
-
+.successOrderDiv{
+    margin: 10%;
+    background: ghostwhite;
+    padding: 1%;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.successOrderA{
+    text-decoration: none;
+    color: #3c9e11;
+}
 .to_bottom {
     position: absolute;
     width: 100%;
@@ -199,9 +209,125 @@ footer {
 .marg {
     margin-left: 20%;
     margin-right: 20%;
-    background-color: #e9d8b0;
+    background-color: white;
 }
 
 .width_OrderParameter {
     width: 52px;
 }
+/*
+//block date css
+*/
+.selectForm {
+    margin-bottom: 3%;
+}
+.leftBody {
+    padding-left: 5%;
+    border-right: 1px solid;
+}
+.leftBodyTitle{
+    margin-left: 10%;
+    margin-bottom: 5%;
+}
+.leftBodyLock {
+    margin-bottom: 5%;
+}
+.leftBodyUnlock {
+    margin-bottom: 5%;
+}
+.rightBodyTitle {
+    margin-left: 10%;
+    margin-bottom: 5%;
+}
+.rightBody {
+    padding-left: 5%;
+}
+.colInp{
+    padding-right: 50%;
+}
+.marginUpdateOrAdd {
+    margin-bottom: 6px;
+}
+.navbarBalans {
+
+    font-size: x-large;
+    pointer-events: none;
+}
+.navbarvalute {
+    padding-bottom: 3px;
+    padding-top: 8px;
+    color: aquamarine;
+    float: left;
+}
+.addorupdate {
+    margin-top: 4%;
+    border: 1px solid aliceblue;
+    padding-top: 2%;
+    padding-left: 10%;
+    background-color: white;
+    padding-bottom: 11px;
+}
+/*page User*/
+.search_user{
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+.search_user_select{
+    min-width: 150px;
+}
+.search_user_div_body{
+visibility: hidden;
+}
+/*update or add apart
+*/
+.deleteImage {
+    background-color: red;
+    font-size: small;
+    width: 161%;
+    padding: 3%;
+    margin-left: 89%;
+    margin-right: 11%
+}
+.divMd6Image {
+    max-height: 100px;
+    margin-top: 30px;
+}
+.fileUploadStyle {
+    border-bottom: 1px solid;
+    text-align: right;
+}
+/* download page
+*/
+#p_prldr{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right:0;
+    bottom:0;
+    background: #2B9AA2;
+    z-index: 30;
+}
+
+.contpre small{font-size:25px;}
+
+.contpre{
+    width: 250px;
+    height: 100px;
+    position: absolute;
+    left: 50%;top: 48%;
+    margin-left:-125px;
+    margin-top:-75px;
+    color:#fff;
+    font-size:40px;
+    letter-spacing:-2px;
+    text-align:center;
+    line-height:35px;}
+
+#p_prldr .svg_anm {
+    position: absolute;
+    width: 41px;
+    height: 41px;
+    background: url(../images/ggi.svg) center center no-repeat;
+    background-size:41px;
+    margin: -16px 0 0 -16px;}

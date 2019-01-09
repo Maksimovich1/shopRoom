@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public class IPictureDao implements PictureDao {
 
@@ -24,6 +26,17 @@ public class IPictureDao implements PictureDao {
 
     @Override
     public void deletePicture(Picture picture) {
+        sessionFactory.getCurrentSession().delete(picture);
 
+    }
+    @Override
+    public List<Picture> getAllPictureByApartment(String idApartment) {
+        return null;
+    }
+
+    @Override
+    public Picture getPictureById(int id) {
+        System.out.println("#### get pic id =" + id);
+       return sessionFactory.getCurrentSession().get(Picture.class, id);
     }
 }

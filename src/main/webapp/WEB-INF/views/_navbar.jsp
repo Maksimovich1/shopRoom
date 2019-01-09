@@ -28,13 +28,15 @@
                     <li><a href="<c:url value="/admin/orders"/>"><spring:message code="navbar.manager_sale"/> </a></li>
                 </sec:authorize>
             </ul>
-
         <ul class="nav navbar-nav navbar-right">
             <li><a href="<c:url value="?lang=en"/>">EN</a></li>
             <li><a href="<c:url value="?lang=ru"/>">RU</a></li>
+            <sec:authorize access="hasRole('USER')">
+                <li><a class="navbarBalans" style="color: darkorange;" href="<c:url value="#"/>">${sessionScope.get("balans")} euro</a></li>
+            </sec:authorize>
             <sec:authorize access="hasRole('ANONYMOUS')">
 
-            <li><a href="<c:url value="/secure/product"/>"><spring:message code="navbar.login"/> <span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="<c:url value="/login"/>"><spring:message code="navbar.login"/> <span class="glyphicon glyphicon-user"></span></a></li>
         </sec:authorize>
         <sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
             <li class="dropdown">
@@ -45,7 +47,7 @@
                     <sec:authorize access="hasRole('ADMIN')">
                     <li><a href="<c:url value="/admin/updateOrAdd"/>"><span class="glyphicon glyphicon-cog"></span> Управление аппартаментами</a></li>
                     <li><a href="<c:url value="/admin/control"/>"><span class="glyphicon glyphicon-trash"></span> Удалить или получить ссылку на аппартамент</a></li>
-                    <li><a href="<c:url value="/admin/control"/>"><span class="glyphicon glyphicon-user"></span> Работа с клиентами</a></li>
+                    <li><a href="<c:url value="/admin/userControl"/>"><span class="glyphicon glyphicon-user"></span> Работа с клиентами</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('USER')">
                         <li><a href="<c:url value="/secure/my_order"/>"><span class="glyphicon glyphicon-list-alt"></span> <spring:message code="navbar.myOrders"/></a></li>

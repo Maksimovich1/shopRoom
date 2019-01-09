@@ -1,16 +1,26 @@
 package com.mamba.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
+@NamedQueries({
+        @NamedQuery(name = "User.findByUserNameWithDependency",
+        query = "select distinct us from User" +
+                " us left join fetch us.authorities auth" +
+                " where us.username = :username"
+        )
+})
 public class User {
     @Id
     @Column(name = "USERNAME")
     private String username;
 
+    @JsonIgnore
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
@@ -22,6 +32,9 @@ public class User {
 
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled;
+
+    @Column(name = "balans", nullable = false)
+    private int cash;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Authorities> authorities = new HashSet<>();
@@ -72,6 +85,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getCash() {
+        return cash;
+    }
+
+    public void setCash(int cash) {
+        this.cash = cash;
     }
 
     @Override

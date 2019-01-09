@@ -33,11 +33,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+        registry.addResourceHandler("/secure/images/**").addResourceLocations("/images/");
+        registry.addResourceHandler("/secure/product/apartment/images/**").addResourceLocations("/images/");
+        registry.addResourceHandler("/admin/images/**").addResourceLocations("/images/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/secure/webjars/**").addResourceLocations("/webjars/");
+        registry.addResourceHandler("/secure/product/apartment/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/admin/webjars/**").addResourceLocations("/webjars/");
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
         registry.addResourceHandler("/secure/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/secure/product/apartment/static/**").addResourceLocations("/static/");
         registry.addResourceHandler("/admin/static/**").addResourceLocations("/static/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/static/favicon.ico");
     }
@@ -73,7 +78,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
-    @Bean
+    @Bean(name="multipartResolver")
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver multipartResolver =
                 new CommonsMultipartResolver();

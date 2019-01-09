@@ -19,6 +19,7 @@ public class IUserDetailsDao implements UserDetailsDao {
 
     @Override
     public User findUserByUsername(String username) {
+        System.out.println("###___get user by username" + username);
         return sessionFactory.getCurrentSession().get(User.class, username);
     }
 }

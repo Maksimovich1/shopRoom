@@ -41,6 +41,27 @@ public class Apartment implements Serializable {
     private int enable;
     private String about;
     private String urlBooking;
+    private String latitude;
+    private String longitude;
+    private int bathroom;
+    private int size_room;
+    private boolean wifi;
+    private String address;
+    private String nameApartment;
+    private String nameManager;
+    private String phoneManager;
+    private String emailManager;
+    private String check_in;
+    private String check_out;
+    private int possessions;
+    private boolean animal;
+    private boolean pool;
+    private boolean heated_pool;
+    private int bed1;
+    private int bed2;
+    private int name_partner;
+    private int discount;
+    private int percent_of_price;
     private Set<Picture> pictures =
             new HashSet<>();
     private Set<Period> periods =
@@ -125,6 +146,195 @@ public class Apartment implements Serializable {
 
     public void setUrlBooking(String urlBooking) {
         this.urlBooking = urlBooking;
+    }
+
+    @Column(name = "latitude")
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    @Column(name = "longitude")
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    @Column(name = "count_bathroom")
+    public int getBathroom() {
+        return bathroom;
+    }
+
+    public void setBathroom(int bathroom) {
+        this.bathroom = bathroom;
+    }
+
+    @Column(name = "size_room")
+    public int getSize_room() {
+        return size_room;
+    }
+
+    public void setSize_room(int size_room) {
+        this.size_room = size_room;
+    }
+
+    @Column(name = "wifi")
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    @Column(name = "address")
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Column(name = "name_apartment")
+    public String getNameApartment() {
+        return nameApartment;
+    }
+
+    public void setNameApartment(String nameApartment) {
+        this.nameApartment = nameApartment;
+    }
+
+    @Column(name = "name_manager")
+    public String getNameManager() {
+        return nameManager;
+    }
+
+    public void setNameManager(String nameManager) {
+        this.nameManager = nameManager;
+    }
+
+    @Column(name = "phone_manager")
+    public String getPhoneManager() {
+        return phoneManager;
+    }
+
+    public void setPhoneManager(String phoneManager) {
+        this.phoneManager = phoneManager;
+    }
+
+    @Column(name = "email_manager")
+    public String getEmailManager() {
+        return emailManager;
+    }
+
+    public void setEmailManager(String emailManager) {
+        this.emailManager = emailManager;
+    }
+
+    @Column(name = "check_in")
+    public String getCheck_in() {
+        return check_in;
+    }
+
+    public void setCheck_in(String check_in) {
+        this.check_in = check_in;
+    }
+
+    @Column(name = "check_out")
+    public String getCheck_out() {
+        return check_out;
+    }
+
+    public void setCheck_out(String check_out) {
+        this.check_out = check_out;
+    }
+
+    @Column(name = "save_possessions")
+    public int getPossessions() {
+        return possessions;
+    }
+
+    public void setPossessions(int possessions) {
+        this.possessions = possessions;
+    }
+
+    @Column(name = "animal")
+    public boolean isAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(boolean animal) {
+        this.animal = animal;
+    }
+
+    @Column(name = "pool")
+    public boolean isPool() {
+        return pool;
+    }
+
+    public void setPool(boolean pool) {
+        this.pool = pool;
+    }
+
+    @Column(name = "heated_pool")
+    public boolean isHeated_pool() {
+        return heated_pool;
+    }
+
+    public void setHeated_pool(boolean heated_pool) {
+        this.heated_pool = heated_pool;
+    }
+
+    @Column(name = "bed1")
+    public int getBed1() {
+        return bed1;
+    }
+
+    public void setBed1(int bed1) {
+        this.bed1 = bed1;
+    }
+
+    @Column(name = "bed2")
+    public int getBed2() {
+        return bed2;
+    }
+
+    public void setBed2(int bed2) {
+        this.bed2 = bed2;
+    }
+
+    @Column(name = "name_partner")
+    public int getName_partner() {
+        return name_partner;
+    }
+
+    public void setName_partner(int name_partner) {
+        this.name_partner = name_partner;
+    }
+
+    @Column(name = "discount")
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    @Column(name = "percent")
+    public int getPercent_of_price() {
+        return percent_of_price;
+    }
+
+    public void setPercent_of_price(int percent_of_price) {
+        this.percent_of_price = percent_of_price;
     }
 
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL,

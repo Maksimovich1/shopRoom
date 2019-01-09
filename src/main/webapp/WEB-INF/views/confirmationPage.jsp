@@ -16,16 +16,67 @@
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background-color: gainsboro">
 <div class="container">
     <h2 style="margin-left: 42%">Проверка:</h2>
     <div class="panel panel-default marg">
-        <div class="panel-body form-inline"><h4>№ апартамента: ${id}</h4></div>
+        <%--<div class="panel-body form-inline"><h4>Apartment: ${paymentCustomModel.getApartmentName()}</h4></div>
         <div class="panel-body"><h4>Дата оформления аренды: ${dateNow}</h4></div>
-        <div class="panel-body"><h4>Период проживания: ${period_str}</h4></div>
-        <div class="panel-body"><h4>Количество ночей: ${countNight}</h4></div>
+        <div class="panel-body"><h4>Период проживания: { ${paymentCustomModel.getDateIn()} : ${paymentCustomModel.getDateOut() } }</h4></div>
+        <div class="panel-body"><h4>Количество ночей: ${paymentCustomModel.getCountNight()}</h4></div>
         <div class="panel-body"><h4>Цена за 1 ночь: ${apartment.getPrice()}</h4></div>
-        <div class="panel-footer"><h2>Итого: ${summary} $</h2></div>
+        <div class="panel-body">
+            <h4>Способ оплаты:
+                <c:if test="${sessionScope.get('paymentMethod').equals('1')}" >
+                    credit payment
+                </c:if>
+                <c:if test="${sessionScope.get('paymentMethod').equals('2')}" >
+                    full payment
+                </c:if>
+                <c:if test="${!sessionScope.get('paymentMethod').equals('1') && !sessionScope.get('paymentMethod').equals('2')}" >
+                    full payment
+                </c:if>
+            </h4>
+        </div>--%>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th scope="row">Название апартамента</th>
+                <td>${paymentCustomModel.getApartmentName()}</td>
+            </tr>
+            <tr>
+                <th scope="row">Дата оформления заказа</th>
+                <td>${dateNow}</td>
+            </tr>
+            <tr>
+                <th scope="row">Период проживания</th>
+                <td>с ${paymentCustomModel.getDateIn()}  по ${paymentCustomModel.getDateOut() } </td>
+            </tr>
+            <tr>
+                <th scope="row">Количество ночей</th>
+                <td>${paymentCustomModel.getCountNight()}</td>
+            </tr>
+            <tr>
+                <th scope="row">Цена за 1 ночь</th>
+                <td>${apartment.getPrice()}</td>
+            </tr>
+            <tr>
+                <th scope="row">Способ оплаты</th>
+                <td>
+                    <c:if test="${sessionScope.get('paymentMethod').equals('1')}" >
+                        Предоплата ${paymentCustomModel.getPledge()} euro
+                    </c:if>
+                    <c:if test="${sessionScope.get('paymentMethod').equals('2')}" >
+                        Предоплата ${paymentCustomModel.getPledge()} euro
+                    </c:if>
+                    <c:if test="${!sessionScope.get('paymentMethod').equals('1') && !sessionScope.get('paymentMethod').equals('2')}" >
+                        Предоплата ${paymentCustomModel.getPledge()} euro
+                    </c:if>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="panel-footer"><h2>Итого: ${paymentCustomModel.getSummary()} $</h2></div>
         <div class="panel-footer">
             <form action="${pageContext.request.contextPath}/secure/complete" method="post" class="form-inline">
                 <div class="form-group">
@@ -36,7 +87,9 @@
                     <label for="phone">Phone</label>
                     <input type="text" class="form-control" id="phone" placeholder="Enter phone" name="phone">
                 </div>
-                <input name="apartment" type="hidden" value="${id}">
+                <input name="apartment" type="hidden" value="${apartment.getId()}">
+                <input name="dateIn" type="hidden" value="${paymentCustomModel.getDateIn()}">
+                <input name="dateOut" type="hidden" value="${paymentCustomModel.getDateOut()}">
                 <button type="submit" class="btn btn-default">Оформить заказ</button>
             </form>
             <a href="<c:url value="/secure/product"/>" class="btn btn-danger">Вернуться</a>
@@ -45,17 +98,5 @@
 </div>
 <br>
 
-<%--<form action="${pageContext.request.contextPath}/payment" method="POST">--%>
-    <%--<script th:inline="javascript"--%>
-            <%--src="https://checkout.stripe.com/checkout.js" class="stripe-button"--%>
-            <%--data-key="pk_test_sjBV4ZqrUCQ6YZjiAC4eufFN"--%>
-            <%--data-currency="eur"--%>
-            <%--data-amount="100"--%>
-            <%--data-name="Payment"--%>
-            <%--data-description="Demo"--%>
-            <%--data-image="/images/ava.jpg"--%>
-            <%--data-locale="auto">--%>
-    <%--</script>--%>
-<%--</form>--%>
 </body>
 </html>

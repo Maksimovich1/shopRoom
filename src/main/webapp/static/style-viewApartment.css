@@ -1,0 +1,181 @@
+.divCont{
+    margin-top: 5%;
+    background-color: white;
+}
+.divContent{
+    border: 1px solid aliceblue;
+    margin-bottom: 35px;
+}
+.divContentTitle{
+    font-size: 250%;
+    margin: 20px;
+    border-bottom: 1px solid;
+}
+.divContentPick{
+   padding-bottom: 2%;
+}
+.divSpanBlock{
+    margin-bottom: 15px;
+    border-bottom: 1px solid #647a86;
+    padding-bottom: 10px;
+}
+.divSpan{
+    border-right: 1px solid;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+.w3-content{
+    background-color: yellow;
+}
+.mySlides{
+    width: 100%;
+    max-height: 460px;
+    padding: 2px;
+}
+.w3-row-padding{
+
+}
+.w3-section{
+
+}
+.w3-col {
+    float: left;
+    width: 12.5%;
+    padding: 2px;
+}
+.price{
+    color: black;
+    border-bottom: 1px solid blue;
+    padding-left: 5%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.rightColumn{
+    width: 31.333%;
+    float: left;
+    min-width: 310px;
+}
+.rightColumnRow{
+    margin-left: 10px;
+    border: 1px solid;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.priceColumnBody{
+    padding-left: 15px;
+    padding-right: 15px;
+/*    margin-top: 55px;*/
+}
+.priceColumnBodyLine{
+    border: 1px solid aliceblue;
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.rowMy{
+    border: 1px solid aliceblue;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+.divButton{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.buttonBuyNow{
+    background-color: #2a60cc;
+    border: 1px;
+    border-radius: 4px;
+    height: 50px;
+    width: 100%;
+    min-height: 35px;
+}
+.body_about{
+    margin-bottom: 40px;
+    margin-top: 40px;
+    width: 100%;
+}
+.aboutMapDiv{
+    width: 65%;
+    float: left;
+    height: 450px;
+    min-height: 150px;
+    margin-left: 2%;
+}
+.aboutDiv{
+    width: 30%;
+    float: left;
+    margin-left: 15px;
+    padding: 15px;
+    border: 1px solid;
+}
+.mapView{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.aboutTitle{
+    margin-right: 10%;
+    padding: 10px 14% 10px 7%;
+    margin-bottom: 10px;
+    width: 66%;
+    border-bottom: 1px solid;
+}
+.rowMy1{
+
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-radius: 15px;
+}
+.viewStyle{
+    padding: 10px;
+    border-bottom: 1px solid;
+    font-weight: bold;
+}
+/*
+*/
+.mainDivPrice {
+    margin-bottom: 50px;
+    margin-left: 1%;
+}
+.labelPrice {
+    min-width: 150px;
+    min-height: 125px;
+    border: 1px solid cornflowerblue;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-right: 1%;
+    background-color: aliceblue;
+}
+.labelPriceTitle{
+    border-bottom: 1px solid;
+    padding-left: 15%;
+    padding-top: 10%;
+}
+.labelPriceBody{
+    padding: 13%;
+    font-size: xx-large;
+    margin-top: 7%;
+    margin-bottom: 7%;
+    background-color: skyblue;
+    border-radius: 30px;
+}
+.labelPriceBodyAnyPrice {
+    background-color: gold;
+}
+.newPrice {
+    background-color: gold;
+    width: 60px;
+    height: 10px;
+}
+.oldPrice {
+    background-color: skyblue;
+    height: 10px;
+    width: 60px
+}
+.titlePrice {
+    padding-left: 2%;
+
+}

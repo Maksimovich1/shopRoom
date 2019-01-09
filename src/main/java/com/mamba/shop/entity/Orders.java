@@ -17,8 +17,9 @@ public class Orders implements Serializable {
     private Date date_in;
     private Date date_out;
     private String id_product_buy;
-    private String price;
+    private int price;
     private int status;
+    private int pledge;
 
     public Orders() {
     }
@@ -101,11 +102,11 @@ public class Orders implements Serializable {
     }
 
     @Column(name = "summary", nullable = false)
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -118,6 +119,13 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
+    @Column(name = "pledge", nullable = false)
+    public int getPledge() {
+        return pledge;
+    }
+    public void setPledge(int pledge) {
+        this.pledge = pledge;
+    }
     @Override
     public String toString() {
         return "Orders{" +

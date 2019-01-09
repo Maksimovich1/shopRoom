@@ -13,4 +13,6 @@ public interface RegistrationService {
             throws IllegalAccessException, IllegalArgumentException;
     List<User> getAllUser();
     void disableOrEnableUser(String username, boolean enabled) throws NotFoundException;
+    void updateUser(User user);
+    User getUserByUsernameWithDependency(String username);
 }

@@ -1,6 +1,7 @@
 package com.mamba.shop.dao;
 
 import com.mamba.shop.entity.Apartment;
+import com.mamba.shop.entity.Period;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface ApartmentDao {
 
     void addApartment(Apartment apartment);
     void deleteApartment(Apartment apartment);
+    void addPeriodInApartment(Period period, String idApartment);
 }

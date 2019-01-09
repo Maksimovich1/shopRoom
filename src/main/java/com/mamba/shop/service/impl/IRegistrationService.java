@@ -70,10 +70,10 @@ public class IRegistrationService implements RegistrationService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> getAllUser() {
-
-        return null;
+        return registrationDao.getAllUsers();
     }
 
     @Override
@@ -83,5 +83,16 @@ public class IRegistrationService implements RegistrationService {
             user.setEnabled(enabled);
         }
         else throw new NotFoundException("Пользователь не найден");
+    }
+
+    @Override
+    public void updateUser(User user) {
+        registrationDao.updateUser(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getUserByUsernameWithDependency(String username) {
+        return registrationDao.getUserByUsernameWithDependency(username);
     }
 }

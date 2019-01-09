@@ -2,6 +2,8 @@ package com.mamba.shop.service.impl;
 
 import com.mamba.shop.dao.*;
 import com.mamba.shop.entity.*;
+import com.mamba.shop.entity.custom_entity.CustomPricesModel;
+import com.mamba.shop.entity.custom_entity.PeriodLongCustomModel;
 import com.mamba.shop.entity.custom_entity.SearchCustomModel;
 import com.mamba.shop.service.DownloadFile;
 import com.mamba.shop.service.MailService;
@@ -18,17 +20,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 @Service
 @Transactional
 public class IShopDetailsService implements ShopService, MailService{
@@ -40,6 +45,7 @@ public class IShopDetailsService implements ShopService, MailService{
     private final OrderDao orderDao;
     private final PictureDao pictureDao;
     private final PeriodDao periodDao;
+    private final PriceForPeriodDao priceForPeriodDao;
 
     @Value(value = "${app.service_shop.host}")
     private String host;
@@ -48,12 +54,26 @@ public class IShopDetailsService implements ShopService, MailService{
     @Value(value = "${app.service_shop.url_after}")
     private String url_after;
 
+    @Value(value = "${app.controllerAccess.district1}")
+    private String district1;
+    @Value(value = "${app.controllerAccess.district2}")
+    private String district2;
+    @Value(value = "${app.controllerAccess.district3}")
+    private String district3;
+    @Value(value = "${app.controllerAccess.district4}")
+    private String district4;
+    @Value(value = "${app.controllerAccess.district5}")
+    private String district5;
+    @Value(value = "${app.controllerAccess.district6}")
+    private String district6;
+
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Autowired
     public IShopDetailsService(ApartmentDao apartmentDao, JavaMailSender mailSender,
                                DownloadFile downloadFile, UserDetailsDao userDetailsDao,
-                               OrderDao orderDao, PictureDao pictureDao, PeriodDao periodDao) {
+                               OrderDao orderDao, PictureDao pictureDao, PeriodDao periodDao,
+                               PriceForPeriodDao priceForPeriodDao) {
         this.apartmentDao = apartmentDao;
         this.mailSender = mailSender;
         this.downloadFile = downloadFile;
@@ -61,6 +81,7 @@ public class IShopDetailsService implements ShopService, MailService{
         this.orderDao = orderDao;
         this.pictureDao = pictureDao;
         this.periodDao = periodDao;
+        this.priceForPeriodDao = priceForPeriodDao;
     }
 
     @Transactional(readOnly = true)
@@ -68,26 +89,21 @@ public class IShopDetailsService implements ShopService, MailService{
     public List<Apartment> searchFreeApartmentsWithDependency(
             String countPeople, String countChild,
             String district, String priceMax,
-            String dateIn, String dateOut, String bedroom) {
+            String dateIn, String dateOut, String bedroom) throws ParseException, NumberFormatException {
 
-        SearchCustomModel model = null;
-        try {
+        SearchCustomModel model;
+
             model = new SearchCustomModel(
                     Integer.parseInt(bedroom), Integer.parseInt(countPeople),
                     Integer.parseInt(countChild), Integer.parseInt(priceMax),
                     Integer.parseInt(district),
                     new SimpleDateFormat(DATE_FORMAT).parse(dateIn),
                     new SimpleDateFormat(DATE_FORMAT).parse(dateOut));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            System.out.println("Не удалось преобразовать дату в сервисе.");
-        }
 
         List<Apartment> listResult = new ArrayList<>();
         List<Apartment> listResultDao = apartmentDao.getAllFreeApartmentsBySearchCustomModelWithDependency(model);
         for (Apartment apartment :
                 listResultDao) {
-            assert model != null;
             if (checkPeriodApartment(apartment, model.getSearch_date_in(), model.getSearch_date_out()))
                 listResult.add(apartment);
         }
@@ -111,7 +127,9 @@ public class IShopDetailsService implements ShopService, MailService{
         return apartmentDao.findById(id);
     }
     @Override
-    public void addApartment(Apartment apartment) {
+    public void addApartment(Apartment apartment) throws IllegalArgumentException {
+        if (apartmentDao.findById(apartment.getId()) != null)
+            throw new IllegalArgumentException("Апартамент с таким номером существует " + apartment.getId());
         apartmentDao.addApartment(apartment);
     }
     @Override
@@ -138,7 +156,6 @@ public class IShopDetailsService implements ShopService, MailService{
             Date archiveDateIn = periodArchive.getDate_in();
             Date archiveDateOut = periodArchive.getDate_out();
             if (thisDate_in.before(archiveDateIn) && thisDate_out.before(archiveDateIn)){
-
                 if (countEquals <= 0)
                 return true;
             }
@@ -180,8 +197,9 @@ public class IShopDetailsService implements ShopService, MailService{
                     periods) {
                 if (equalsDatePeriods(apartment, prd)) {
                     //add period in this apartment
-                    apartment.getPeriods().add(prd);
-                    apartmentDao.updateApartment(apartment);
+                    /*apartment.getPeriods().add(prd);
+                    apartmentDao.updateApartment(apartment);*/
+                    apartmentDao.addPeriodInApartment(prd, apartment.getId());
                     System.out.println("####Период был уникальный для этого апартамента id:  = "
                             + apartment.getId() + "period = " + prd.toString());
                 } else
@@ -260,6 +278,11 @@ public class IShopDetailsService implements ShopService, MailService{
         System.out.println("user = " + username);
         System.out.println(user.toString());
         return user;
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDetailsDao.findUserByUsername(userName);
     }
 
     @Override
@@ -344,7 +367,7 @@ public class IShopDetailsService implements ShopService, MailService{
         order.setDate_in(dateIn);
         order.setDate_out(dateOut);
         order.setId_product_buy(apartmentId);
-        order.setPrice(summary);
+        order.setPrice(Integer.parseInt(summary));
         order.setStatus(status);
         return order;
     }
@@ -373,7 +396,13 @@ public class IShopDetailsService implements ShopService, MailService{
     }
 
     @Override
-    public void deleteOrder(String orderId) {
+    public Orders getOrderById(String id) {
+        return orderDao.getOrderById(id);
+    }
+
+    @Override
+    public int deleteOrder(String orderId, String userRole) {
+        int penya = 0;
         Orders order = orderDao.getOrderById(orderId);
         String aparId = order.getId_product_buy();
         Period periodOrder = new Period();
@@ -394,35 +423,151 @@ public class IShopDetailsService implements ShopService, MailService{
             System.out.println("Не найден удаляемый период");
         }
         else {
+            if (userRole.equals("user"))
+                penya = (int) (order.getPledge() * 0.1);
+            penya = order.getPledge() - penya;
             periodDao.deletePeriod(periodDao.getById(idPeriodRemove));
             orderDao.deleteOrder(order);
         }
+        return penya;
     }
 
     ////////////////////////////////////////
     @Override
-    public void saveImageForApartment(CommonsMultipartFile[] file, String idApartment) {
+    public void saveImageForApartment(MultipartFile file, String idApartment, String pathNewImage) throws IOException {
+        Apartment apartment = apartmentDao.findByIdWithDependency(idApartment);
+        System.out.println("Запись пути картинки в бд.________");
+        Picture picture = new Picture();
+        picture.setApartment(apartment);
+        picture.setPict(pathNewImage);
+        apartment.getPictures().add(picture);
+        File transferFile = new File(pathNewImage);
+        if (!transferFile.exists()){ // проверка на существование папки
+            boolean result = transferFile.mkdirs();
+            if (result)
+                System.out.println("create new folder");
+        }
+        file.transferTo(transferFile);
+    }
 
-        Apartment apartment = apartmentDao.findById(idApartment);
-        System.out.println("Запись картинки в бд.________");
-        if ((file != null) && (file.length > 0)){
-            for (CommonsMultipartFile multipartFile: file){
-                if (multipartFile.isEmpty()){
-                    System.out.println("name = " + multipartFile.getOriginalFilename());
-                    if (!multipartFile.getOriginalFilename().equals("")){
-                        Picture picture = new Picture();
-                        picture.setPict(multipartFile.getBytes());
-                        picture.setApartment(apartment);
-                        pictureDao.addPicture(picture);
-                        System.out.println("Картинка успешно добавлена!--------");
-                    }
-                }
-            }// конец цикла
-        }else {
-            System.out.println("____переданный массив из байтов пуст, null");
+    @Override
+    public boolean deletePicture(int id) {
+        Picture picture = pictureDao.getPictureById(id);
+        String path = picture.getPict();
+        if (new File(path).delete()){
+            pictureDao.deletePicture(picture);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public byte[] getImageForApartment(String path) throws IOException {
+        BufferedImage image;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] imageInByte;
+        File file = new File(path);
+        System.out.println(file.getAbsolutePath());
+        image = ImageIO.read(file);
+        ImageIO.write( image, "jpg", baos );
+        baos.flush();
+        imageInByte = baos.toByteArray();
+        baos.close();
+        return imageInByte;
+    }
+
+    @Override
+    public Picture getPicture(int id) {
+        return pictureDao.getPictureById(id);
+    }
+
+    ///////////////////////
+    @Override
+    public void addNewPrice(String name, String begin, String end, String price, String idApartment) throws ParseException {
+        long beginDate = new SimpleDateFormat(DATE_FORMAT).parse(begin).getTime();
+        long endDate = new SimpleDateFormat(DATE_FORMAT).parse(end).getTime();
+        PriceForThePeriod priceForThePeriod =
+                new PriceForThePeriod(name, beginDate, endDate, price, idApartment);
+        priceForPeriodDao.addPriceForPeriod(priceForThePeriod);
+    }
+
+    @Override
+    public List<CustomPricesModel> setPriceForThePeriod(Apartment apartment, String in, String out) throws ParseException {
+
+        String idApartment = apartment.getId();
+        List<CustomPricesModel> customPricesModelList = new ArrayList<>();
+        List<PriceForThePeriod> listPricesForThePeriod = priceForPeriodDao.getPriceForThePeriodByIdApartment(idApartment);
+        long dateIn = new SimpleDateFormat(DATE_FORMAT).parse(in).getTime();
+        long dateOut = new SimpleDateFormat(DATE_FORMAT).parse(out).getTime();
+        long hour24 = 86400000;
+
+        for (long i = dateIn + hour24; i <= dateOut; i += hour24){
+            System.out.println("Проверяем эту дату" +  new SimpleDateFormat(DATE_FORMAT).format(new Date(i)));
+            customPricesModelList.add(isEntersThisDay(i, listPricesForThePeriod, apartment));
         }
 
+        return customPricesModelList;
     }
+
+    @Override
+    public String getNameDistrict(int id) {
+        String district;
+        switch (id){
+            case 1:
+                district = district1;
+                break;
+            case 2:
+                district = district2;
+                break;
+            case 3:
+                district = district3;
+                break;
+            case 4:
+                district = district4;
+                break;
+            case 5:
+                district = district5;
+                break;
+            case 6:
+                district = district6;
+                break;
+            default:
+                district = district1;
+        }
+        return district;
+    }
+
+    @Override
+    public boolean hasThePriceChanged(List<CustomPricesModel> pricesModelList) {
+        for (CustomPricesModel cpm :
+                pricesModelList) {
+            if (cpm.isFlag())
+                return true;
+        }
+        return false;
+    }
+
+        /*
+        * false старая цена
+        * */
+    private CustomPricesModel isEntersThisDay(long dateThis, List<PriceForThePeriod> listPricesForThePeriod, Apartment apartment){
+        String datestr = new SimpleDateFormat(DATE_FORMAT).format(new Date(dateThis));
+        for (PriceForThePeriod pr :
+                listPricesForThePeriod) {
+            if (dateThis >= pr.getBegin_period() && dateThis <= pr.getEnd_period())
+                return new CustomPricesModel(
+                        datestr,
+                        pr.getPriceOfPeriod(),
+                        true
+                );
+        }
+        return new CustomPricesModel(
+                datestr,
+                String.valueOf(apartment.getPrice()),
+                false
+        );
+    }
+
     private boolean equalsDate(Date date1, Date date2){
         Calendar calendar1 = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();

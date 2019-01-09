@@ -25,7 +25,7 @@ public class SecurityDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = detailsDao.findUserByUsername(username);
-        org.springframework.security.core.userdetails.User.UserBuilder userBuilder = null;
+        org.springframework.security.core.userdetails.User.UserBuilder userBuilder;
 
         if (user != null){
             userBuilder = org.springframework.security.core.userdetails.User.withUsername(username);

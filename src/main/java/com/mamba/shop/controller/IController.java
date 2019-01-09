@@ -56,13 +56,17 @@ public class IController {
     }
 
     @RequestMapping("/get.download/jsd1134is6chd_uhc_sid/sdcs32dvg2222112/{id}5987412365/bzs123fff_gbc)ss")
-    public String downloadCalendar(@PathVariable String id, HttpServletResponse response){
+    public void downloadCalendar(@PathVariable String id, HttpServletResponse response){
         System.out.println("Скачиваем календарь номер = " + id);
         Apartment apartment = shopService.getByIdWithDependency(id);
         Set<Period> periods =  apartment.getPeriods();
         downloadFile.writeCalendar("room234" + id + ".ics",periods,"Europe/Minsk");
         downloadFile.downloadCalendar(id, response);
-        return "index";
+        try {
+            response.flushBuffer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @GetMapping(value = "/404")
     public String notFoundPage(){

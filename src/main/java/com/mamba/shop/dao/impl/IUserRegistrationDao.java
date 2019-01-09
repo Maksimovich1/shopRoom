@@ -25,6 +25,15 @@ public class IUserRegistrationDao implements UserRegistrationDao {
     }
 
     @Override
+    public User getUserByUsernameWithDependency(String username) {
+        System.out.println("### get user by username with dependency");
+        Session session = sessionFactory.getCurrentSession();
+        return (User) session.getNamedQuery("User.findByUserNameWithDependency")
+                .setParameter("username", username)
+                .uniqueResult();
+    }
+
+    @Override
     public void addUser(User userAdd) {
         sessionFactory.getCurrentSession().persist(userAdd);
         System.out.println("###__ user add for name = " + userAdd.getUsername());
@@ -48,6 +57,14 @@ public class IUserRegistrationDao implements UserRegistrationDao {
         System.out.println("###__ new auth user = "
                 + authorities.getUser().getUsername()
                 + " role = " + authorities.getAuthority());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<User> getAllUsers() {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "from User";
+        return (List<User>) session.createQuery(sql).list();
     }
 
     @Override

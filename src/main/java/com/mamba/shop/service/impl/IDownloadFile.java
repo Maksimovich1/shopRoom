@@ -140,7 +140,6 @@ public class IDownloadFile implements DownloadFile {
         try {
             assert file != null;
             FileCopyUtils.copy(file, response.getOutputStream());
-            response.flushBuffer();
         } catch (IOException e) {
             e.printStackTrace();
 

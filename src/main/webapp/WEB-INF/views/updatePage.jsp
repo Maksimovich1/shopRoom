@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="url" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
@@ -17,33 +18,39 @@
     <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
-    <jsp:include page="_navbar.jsp"/>
+<body style="background-color: #f9f6f6">
+<jsp:include page="_navbar.jsp"/>
 <div class="container">
 
-    <c:if test="${param.addStatus == 'true'}">
+    <c:if test="${addStatus == 'true'}">
         <div class="alert alert-success">
             <strong>Success!</strong> Apartment is add.
         </div>
     </c:if>
-    <c:if test="${param.addStatus == 'false'}">
+    <c:if test="${addStatus == 'false'}">
         <div class="alert alert-warning">
             <strong>Error!</strong> Апартамент не был добавлен!
+                ${message}
         </div>
     </c:if>
     <!-- Trigger the modal with a button -->
-    <div style="margin: 15px">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
+    <div class="row addorupdate">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+ Добавить апартамент</button>
+        </div>
+
+        <div class="col-md-6">
+            <form action="${pageContext.request.contextPath}/admin/searchForId">
+                <div class="input-group col-xs-4" style="width: 70%;">
+                    <input type="text" class="form-control input-lg" placeholder="Search" name="ida">
+                    <div class="input-group-btn">
+                        <button class="btn btn-success btn-lg" type="submit">Поиск</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <form action="${pageContext.request.contextPath}/admin/searchForId">
-        <div class="input-group col-xs-4">
-            <input type="text" class="form-control input-lg" placeholder="Search" name="ida">
-            <div class="input-group-btn">
-                <button class="btn btn-success btn-lg" type="submit">Поиск</button>
-            </div>
-        </div>
-    </form>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -55,44 +62,21 @@
                     <h4 class="modal-title">Добавление апартамента</h4>
                 </div>
                 <form action="${pageContext.request.contextPath}/admin/addApartment" method="get">
-                <div class="modal-body">
-                    <div class="col-xs-6">
-                        <label for="id1">ID:</label>
-                        <input type="text" class="form-control" id="id1" placeholder="ID" name="id1">
+                    <div class="modal-body">
+                        <div class="col-xs-6 marginUpdateOrAdd">
+                            <label for="id1">ID:</label>
+                            <input type="text" class="form-control" id="id1" placeholder="ID" name="id1">
+                        </div>
+                        <jsp:include page="_viewmodel_apartment.jsp"/>
+                        <div class="col-xs-12 " >
+                            <button type="submit" class="btn btn-success" id="idb">Добавить апартамент</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+
                     </div>
-                    <div class="col-xs-6">
-                        <label for="countP">Колличество людей 18+:</label>
-                        <input type="text" class="form-control" id="countP" placeholder="Количество людей 18+" name="people">
+                    <div class="modal-footer" style="border-top: 0">
+
                     </div>
-                    <div class="col-xs-6">
-                        <label for="countC">Колличество детей:</label>
-                        <input type="text" class="form-control" id="countC" placeholder="Количество детей" name="children">
-                    </div>
-                    <div class="col-xs-6">
-                        <label for="bedroom">Колличество комнат</label>
-                        <input type="text" class="form-control" id="bedroom" placeholder="Количество комнат" name="bedroom">
-                    </div>
-                    <div class="col-xs-6">
-                        <label for="price">Цена:</label>
-                        <input type="text" class="form-control" id="price" placeholder="Цена" name="price">
-                    </div>
-                    <div class="col-xs-6">
-                        <label for="district">Район</label>
-                        <input type="text" class="form-control" id="district" placeholder="Район:" name="district">
-                    </div>
-                    <div class="col-xs-6" style="margin-right: 177px; margin-bottom: 10px;">
-                        <label for="urlbooking">URL</label>
-                        <input type="text" class="form-control" id="urlbooking" placeholder="URL Booking" name="urlbooking">
-                    </div>
-                    <div>
-                        <label for="about">О апартаменте:</label>
-                        <textarea class="form-control" rows="5" id="about" name="about"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="idb">Добавить апартамент</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
                 </form>
             </div>
         </div>
@@ -100,48 +84,52 @@
     <c:if test="${apartment == null}">
         <p>Ничего не найдено :(</p>
     </c:if>
-        <c:if test="${apartment != null}">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <a href="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}">
-                        <img src="${pageContext.request.contextPath}/secure/getImage/room${apartment.getId()}" alt="Lights" style="width:100%">
-                    </a>
+    <c:if test="${apartment != null}">
+        <div class="row" style="border: 1px solid antiquewhite;margin-top: 1%;background-color: white; margin-bottom: 1%">
+            <div class="col-md-4" style="padding-top: 2%">
+                <div class="row">
+                    <c:forEach items="${pictureList}" var="pic">
+                        <div class="col-md-6 divMd6Image">
+                            <div>
+                            <a class="deleteImage" href=" <c:url value="/admin/deleteImage">
+                                        <c:param name="idImage" value="${pic.getId()}"/>
+                                        <c:param name="idApart" value="${apartment.getId()}"/>
+                                      </c:url> " >X</a>
+                            </div>
+                            <a href="/secure/getImage/${pic.getId()}">
+                                <img src="/secure/getImage/${pic.getId()}" alt="Lights" style="width:100%; max-height: 100px">
+                            </a>
+                        </div>
+                    </c:forEach>
+
+
                 </div>
             </div>
             <div class="col-md-8">
                 <form action="${pageContext.request.contextPath}/admin/update">
-                    <div class="form-group">
-                        <label for="ida">ID:</label>
-                        <input class="form-control input-sm" id="ida" type="text" name="ida" value="${apartment.getId()}">
-                        <label for="bedroomUpdate">Количество комнат:</label>
-                        <input class="form-control input-sm" id="bedroomUpdate" type="text" name="bedroom" value="${apartment.getBedroom()}">
-                        <label for="peopleUpdate">Количество людей:</label>
-                        <input class="form-control input-sm" id="peopleUpdate" type="text" name="people" value="${apartment.getPeople()}">
-                        <label for="chUpdate">Количество детей:</label>
-                        <input class="form-control input-sm" id="chUpdate" type="text" name="children" value="${apartment.getChildren()}">
-                        <label for="priceUpdate">Цена:</label>
-                        <input class="form-control input-sm" id="priceUpdate" type="text" name="price" value="${apartment.getPrice()}">
-                        <label for="districtUpdate">Район:</label>
-                        <input class="form-control input-sm" id="districtUpdate" type="text" name="district" value="${apartment.getDistrict()}">
-                        <label for="aboutUpdate">О номере:</label>
-                        <input class="form-control input-sm" id="aboutUpdate" type="text" name="about" value="${apartment.getAbout()}">
-                        <label for="aboutUpdate">Url:</label>
-                        <input class="form-control input-sm" id="urlUpdate" type="text" name="url" value="${apartment.getUrlBooking()}">
+
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <div class="col-xs-12" >
+                            <label for="ida">ID:</label>
+                            <input class="form-control input-sm" id="ida" type="text" name="ida" value="${apartment.getId()}"  >
+                        </div>
+                        <jsp:include page="_viewmodel_apartment.jsp"/>
+                        <div class="col-xs-8" style="margin-bottom: 20px">
+                            <button type="submit" class="btn btn-success">Применить изменения</button>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Изменить</button>
                 </form>
-                <%--<div class="caption">--%>
-                    <%--<p>${apartment.getBedroom()}</p>--%>
-                    <%--<p>${apartment.getPeople()}</p>--%>
-                    <%--<p>${apartment.getChildren()}</p>--%>
-                    <%--<p>${apartment.getPrice()}</p>--%>
-                    <%--<p>${apartment.getDistrict()}</p>--%>
-                    <%--<p>${apartment.getAbout()}</p>--%>
-                <%--</div>--%>
+                <div     style="margin-bottom: 10px">
+                    <form name="fileUpload" class="form-inline" method="POST" action="${pageContext.request.contextPath}/admin/save_image" enctype="multipart/form-data">
+                        <label>Select File</label> <br />
+                        <input type="file" name="file" class="fileUploadStyle" />
+                        <input type="hidden" value="${apartment.getId()}" name="idApart">
+                        <input type="submit" class="btn btn-success" name="submit" value="Upload" />
+                    </form>
+                </div>
             </div>
-            </div>
-        </c:if>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

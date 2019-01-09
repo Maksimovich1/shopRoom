@@ -1,17 +1,21 @@
 package com.mamba.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "AUTHORITIES")
 public class Authorities {
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "AUTHORITY")
     private String authority;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "USERNAME")
     private User user;

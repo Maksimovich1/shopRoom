@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/webjars", "/images", "/productList").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/secure/**").access("hasRole('ADMIN') or hasRole('USER')")
-                .and().formLogin().loginPage("/login").loginProcessingUrl("/loginAction").permitAll()
+                .and().formLogin().loginPage("/login").loginProcessingUrl("/loginAction").successForwardUrl("/secure/product").permitAll()
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }
 }

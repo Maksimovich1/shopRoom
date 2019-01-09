@@ -1,5 +1,7 @@
 package com.mamba.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -47,6 +49,7 @@ public class Period implements Serializable{
         this.date_out = date_out;
     }
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "apartment_period",
         joinColumns = @JoinColumn(name = "period_id"),
